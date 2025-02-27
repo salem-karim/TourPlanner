@@ -1,10 +1,10 @@
-module com.tourplanner.tourplanner {
+module at.technikum.tourplanner {
   requires javafx.controls;
   requires javafx.fxml;
 
   requires org.controlsfx.controls;
   requires org.kordamp.bootstrapfx.core;
 
-  opens com.tourplanner.tourplanner to javafx.fxml;
-  exports com.tourplanner.tourplanner;
+  opens at.technikum.tourplanner to javafx.fxml;
+  exports at.technikum.tourplanner;
 }
