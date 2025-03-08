@@ -3,7 +3,7 @@ package at.technikum.tourplanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class TourPlannerController {
   @FXML
   private Label welcomeText;
 
