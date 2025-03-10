@@ -15,7 +15,7 @@ public class TourPlannerApplication extends Application {
 //    final Locale locale = new Locale.Builder().setLanguage("de").build();
 //    final ResourceBundle i18n = ResourceBundle.getBundle("at.technikum.tourplanner.i18n", locale);
     FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+    Scene scene = new Scene(fxmlLoader.load(), 900, 600);
     stage.setTitle("Tour Planner");
     stage.setScene(scene);
     stage.show();
