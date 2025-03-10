@@ -13,8 +13,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.0.1" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="at.technikum.tourplanner.TourPlannerController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.technikum.tourplanner.controllers.TourPlannerController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -67,17 +67,17 @@
                   <ListView layoutX="11.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
                   <HBox layoutX="11.0" layoutY="519.0" prefHeight="44.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <children>
-                      <Button mnemonicParsing="false" text="Create" HBox.hgrow="ALWAYS">
+                      <Button fx:id="createButton" mnemonicParsing="false" text="Create" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" text="Modify" HBox.hgrow="ALWAYS">
+                        <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false" text="Edit" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" text="Delete" HBox.hgrow="ALWAYS">
+                        <Button fx:id="deleteButton" alignment="CENTER" mnemonicParsing="false" text="Delete" HBox.hgrow="ALWAYS">
                            <font>
                               <Font size="15.0" />
                            </font>
