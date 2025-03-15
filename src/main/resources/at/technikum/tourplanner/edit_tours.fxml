@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0" text="Log information" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Label alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0" text="Tour information" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -30,6 +30,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <TextField prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -37,32 +38,37 @@
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
-            <Label minWidth="-Infinity" text="Date/Time" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+            <Label minWidth="-Infinity" text="Name" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="20.0" layoutY="21.0" text="Comment" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label layoutX="20.0" layoutY="21.0" text="Tour description" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="10.0" layoutY="21.0" text="Difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <Label layoutX="10.0" layoutY="21.0" text="From" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="10.0" layoutY="21.0" text="Total Distance" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Label layoutX="10.0" layoutY="21.0" text="To" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="10.0" layoutY="21.0" text="Total Time" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <Label layoutX="10.0" layoutY="21.0" text="Transport type" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
             </Label>
-            <Label layoutX="10.0" layoutY="21.0" text="Rating" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <Label layoutX="10.0" layoutY="21.0" text="Tour distance" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="21.0" text="Estimated time" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
@@ -92,21 +98,29 @@
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </TextField>
+            <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </GridPane.margin>
+            </TextField>
          </children>
       </GridPane>
       <ButtonBar buttonMinWidth="80.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <buttons>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Cancel" textAlignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="OK" textAlignment="CENTER">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Cancel" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
         </buttons>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
          <padding>
             <Insets bottom="10.0" right="20.0" />
          </padding>

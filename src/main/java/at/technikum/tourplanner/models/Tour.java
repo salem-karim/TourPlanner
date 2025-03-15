@@ -1,7 +1,11 @@
 package at.technikum.tourplanner.models;
 
 import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Tour {
     private UUID id;
     private String name;
@@ -25,66 +29,5 @@ public class Tour {
         this.route_info = route_info;
     }
 
-    public UUID getId() {
-        return id;
-    }
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTour_description() {
-        return tour_description;
-    }
-    public void setTour_description(String tour_description) {
-        this.tour_description = tour_description;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getTransport_type() {
-        return transport_type;
-    }
-    public void setTransport_type(String transport_type) {
-        this.transport_type = transport_type;
-    }
-
-    public int getTour_distance() {
-        return tour_distance;
-    }
-    public void setTour_distance(int tour_distance) {
-        this.tour_distance = tour_distance;
-    }
-
-    public int getEstimated_time() {
-        return estimated_time;
-    }
-    public void setEstimated_time(int estimated_time) {
-        this.estimated_time = estimated_time;
-    }
-
-    public String getRoute_info() {
-        return route_info;
-    }
-    public void setRoute_info(String route_info) {
-        this.route_info = route_info;
-    }
 }

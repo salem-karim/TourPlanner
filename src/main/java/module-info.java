@@ -3,8 +3,9 @@ module at.technikum.tourplanner {
   requires javafx.fxml;
 
   requires org.controlsfx.controls;
+    requires static lombok;
 
-  opens at.technikum.tourplanner to javafx.fxml;
+    opens at.technikum.tourplanner to javafx.fxml;
   exports at.technikum.tourplanner;
   exports at.technikum.tourplanner.models;
   opens at.technikum.tourplanner.models to javafx.fxml;
