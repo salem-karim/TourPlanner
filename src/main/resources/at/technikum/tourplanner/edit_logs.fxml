@@ -1,165 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-  prefHeight="400.0"
-  prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
-  xmlns:fx="http://javafx.com/fxml/1">
+            prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
+            xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <Label alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0"
-      text="%logInfo.title"
-      textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-      AnchorPane.topAnchor="0.0">
+           text="%logInfo.title"
+           textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+           AnchorPane.topAnchor="0.0">
       <font>
-        <Font name="System Bold" size="20.0" />
+        <Font name="System Bold" size="20.0"/>
       </font>
     </Label>
     <GridPane prefHeight="298.0" prefWidth="600.0" AnchorPane.bottomAnchor="60.0"
-      AnchorPane.leftAnchor="0.0"
-      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
       <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="116.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="504.0" minWidth="10.0" prefWidth="484.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" prefWidth="116.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="504.0" minWidth="10.0" prefWidth="484.0"/>
       </columnConstraints>
       <rowConstraints>
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       </rowConstraints>
       <children>
         <Label minWidth="-Infinity" text="%logInfo.name" GridPane.halignment="RIGHT"
-          GridPane.valignment="CENTER">
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-          GridPane.halignment="CENTER"
-          GridPane.valignment="CENTER">
+                   GridPane.halignment="CENTER"
+                   GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label minWidth="-Infinity" text="%logInfo.date" GridPane.halignment="RIGHT"
-          GridPane.rowIndex="1"
-          GridPane.valignment="CENTER">
+               GridPane.rowIndex="1"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-          GridPane.halignment="CENTER"
-          GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                   GridPane.halignment="CENTER"
+                   GridPane.rowIndex="1" GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label layoutX="20.0" layoutY="21.0" text="%logInfo.comment" GridPane.halignment="RIGHT"
-          GridPane.rowIndex="2"
-          GridPane.valignment="CENTER">
+               GridPane.rowIndex="2"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField layoutX="223.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="2">
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="2">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label layoutX="10.0" layoutY="21.0" text="%logInfo.difficulty" GridPane.halignment="RIGHT"
-          GridPane.rowIndex="3"
-          GridPane.valignment="CENTER">
+               GridPane.rowIndex="3"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="3">
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="3">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaldistance"
-          GridPane.halignment="RIGHT"
-          GridPane.rowIndex="4"
-          GridPane.valignment="CENTER">
+               GridPane.halignment="RIGHT"
+               GridPane.rowIndex="4"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="4">
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="4">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaltime" GridPane.halignment="RIGHT"
-          GridPane.rowIndex="5"
-          GridPane.valignment="CENTER">
+               GridPane.rowIndex="5"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="5">
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="5">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
         <Label layoutX="10.0" layoutY="21.0" text="%logInfo.rating" GridPane.halignment="RIGHT"
-          GridPane.rowIndex="6"
-          GridPane.valignment="CENTER">
+               GridPane.rowIndex="6"
+               GridPane.valignment="CENTER">
           <GridPane.margin>
-            <Insets left="20.0" />
+            <Insets left="20.0"/>
           </GridPane.margin>
         </Label>
         <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="6">
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="6">
           <GridPane.margin>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" right="20.0"/>
           </GridPane.margin>
         </TextField>
       </children>
     </GridPane>
     <ButtonBar buttonMinWidth="80.0" prefHeight="40.0" prefWidth="200.0"
-      AnchorPane.bottomAnchor="0.0"
-      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <buttons>
         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-          text="%button.cancel"
-          textAlignment="CENTER">
+                text="%button.cancel"
+                textAlignment="CENTER">
           <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
           </font>
         </Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="%button.ok"
-          textAlignment="CENTER">
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="%button.save"
+                textAlignment="CENTER">
           <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
           </font>
         </Button>
       </buttons>
       <padding>
-        <Insets bottom="10.0" right="20.0" />
+        <Insets bottom="10.0" right="20.0"/>
       </padding>
     </ButtonBar>
   </children>
