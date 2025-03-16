@@ -14,110 +14,124 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tourplanner.controllers.TourPlannerController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21.0.5"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="at.technikum.tourplanner.controllers.TourPlannerController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="false" text="%menu.file">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <MenuItem mnemonicParsing="false" text="%button.new" />
+            <MenuItem mnemonicParsing="false" text="%button.open" />
+            <Menu mnemonicParsing="false" text="%button.openrecent" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
+            <MenuItem mnemonicParsing="false" text="%button.close" />
+            <MenuItem mnemonicParsing="false" text="%button.save" />
+            <MenuItem mnemonicParsing="false" text="%button.saveas" />
+            <MenuItem mnemonicParsing="false" text="%button.revert" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
+            <MenuItem mnemonicParsing="false" text="%button.preferences" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
+            <MenuItem mnemonicParsing="false" text="%button.quit" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
+        <Menu mnemonicParsing="false" text="%menu.edit">
           <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
+            <MenuItem mnemonicParsing="false" text="%button.undo" />
+            <MenuItem mnemonicParsing="false" text="%button.redo" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
+            <MenuItem mnemonicParsing="false" text="%button.cut" />
+            <MenuItem mnemonicParsing="false" text="%button.copy" />
+            <MenuItem mnemonicParsing="false" text="%button.paste" />
+            <MenuItem mnemonicParsing="false" text="%button.delete" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
+            <MenuItem mnemonicParsing="false" text="%button.selectall" />
+            <MenuItem mnemonicParsing="false" text="%button.unselectall" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
+        <Menu mnemonicParsing="false" text="%menu.help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <MenuItem mnemonicParsing="false" text="%menu.about" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <SplitPane dividerPositions="0.35" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.35" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0"
+      VBox.vgrow="ALWAYS">
       <items>
         <AnchorPane>
           <children>
-            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0" style="&#10;" text="Tours" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" prefWidth="-1.0"
+              style="&#10;"
+              text="%main.tour" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
               <font>
-                <Font name="System Bold" size="18.0" fx:id="x1" />
+                <Font name="System Bold" size="18.0" />
               </font>
             </Label>
-                  <ListView fx:id="toursListView" layoutX="11.0" layoutY="52.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
-                  <ButtonBar buttonMinWidth="80.0" prefHeight="59.0" prefWidth="311.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                    <buttons>
-                      <Button mnemonicParsing="false" text="Create">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" text="Modify">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button alignment="CENTER" mnemonicParsing="false" text="Delete">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                    </buttons>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets right="25.0" />
-                     </padding>
-                  </ButtonBar>
+            <ListView fx:id="toursListView" layoutX="11.0" layoutY="52.0" prefHeight="200.0"
+              prefWidth="200.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+            <ButtonBar buttonMinWidth="80.0" prefHeight="59.0" prefWidth="311.0"
+              AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+              <buttons>
+                <Button mnemonicParsing="false" text="%button.new">
+                  <font>
+                    <Font size="15.0" />
+                  </font>
+                </Button>
+                <Button alignment="CENTER" mnemonicParsing="false" text="%button.edit">
+                  <font>
+                    <Font size="15.0" />
+                  </font>
+                </Button>
+                <Button alignment="CENTER" mnemonicParsing="false" text="%button.delete">
+                  <font>
+                    <Font size="15.0" />
+                  </font>
+                </Button>
+              </buttons>
+              <opaqueInsets>
+                <Insets />
+              </opaqueInsets>
+              <padding>
+                <Insets right="25.0" />
+              </padding>
+            </ButtonBar>
           </children>
         </AnchorPane>
-            <AnchorPane prefHeight="573.0" prefWidth="464.0">
-               <children>
-                  <VBox prefHeight="573.0" prefWidth="581.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ButtonBar buttonMinWidth="80.0" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
-                          <buttons>
-                              <Button alignment="CENTER" mnemonicParsing="false" text="Logs">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Button>
-                              <Button mnemonicParsing="false" text="General">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Button>
-                          </buttons>
-                           <padding>
-                              <Insets right="20.0" />
-                           </padding>
-                        </ButtonBar>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
+        <AnchorPane prefHeight="573.0" prefWidth="464.0">
+          <children>
+            <VBox prefHeight="573.0" prefWidth="581.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <children>
+                <ButtonBar buttonMinWidth="80.0" maxWidth="1.7976931348623157E308"
+                  nodeOrientation="RIGHT_TO_LEFT"
+                  prefHeight="40.0" prefWidth="200.0">
+                  <buttons>
+                    <Button alignment="CENTER" mnemonicParsing="false" text="%menu.logs">
+                      <font>
+                        <Font size="15.0" />
+                      </font>
+                    </Button>
+                    <Button mnemonicParsing="false" text="%menu.general">
+                      <font>
+                        <Font size="15.0" />
+                      </font>
+                    </Button>
+                  </buttons>
+                  <padding>
+                    <Insets right="20.0" />
+                  </padding>
+                </ButtonBar>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+              </children>
+            </VBox>
+          </children>
+        </AnchorPane>
       </items>
     </SplitPane>
   </children>

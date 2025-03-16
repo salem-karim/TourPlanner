@@ -12,11 +12,11 @@ import java.util.ResourceBundle;
 public class TourPlannerApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
-//    final Locale locale = new Locale.Builder().setLanguage("de").build();
-//    final ResourceBundle i18n = ResourceBundle.getBundle("at.technikum.tourplanner.i18n", locale);
-    FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"));
+    final Locale locale = new Locale.Builder().setLanguage("de").build();
+    final ResourceBundle i18n = ResourceBundle.getBundle("at.technikum.tourplanner.i18n", locale);
+    FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"), i18n);
     Scene scene = new Scene(fxmlLoader.load(), 900, 600);
-    stage.setTitle("Tour Planner");
+    stage.setTitle(i18n.getString("main.title"));
     stage.setScene(scene);
     stage.show();
   }
