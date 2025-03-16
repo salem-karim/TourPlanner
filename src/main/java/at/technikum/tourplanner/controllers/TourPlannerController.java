@@ -16,10 +16,18 @@ public class TourPlannerController implements Initializable {
   private Button createButton;
 
   @FXML
-  private Button editButton;
+  private Button modifyButton;
   
   @FXML
   private Button deleteButton;
+
+  @FXML
+  private Button generalButton;
+
+  @FXML
+  private Button logsButton;
+
+
 
   @FXML
   private ListView<String> toursListView;
@@ -27,6 +35,6 @@ public class TourPlannerController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     tourTableViewModel = new TourTableViewModel();
-    toursListView.setItems(tourTableViewModel.getDataNames()); //doesnt work :( !!!
+    toursListView.setItems(tourTableViewModel.getDataNames());
   }
 }
