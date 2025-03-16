@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-// responsible for tour_general.fxml (listing of the tour info) !!
+// responsible for tour_info.fxml (listing of the tour info) !!
 public class TourViewModel {
 
     private final StringProperty id;
@@ -20,7 +20,7 @@ public class TourViewModel {
     private final StringProperty route_info;
 
 
-    public TourViewModel(Tour tour) {
+    public TourViewModel(final Tour tour) {
         this.id = new SimpleStringProperty(tour.getId().toString());
         this.name = new SimpleStringProperty(tour.getName());
         this.tour_description = new SimpleStringProperty(tour.getTour_description());
@@ -33,7 +33,7 @@ public class TourViewModel {
 
     }
 
-    public TourViewModel(TourViewModel ttvm) {
+    public TourViewModel(final TourViewModel ttvm) {
         this.id = new SimpleStringProperty(ttvm.getId());
         this.name = new SimpleStringProperty(ttvm.getName());
         this.tour_description = new SimpleStringProperty(ttvm.getTour_description());
