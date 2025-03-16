@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import java.util.UUID;
 
 public class TourTableViewModel {
+
     private final ObservableList<TourViewModel> data =
             FXCollections.observableArrayList(
                     new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img")),
@@ -16,6 +17,15 @@ public class TourTableViewModel {
     public ObservableList<TourViewModel> getData() {
         return data;
     }
+
+    // test values
+    public ObservableList<String> getDataNames() {
+        ObservableList<String> items = FXCollections.observableArrayList(
+                "Item 1", "Item 2", "Item 3", "Item 4"
+        );
+        return items;
+    }
+
 
     public void newTour(TourViewModel svm) {
         data.add(svm);

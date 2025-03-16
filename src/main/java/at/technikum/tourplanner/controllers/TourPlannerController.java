@@ -4,13 +4,13 @@ import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TourPlannerController implements Initializable {
   
-  //final private TourTableViewModel tourTableViewModel;
+  private TourTableViewModel tourTableViewModel;
   
   @FXML
   private Button createButton;
@@ -21,9 +21,12 @@ public class TourPlannerController implements Initializable {
   @FXML
   private Button deleteButton;
 
+  @FXML
+  private ListView<String> toursListView;
 
-    @Override
+  @Override
   public void initialize(URL location, ResourceBundle resources) {
-    //tourTableViewModel = new TourTableViewModel();
+    tourTableViewModel = new TourTableViewModel();
+    toursListView.setItems(tourTableViewModel.getDataNames()); //doesnt work :( !!!
   }
 }
