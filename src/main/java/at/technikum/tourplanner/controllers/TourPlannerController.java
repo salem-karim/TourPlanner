@@ -52,7 +52,7 @@ public class TourPlannerController implements Initializable {
 
   private void onEditButtonClicked(final ActionEvent event) {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
       loader.setController(new EditTourController());
       final Parent root = loader.load();
       EditTourController controller = loader.getController();
@@ -69,7 +69,7 @@ public class TourPlannerController implements Initializable {
 
   private void onNewButtonClicked(final ActionEvent event) {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
       loader.setController(new NewTourController());
       final Parent root = loader.load();
       NewTourController controller = loader.getController();
