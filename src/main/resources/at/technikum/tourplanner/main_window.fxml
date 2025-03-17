@@ -22,7 +22,7 @@
             <SeparatorMenuItem mnemonicParsing="false"/>
             <MenuItem mnemonicParsing="false" text="%button.preferences"/>
             <SeparatorMenuItem mnemonicParsing="false"/>
-            <MenuItem mnemonicParsing="false" text="%button.quit"/>
+            <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit"/>
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="%menu.edit">
