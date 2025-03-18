@@ -81,6 +81,7 @@ public class TourPlannerController implements Initializable {
               .tourTableViewModel(tourTableViewModel)
               .mainLabel(new Label(i18n.getString("editTour.edit")))
               .tourViewModel(new TourViewModel())
+              .toursListView(toursListView)
               .build());
       final Parent root = loader.load();
       final Stage stage = new Stage();

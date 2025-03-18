@@ -18,14 +18,17 @@ public class TourTableViewModel {
           );
 
   // test values
-  public ObservableList<String> getDataNames() {
-    final ObservableList<String> names = FXCollections.observableArrayList();
-    for (final var tourViewModel : data) {
-      names.add(tourViewModel.getName());
-    }
-    return names;
-  }
+//  public ObservableList<String> getDataNames() {
+//    final ObservableList<String> names = FXCollections.observableArrayList();
+//    for (final var tourViewModel : data) {
+//      names.add(tourViewModel.getName());
+//    }
+//    return names;
+//  }
 
+  public ObservableList<String> getDataNames() {
+    return FXCollections.observableArrayList(data.stream().map(TourViewModel::getName).toList());
+  }
 
   public void newTour(TourViewModel tvm) {
     data.add(tvm);

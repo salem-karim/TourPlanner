@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Builder;
@@ -32,6 +33,7 @@ public class NewTourController implements Initializable {
 
   private TourTableViewModel tourTableViewModel;
   private TourViewModel tourViewModel;
+  private ListView<String> toursListView;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -47,7 +49,10 @@ public class NewTourController implements Initializable {
   }
 
   private void onSaveButtonClicked(ActionEvent actionEvent) {
+//    tourViewModel.idProperty().get() = UUID.randomUUID();
     tourTableViewModel.newTour(tourViewModel);
-    System.out.println(tourTableViewModel.getDataNames());
+    System.out.println(tourTableViewModel.getData());
+    toursListView.setItems(tourTableViewModel.getDataNames());
+    TourPlannerApplication.closeWindow(saveButton);
   }
 }
