@@ -5,28 +5,30 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.NoArgsConstructor;
 
 // responsible for tour_info.fxml (listing of the tour info) !!
+@NoArgsConstructor
 public class TourViewModel {
 
-  private final StringProperty id;
-  private final StringProperty name;
-  private final StringProperty tour_description;
-  private final StringProperty from;
-  private final StringProperty to;
-  private final StringProperty transport_type;
-  private final IntegerProperty tour_distance;
-  private final IntegerProperty estimated_time;
-  private final StringProperty route_info;
+  private StringProperty id = new SimpleStringProperty();
+  private StringProperty name = new SimpleStringProperty();
+  private StringProperty description = new SimpleStringProperty();
+  private StringProperty from = new SimpleStringProperty();
+  private StringProperty to = new SimpleStringProperty();
+  private StringProperty transport_type = new SimpleStringProperty();
+  private IntegerProperty distance = new SimpleIntegerProperty();
+  private IntegerProperty estimated_time = new SimpleIntegerProperty();
+  private StringProperty route_info = new SimpleStringProperty();
 
   public TourViewModel(final Tour tour) {
     this.id = new SimpleStringProperty(tour.getId().toString());
     this.name = new SimpleStringProperty(tour.getName());
-    this.tour_description = new SimpleStringProperty(tour.getTour_description());
+    this.description = new SimpleStringProperty(tour.getDescription());
     this.from = new SimpleStringProperty(tour.getFrom());
     this.to = new SimpleStringProperty(tour.getTo());
     this.transport_type = new SimpleStringProperty(tour.getTransport_type());
-    this.tour_distance = new SimpleIntegerProperty(tour.getTour_distance());
+    this.distance = new SimpleIntegerProperty(tour.getDistance());
     this.estimated_time = new SimpleIntegerProperty(tour.getEstimated_time());
     this.route_info = new SimpleStringProperty(tour.getRoute_info());
 
@@ -35,15 +37,16 @@ public class TourViewModel {
   public TourViewModel(final TourViewModel ttvm) {
     this.id = new SimpleStringProperty(ttvm.getId());
     this.name = new SimpleStringProperty(ttvm.getName());
-    this.tour_description = new SimpleStringProperty(ttvm.getTour_description());
+    this.description = new SimpleStringProperty(ttvm.getTour_description());
     this.from = new SimpleStringProperty(ttvm.getFrom());
     this.to = new SimpleStringProperty(ttvm.getTo());
     this.transport_type = new SimpleStringProperty(ttvm.getTransport_type());
-    this.tour_distance = new SimpleIntegerProperty(ttvm.getTour_distance());
+    this.distance = new SimpleIntegerProperty(ttvm.getTour_distance());
     this.estimated_time = new SimpleIntegerProperty(ttvm.getEstimated_time());
     this.route_info = new SimpleStringProperty(ttvm.getRoute_info());
   }
 
+  // getters of the properties values
   public String getId() {
     return id.get();
   }
@@ -53,7 +56,7 @@ public class TourViewModel {
   }
 
   public String getTour_description() {
-    return tour_description.get();
+    return description.get();
   }
 
   public String getFrom() {
@@ -69,7 +72,7 @@ public class TourViewModel {
   }
 
   public int getTour_distance() {
-    return tour_distance.get();
+    return distance.get();
   }
 
   public int getEstimated_time() {
@@ -80,6 +83,7 @@ public class TourViewModel {
     return route_info.get();
   }
 
+  // getters of the properties themselves
   public StringProperty idProperty() {
     return id;
   }
@@ -88,8 +92,8 @@ public class TourViewModel {
     return name;
   }
 
-  public StringProperty tour_descriptionProperty() {
-    return tour_description;
+  public StringProperty descriptionProperty() {
+    return description;
   }
 
   public StringProperty fromProperty() {
@@ -104,8 +108,8 @@ public class TourViewModel {
     return transport_type;
   }
 
-  public IntegerProperty tour_distanceProperty() {
-    return tour_distance;
+  public IntegerProperty distanceProperty() {
+    return distance;
   }
 
   public IntegerProperty estimated_timeProperty() {

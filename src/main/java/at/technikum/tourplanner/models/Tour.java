@@ -12,11 +12,11 @@ import java.util.UUID;
 public class Tour {
   private UUID id;
   private String name;
-  private String tour_description;
+  private String description;
   private String from;
   private String to;
   private String transport_type;
-  private int tour_distance;
+  private int distance;
   private int estimated_time;
   private String route_info; //image???
 

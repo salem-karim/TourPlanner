@@ -19,9 +19,11 @@ public class TourTableViewModel {
 
   // test values
   public ObservableList<String> getDataNames() {
-    return FXCollections.observableArrayList(
-            "Item 1", "Item 2", "Item 3", "Item 4"
-    );
+    final ObservableList<String> names = FXCollections.observableArrayList();
+    for (final var tourViewModel : data) {
+      names.add(tourViewModel.getName());
+    }
+    return names;
   }
 
 
@@ -33,11 +35,11 @@ public class TourTableViewModel {
     for (final TourViewModel tour : data) {
       if (tour.getId().equals(tourViewModel.getId())) {
         tour.nameProperty().set(tourViewModel.nameProperty().get());
-        tour.tour_distanceProperty().set(tourViewModel.tour_distanceProperty().get());
+        tour.distanceProperty().set(tourViewModel.distanceProperty().get());
         tour.fromProperty().set(tourViewModel.fromProperty().get());
         tour.toProperty().set(tourViewModel.toProperty().get());
         tour.transport_typeProperty().set(tourViewModel.transport_typeProperty().get());
-        tour.tour_distanceProperty().set(tourViewModel.tour_distanceProperty().get());
+        tour.distanceProperty().set(tourViewModel.distanceProperty().get());
         tour.estimated_timeProperty().set(tourViewModel.estimated_timeProperty().get());
         tour.route_infoProperty().set(tourViewModel.route_infoProperty().get());
       }

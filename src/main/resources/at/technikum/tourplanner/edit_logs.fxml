@@ -138,14 +138,15 @@
                AnchorPane.bottomAnchor="0.0"
                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
       <buttons>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+        <Button fx:id="cancelButto" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
                 text="%button.cancel"
                 textAlignment="CENTER">
           <font>
             <Font size="15.0"/>
           </font>
         </Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="%button.save"
+        <Button fx:id="saveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                text="%button.save"
                 textAlignment="CENTER">
           <font>
             <Font size="15.0"/>
