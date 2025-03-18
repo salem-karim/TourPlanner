@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +42,9 @@ public class TourPlannerController implements Initializable {
   private Button logsButton;
 
   @FXML
+  private MenuItem quitButton;
+
+  @FXML
   private ListView<String> toursListView;
 
   @Override
@@ -49,12 +53,13 @@ public class TourPlannerController implements Initializable {
 //    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
     newButton.setOnAction(this::onNewButtonClicked);
     editButton.setOnAction(this::onEditButtonClicked);
+    quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newButton));
   }
 
 
   private void onEditButtonClicked(final ActionEvent event) {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
       loader.setController(new EditTourController());
       final Parent root = loader.load();
       EditTourController controller = loader.getController();
@@ -71,7 +76,7 @@ public class TourPlannerController implements Initializable {
 
   private void onNewButtonClicked(final ActionEvent event) {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
       loader.setController(NewTourController.builder()
               .tourTableViewModel(tourTableViewModel)
               .mainLabel(new Label(i18n.getString("editTour.edit")))

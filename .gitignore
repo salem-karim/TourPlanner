@@ -12,6 +12,7 @@ target/
 *.iws
 *.iml
 *.ipr
+!TourPlanner.iml
 
 ### Eclipse ###
 .apt_generated

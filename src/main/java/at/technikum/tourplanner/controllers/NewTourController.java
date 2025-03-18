@@ -3,6 +3,7 @@ package at.technikum.tourplanner.controllers;
 import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -35,6 +36,7 @@ public class NewTourController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     cancelButton.setOnAction(event -> TourPlannerApplication.closeWindow(cancelButton));
+    saveButton.setOnAction(this::onSaveButtonClicked);
     name.textProperty().bindBidirectional(tourViewModel.nameProperty());
     description.textProperty().bindBidirectional(tourViewModel.descriptionProperty());
     from.textProperty().bindBidirectional(tourViewModel.fromProperty());
@@ -42,5 +44,10 @@ public class NewTourController implements Initializable {
     transportType.textProperty().bindBidirectional(tourViewModel.transport_typeProperty());
     distance.textProperty().bindBidirectional(tourViewModel.distanceProperty(), new NumberStringConverter());
     duration.textProperty().bindBidirectional(tourViewModel.estimated_timeProperty(), new NumberStringConverter());
+  }
+
+  private void onSaveButtonClicked(ActionEvent actionEvent) {
+    tourTableViewModel.newTour(tourViewModel);
+    System.out.println(tourTableViewModel.getDataNames());
   }
 }
