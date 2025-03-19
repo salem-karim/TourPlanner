@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +24,8 @@ public class TourPlannerController implements Initializable {
   private final TourTableViewModel tourTableViewModel = new TourTableViewModel();
   private final ResourceBundle i18n = TourPlannerApplication.i18n;
 
+  @FXML
+  public SplitPane tourInfo;
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @FXML
