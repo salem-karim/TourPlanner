@@ -2,9 +2,7 @@ module at.technikum.tourplanner {
   requires javafx.controls;
   requires javafx.fxml;
   requires javafx.graphics;
-  requires java.desktop;
   requires org.slf4j;
-  requires org.controlsfx.controls;
   requires static lombok;
 
 //  requires org.junit.jupiter.api;

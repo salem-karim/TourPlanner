@@ -11,11 +11,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Builder
+@Slf4j
 public class NewTourController implements Initializable {
 
   @FXML
@@ -49,7 +51,7 @@ public class NewTourController implements Initializable {
   private void onSaveButtonClicked() {
 //    tourViewModel.idProperty().get() = UUID.randomUUID();
     tourTableViewModel.newTour(tourViewModel);
-    System.out.println(tourTableViewModel.getData());
+    log.info(tourTableViewModel.getData().toString());
     toursListView.setItems(tourTableViewModel.getDataNames());
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }

@@ -13,6 +13,7 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unchecked")
 @Getter
 @Setter
 @NoArgsConstructor

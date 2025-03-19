@@ -46,8 +46,6 @@ public class TourPlannerController implements Initializable {
       toursListView.setItems(tourTableViewModel.getDataNames());
     });
 //    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
-//    newButton.setOnAction(this::onNewButtonClicked);
-//    editButton.setOnAction(this::onEditButtonClicked);
 
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }

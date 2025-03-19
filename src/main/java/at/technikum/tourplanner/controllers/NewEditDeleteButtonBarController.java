@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("unchecked")
 @Setter
 @NoArgsConstructor
 public class NewEditDeleteButtonBarController implements Initializable {
