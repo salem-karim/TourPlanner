@@ -113,7 +113,7 @@
       </GridPane.margin>
     </TextField>
   </GridPane>
-  <fx:include fx:id="saveCancelButtonBar" source="resources/at/technikum/tourplanner/ok_cancel_button_bar.fxml"
+  <fx:include fx:id="newCancelButtonBar" source="ok_cancel_button_bar.fxml"
               AnchorPane.bottomAnchor="0.0"
               AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0"/>

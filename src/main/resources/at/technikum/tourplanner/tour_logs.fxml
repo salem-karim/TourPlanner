@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
             prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.5" xmlns:fx="http://javafx.com/fxml/1">
   <children>
@@ -18,28 +16,7 @@
         <TableColumn prefWidth="67.0" text="%logInfo.rating"/>
       </columns>
     </TableView>
-    <ButtonBar buttonMinWidth="80.0" maxWidth="1.7976931348623157E308" prefHeight="62.0" prefWidth="600.0"
-               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-      <buttons>
-        <Button mnemonicParsing="false" text="%button.new">
-          <font>
-            <Font size="15.0"/>
-          </font>
-        </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" text="%button.edit">
-          <font>
-            <Font size="15.0"/>
-          </font>
-        </Button>
-        <Button alignment="CENTER" mnemonicParsing="false" text="%button.delete">
-          <font>
-            <Font size="15.0"/>
-          </font>
-        </Button>
-      </buttons>
-      <padding>
-        <Insets right="20.0"/>
-      </padding>
-    </ButtonBar>
+    <fx:include fx:id="newEditDeleteButtonBar" source="new_edit_delete_button_bar.fxml" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
   </children>
 </AnchorPane>

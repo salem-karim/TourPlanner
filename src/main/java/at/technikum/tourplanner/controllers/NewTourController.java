@@ -21,7 +21,7 @@ public class NewTourController implements Initializable {
   @FXML
   private Label mainLabel;
   @FXML
-  private ButtonBar saveCancelButtonBar;
+  private ButtonBar newCancelButtonBar;
   @FXML
   private TextField name, description, from, to, transportType, distance, duration;
 
@@ -40,10 +40,10 @@ public class NewTourController implements Initializable {
     duration.textProperty().bindBidirectional(tourViewModel.estimated_timeProperty(), new NumberStringConverter());
 
     OKCancelButtonBarController okCancelController = (OKCancelButtonBarController)
-            saveCancelButtonBar.getProperties().get("okCancelButtonBarController");
+            newCancelButtonBar.getProperties().get("okCancelButtonBarController");
     okCancelController.getOkButton().setText(TourPlannerApplication.i18n.getString("button.new"));
     okCancelController.setOkButtonListener(event -> onSaveButtonClicked());
-    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
+    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(newCancelButtonBar));
   }
 
   private void onSaveButtonClicked() {
@@ -51,6 +51,6 @@ public class NewTourController implements Initializable {
     tourTableViewModel.newTour(tourViewModel);
     System.out.println(tourTableViewModel.getData());
     toursListView.setItems(tourTableViewModel.getDataNames());
-    TourPlannerApplication.closeWindow(saveCancelButtonBar);
+    TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

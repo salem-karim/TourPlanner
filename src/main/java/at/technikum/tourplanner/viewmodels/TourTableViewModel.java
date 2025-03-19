@@ -53,4 +53,8 @@ public class TourTableViewModel {
     data.remove(tourViewModel);
     // sonstiges??
   }
+
+  public void deleteTour(int index) {
+    data.remove(index);
+  }
 }

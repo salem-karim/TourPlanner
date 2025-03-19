@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.text.Font?>
+<ButtonBar xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="buttonBar"
+           prefHeight="60.0" prefWidth="300.0" buttonMinWidth="80.0"
+           fx:controller="at.technikum.tourplanner.controllers.NewEditDeleteButtonBarController">
+
+  <buttons>
+    <Button fx:id="newButton" mnemonicParsing="false" text="%button.new">
+      <font>
+        <Font size="15.0"/>
+      </font>
+    </Button>
+    <Button fx:id="editButton" alignment="CENTER" mnemonicParsing="false" text="%button.edit">
+      <font>
+        <Font size="15.0"/>
+      </font>
+    </Button>
+    <Button fx:id="deleteButton" alignment="CENTER" mnemonicParsing="false" text="%button.delete">
+      <font>
+        <Font size="15.0"/>
+      </font>
+    </Button>
+  </buttons>
+  <opaqueInsets>
+    <Insets/>
+  </opaqueInsets>
+  <padding>
+    <Insets right="25.0"/>
+  </padding>
+</ButtonBar>

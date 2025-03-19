@@ -3,16 +3,12 @@ package at.technikum.tourplanner.controllers;
 import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,37 +23,37 @@ public class TourPlannerController implements Initializable {
   private final ResourceBundle i18n = TourPlannerApplication.i18n;
 
   @FXML
-  private Button newButton;
-
-  @FXML
-  private Button editButton;
-
-  @FXML
-  private Button deleteButton;
+  private ButtonBar newEditDeleteButtonBar;
 
   @FXML
   private Button generalButton;
-
   @FXML
   private Button logsButton;
-
   @FXML
   private MenuItem quitButton;
-
   @FXML
   private ListView<String> toursListView;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     toursListView.setItems(tourTableViewModel.getDataNames());
+    NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController)
+            newEditDeleteButtonBar.getProperties().get("newEditDeleteButtonBarController");
+    newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
+    newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
+    newEditDeleteButtonBarController.setDeleteButtonListener(event -> {
+      tourTableViewModel.deleteTour(toursListView.getSelectionModel().getSelectedIndex());
+      toursListView.setItems(tourTableViewModel.getDataNames());
+    });
 //    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
-    newButton.setOnAction(this::onNewButtonClicked);
-    editButton.setOnAction(this::onEditButtonClicked);
-    quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newButton));
+//    newButton.setOnAction(this::onNewButtonClicked);
+//    editButton.setOnAction(this::onEditButtonClicked);
+
+    quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }
 
 
-  private void onEditButtonClicked(final ActionEvent event) {
+  private void onEditButtonClicked() {
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
       loader.setController(new EditTourController());
@@ -74,7 +70,7 @@ public class TourPlannerController implements Initializable {
   }
 
 
-  private void onNewButtonClicked(final ActionEvent event) {
+  private void onNewButtonClicked() {
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
       loader.setController(NewTourController.builder()
