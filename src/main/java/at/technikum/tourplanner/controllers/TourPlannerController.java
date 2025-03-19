@@ -3,12 +3,17 @@ package at.technikum.tourplanner.controllers;
 import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,11 +29,8 @@ public class TourPlannerController implements Initializable {
 
   @FXML
   private ButtonBar newEditDeleteButtonBar;
-
   @FXML
-  private Button generalButton;
-  @FXML
-  private Button logsButton;
+  private AnchorPane tourLogs;
   @FXML
   private MenuItem quitButton;
   @FXML
@@ -45,9 +47,32 @@ public class TourPlannerController implements Initializable {
       tourTableViewModel.deleteTour(toursListView.getSelectionModel().getSelectedIndex());
       toursListView.setItems(tourTableViewModel.getDataNames());
     });
-//    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
 
+    Platform.runLater(() -> {
+      ButtonBar logsButtonBar = (ButtonBar) tourLogs.lookup("#newEditDeleteButtonBar");
+      if (logsButtonBar != null) {
+        var logButtonBarController = (NewEditDeleteButtonBarController)
+                logsButtonBar.getProperties().get("newEditDeleteButtonBarController");
+        logButtonBarController.setNewButtonListener(event -> onLogsNewButtonClicked());
+        logButtonBarController.setEditButtonListener(event -> onLogsEditButtonClicked());
+        logButtonBarController.setDeleteButtonListener(event -> onLogsDeleteButtonClicked());
+      }
+    });
+
+//    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
+  }
+
+  private void onLogsDeleteButtonClicked() {
+    log.info("Logs delete button clicked");
+  }
+
+  private void onLogsEditButtonClicked() {
+    log.info("Logs edit button clicked");
+  }
+
+  private void onLogsNewButtonClicked() {
+    log.info("Logs new button clicked");
   }
 
 
