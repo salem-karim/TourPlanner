@@ -3,10 +3,9 @@ package at.technikum.tourplanner.controllers;
 import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -21,13 +20,8 @@ public class NewTourController implements Initializable {
 
   @FXML
   private Label mainLabel;
-
   @FXML
-  private Button saveButton;
-
-  @FXML
-  private Button cancelButton;
-
+  private ButtonBar saveCancelButtonBar;
   @FXML
   private TextField name, description, from, to, transportType, distance, duration;
 
@@ -37,8 +31,6 @@ public class NewTourController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    cancelButton.setOnAction(event -> TourPlannerApplication.closeWindow(cancelButton));
-    saveButton.setOnAction(this::onSaveButtonClicked);
     name.textProperty().bindBidirectional(tourViewModel.nameProperty());
     description.textProperty().bindBidirectional(tourViewModel.descriptionProperty());
     from.textProperty().bindBidirectional(tourViewModel.fromProperty());
@@ -46,13 +38,19 @@ public class NewTourController implements Initializable {
     transportType.textProperty().bindBidirectional(tourViewModel.transport_typeProperty());
     distance.textProperty().bindBidirectional(tourViewModel.distanceProperty(), new NumberStringConverter());
     duration.textProperty().bindBidirectional(tourViewModel.estimated_timeProperty(), new NumberStringConverter());
+
+    OKCancelButtonBarController okCancelController = (OKCancelButtonBarController)
+            saveCancelButtonBar.getProperties().get("okCancelButtonBarController");
+    okCancelController.getOkButton().setText(TourPlannerApplication.i18n.getString("button.new"));
+    okCancelController.setOkButtonListener(event -> onSaveButtonClicked());
+    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
   }
 
-  private void onSaveButtonClicked(ActionEvent actionEvent) {
+  private void onSaveButtonClicked() {
 //    tourViewModel.idProperty().get() = UUID.randomUUID();
     tourTableViewModel.newTour(tourViewModel);
     System.out.println(tourTableViewModel.getData());
     toursListView.setItems(tourTableViewModel.getDataNames());
-    TourPlannerApplication.closeWindow(saveButton);
+    TourPlannerApplication.closeWindow(saveCancelButtonBar);
   }
 }
