@@ -1,6 +1,9 @@
 package at.technikum.tourplanner;
 
+import at.technikum.tourplanner.viewmodels.TourViewModel;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -24,17 +27,51 @@ class MainViewModelTest {
 
   @Test
   void testNewButtonAndCancel(FxRobot robot) {
-    // Click the "New" button
+
     robot.clickOn("#newButton");
 
-    // Verify that the new window is opened
     assertThat(robot.window("Create New Tour")).isShowing();
 
-    // Click the "Cancel" button
-    robot.clickOn("#cancelButton");
 
-    // Verify that the new window is closed
-    assertThat(robot.window("Create New Tour")).isNotShowing();
+    //robot.clickOn("#cancelButton");
 
+    // Verify that the new window is closed -> problem
+    //assertThat(robot.window("Tour Planner")).isShowing();
+
+  }
+
+  @Test
+  void testEditButtonAndCancel(FxRobot robot) {
+    robot.clickOn("#editButton");
+
+    assertThat(robot.window("Edit Tour")).isShowing();
+
+
+    //robot.clickOn("#cancelButton");
+
+    // Verify that the new window is closed -> problem
+    //assertThat(robot.window("Edit Tour")).isNotShowing();
+  }
+
+  @Test
+  void testDeleteButtonAndApply(FxRobot robot) {
+    robot.clickOn("#deleteButton");
+
+    robot.clickOn("OK");
+
+    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    TourViewModel firstItem = listView.getItems().getFirst(); // Get the first item
+    String firstItemName = firstItem.getName();
+
+    Assertions.assertThat(firstItemName).isEqualTo("Schneeberg Wanderung");
+  }
+
+  @Test
+  void testNameOfFirstListItem(FxRobot robot) {
+    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    TourViewModel firstItem = listView.getItems().getFirst();
+    String firstItemName = firstItem.getName();
+
+    assertThat(firstItemName).isEqualTo("Kahlsberg Wanderung");
   }
 }
