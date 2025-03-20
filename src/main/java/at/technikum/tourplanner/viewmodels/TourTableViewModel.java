@@ -19,9 +19,9 @@ public class TourTableViewModel {
 
           );
 
-  public ObservableList<String> getDataNames() {
-    return FXCollections.observableArrayList(data.stream().map(TourViewModel::getName).toList());
-  }
+//  public ObservableList<String> getDataNames() {
+//    return FXCollections.observableArrayList(data.stream().map(TourViewModel::getName).toList());
+//  }
 
   public void newTour(TourViewModel tvm) {
     data.add(tvm);

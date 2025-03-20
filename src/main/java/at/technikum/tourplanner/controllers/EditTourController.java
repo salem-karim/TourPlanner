@@ -10,8 +10,6 @@ public class EditTourController extends BaseTourController {
   @Override
   protected void onSaveButtonClicked() {
     tourTableViewModel.updateTour(tourViewModel);
-    toursListView.setItems(tourTableViewModel.getDataNames());
-    log.info(tourTableViewModel.getDataNames().toString());
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

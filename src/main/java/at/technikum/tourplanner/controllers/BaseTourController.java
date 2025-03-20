@@ -30,7 +30,7 @@ public abstract class BaseTourController {
 
   protected TourTableViewModel tourTableViewModel;
   protected TourViewModel tourViewModel;
-  protected ListView<String> toursListView;
+  protected ListView<TourViewModel> toursListView;
 
   public void initialize() {
     name.textProperty().bindBidirectional(tourViewModel.nameProperty());

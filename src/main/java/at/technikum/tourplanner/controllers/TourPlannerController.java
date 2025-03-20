@@ -34,13 +34,19 @@ public class TourPlannerController implements Initializable {
   @FXML
   private MenuItem quitButton;
   @FXML
-  private ListView<String> toursListView;
+  private ListView<TourViewModel> toursListView;
 
   private TourInfoController tourInfoController;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    toursListView.setItems(tourTableViewModel.getDataNames());
+    initializeListView();
+    toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal != null && newVal.intValue() >= 0) {
+        tourTableViewModel.setSelectedTour(tourTableViewModel.getData().get(newVal.intValue()));
+      }
+    });
+
     toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     toursListView.getSelectionModel().select(0);
 
@@ -73,27 +79,45 @@ public class TourPlannerController implements Initializable {
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }
 
-  private void initializeTourInfo() {
+  private void initializeListView() {
+    // Keep using TourViewModel objects
+    toursListView.setItems(tourTableViewModel.getData());
 
+    // Set a custom cell factory to display only the names
+    toursListView.setCellFactory(param -> new ListCell<TourViewModel>() {
+      @Override
+      protected void updateItem(TourViewModel tour, boolean empty) {
+        super.updateItem(tour, empty);
+
+        if (empty || tour == null) {
+          setText(null);
+        } else {
+          setText(tour.getName());
+        }
+      }
+    });
+
+    toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    toursListView.getSelectionModel().select(0);
+  }
+
+  private void initializeTourInfo() {
     tourInfoController = (TourInfoController) tourInfo.getProperties().get("tourInfoController");
 
     // Update the TourInfoController when a new tour is selected
     toursListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-      if (newVal != null) {
-        tourTableViewModel.getData().stream()
-                .filter(tour -> tour.getName().equals(newVal))
-                .findFirst()
-                .ifPresent(selectedTour -> tourInfoController.setTourViewModel(selectedTour));
+      if (newVal != null && tourInfoController != null) {
+        // We now have direct access to the selected TourViewModel
+        tourInfoController.setTourViewModel(newVal);
       }
     });
 
     // Initialize with the first tour if available
-    if (!tourTableViewModel.getData().isEmpty()) {
-      String firstTourName = toursListView.getItems().getFirst();
-      tourTableViewModel.getData().stream()
-              .filter(tour -> tour.getName().equals(firstTourName))
-              .findFirst()
-              .ifPresent(firstTour -> tourInfoController.setTourViewModel(firstTour));
+    if (!tourTableViewModel.getData().isEmpty() && tourInfoController != null) {
+      TourViewModel firstTour = toursListView.getItems().getFirst();
+      if (firstTour != null) {
+        tourInfoController.setTourViewModel(firstTour);
+      }
     }
   }
 
@@ -119,7 +143,7 @@ public class TourPlannerController implements Initializable {
       for (int index : selectedIndices) {
         tourTableViewModel.deleteTour(index);
       }
-      toursListView.setItems(tourTableViewModel.getDataNames());
+      toursListView.setItems(tourTableViewModel.getData());
     }
   }
 
