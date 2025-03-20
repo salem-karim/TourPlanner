@@ -13,7 +13,6 @@ import lombok.Setter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@SuppressWarnings("unchecked")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,8 +25,8 @@ public class OKCancelButtonBarController implements Initializable {
   @FXML
   private Button cancelButton;
 
-  private EventHandler okButtonListener;
-  private EventHandler cancelButtonListener;
+  private EventHandler<ActionEvent> okButtonListener;
+  private EventHandler<ActionEvent> cancelButtonListener;
 
 //  Mediators View Elements go here later
 

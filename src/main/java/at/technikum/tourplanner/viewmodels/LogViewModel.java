@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @NoArgsConstructor
-public class LogsViewModel {
+public class LogViewModel {
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
   private final StringProperty dateTime = new SimpleStringProperty();
   private final StringProperty comment = new SimpleStringProperty();
@@ -16,7 +16,7 @@ public class LogsViewModel {
   private final IntegerProperty totalTime = new SimpleIntegerProperty();
   private final IntegerProperty rating = new SimpleIntegerProperty();
 
-  public LogsViewModel(final Logs log) {
+  public LogViewModel(final Logs log) {
     this.id.set(log.getId());
     this.dateTime.set(log.getDate_time());
     this.comment.set(log.getComment());
@@ -26,7 +26,7 @@ public class LogsViewModel {
     this.rating.set(log.getRating());
   }
 
-  public LogsViewModel(final LogsViewModel log) {
+  public LogViewModel(final LogViewModel log) {
     this.id.set(log.getId());
     this.dateTime.set(log.getDateTime());
     this.comment.set(log.getComment());

@@ -1,7 +1,10 @@
 package at.technikum.tourplanner.controllers;
 
+import at.technikum.tourplanner.mediators.LogButtonsMediator;
 import at.technikum.tourplanner.mediators.Mediator;
 import at.technikum.tourplanner.mediators.TourButtonsMediator;
+import at.technikum.tourplanner.viewmodels.LogViewModel;
+import at.technikum.tourplanner.viewmodels.TourViewModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -16,7 +20,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-@SuppressWarnings("unchecked")
 @Setter
 @NoArgsConstructor
 public class NewEditDeleteButtonBarController implements Initializable {
@@ -30,20 +33,26 @@ public class NewEditDeleteButtonBarController implements Initializable {
   @FXML
   private Button deleteButton;
 
-  private EventHandler newButtonListener;
-  private EventHandler editButtonListener;
-  private EventHandler deleteButtonListener;
+  private EventHandler<ActionEvent> newButtonListener;
+  private EventHandler<ActionEvent> editButtonListener;
+  private EventHandler<ActionEvent> deleteButtonListener;
 
   private ArrayList<Mediator> mediators = new ArrayList<>();
-  private ListView tourListView;
 
 
-  public void setTourListView(ListView tourListView) {
-    this.tourListView = tourListView;
+  public void setTourListView(ListView<TourViewModel> tourListView) {
 
     if (tourListView != null) {
       mediators.add(new TourButtonsMediator(editButton, tourListView, new boolean[]{true, false, true}));
       mediators.add(new TourButtonsMediator(deleteButton, tourListView, new boolean[]{true, false, false}));
+    }
+  }
+
+  public void setLogTableView(TableView<LogViewModel> logTableView) {
+
+    if (logTableView != null) {
+      mediators.add(new LogButtonsMediator(editButton, logTableView, new boolean[]{true, false, true}));
+      mediators.add(new LogButtonsMediator(deleteButton, logTableView, new boolean[]{true, false, false}));
     }
   }
 

@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TourPlannerApplication extends Application {
-  static final private String LANGUAGE = "de";
+  static final private String LANGUAGE = "en";
   static final private Locale locale = new Locale.Builder().setLanguage(LANGUAGE).build();
   static final public ResourceBundle i18n = ResourceBundle.getBundle("at.technikum.tourplanner.i18n", locale);
 

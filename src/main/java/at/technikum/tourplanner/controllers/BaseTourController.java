@@ -1,50 +1,76 @@
 package at.technikum.tourplanner.controllers;
 
 import at.technikum.tourplanner.TourPlannerApplication;
+import at.technikum.tourplanner.services.TourValidator;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.util.converter.NumberStringConverter;
-import lombok.AllArgsConstructor;
+import javafx.scene.control.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Getter
 @SuperBuilder
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public abstract class BaseTourController {
   @FXML
   protected Label mainLabel;
   @FXML
   protected ButtonBar newCancelButtonBar;
   @FXML
-  protected TextField name, description, from, to, transportType, distance, duration;
+  protected TextField name, description, from, to;
+  @FXML
+  protected ChoiceBox<String> transportType;
 
   protected OKCancelButtonBarController okCancelController;
+  protected TourValidator validator;
 
   protected TourTableViewModel tourTableViewModel;
   protected TourViewModel tourViewModel;
   protected ListView<TourViewModel> toursListView;
 
+  // Flag to prevent duplicate initialization
+  private boolean initialized = false;
+
   public void initialize() {
+    // Prevent duplicate initialization
+    if (initialized) {
+      return;
+    }
+
+    validator = new TourValidator(TourPlannerApplication.i18n);
+
+    // Clear and populate transport types from i18n
+    transportType.getItems().clear();
+    transportType.getItems().addAll(
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.car"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.bike"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.foot"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.bus"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.train")
+    );
+
     name.textProperty().bindBidirectional(tourViewModel.nameProperty());
     description.textProperty().bindBidirectional(tourViewModel.descriptionProperty());
     from.textProperty().bindBidirectional(tourViewModel.fromProperty());
     to.textProperty().bindBidirectional(tourViewModel.toProperty());
-    transportType.textProperty().bindBidirectional(tourViewModel.transport_typeProperty());
-    distance.textProperty().bindBidirectional(tourViewModel.distanceProperty(), new NumberStringConverter());
-    duration.textProperty().bindBidirectional(tourViewModel.estimated_timeProperty(), new NumberStringConverter());
+    transportType.valueProperty().bindBidirectional(tourViewModel.transport_typeProperty());
 
     okCancelController = (OKCancelButtonBarController)
             newCancelButtonBar.getProperties().get("okCancelButtonBarController");
-    okCancelController.setOkButtonListener(event -> onSaveButtonClicked());
-    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(newCancelButtonBar));
+
+    // Add validation before saving
+    okCancelController.setOkButtonListener(event -> {
+      if (validator.validateTour(tourViewModel)) {
+        onSaveButtonClicked();
+      }
+    });
+
+    okCancelController.setCancelButtonListener(event ->
+            TourPlannerApplication.closeWindow(newCancelButtonBar));
+
+    initialized = true;
   }
 
   protected abstract void onSaveButtonClicked();

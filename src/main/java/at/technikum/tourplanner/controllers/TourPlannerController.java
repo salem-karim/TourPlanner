@@ -3,7 +3,6 @@ package at.technikum.tourplanner.controllers;
 import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.viewmodels.TourTableViewModel;
 import at.technikum.tourplanner.viewmodels.TourViewModel;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,18 +63,6 @@ public class TourPlannerController implements Initializable {
     newEditDeleteButtonBarController.setDeleteButtonListener(event -> onDeleteButtonClicked());
     initializeTourInfo();
 
-    Platform.runLater(() -> {
-      ButtonBar logsButtonBar = (ButtonBar) tourLogs.lookup("#newEditDeleteButtonBar");
-      if (logsButtonBar != null) {
-        var logButtonBarController = (NewEditDeleteButtonBarController)
-                logsButtonBar.getProperties().get("newEditDeleteButtonBarController");
-        logButtonBarController.setNewButtonListener(event -> onLogsNewButtonClicked());
-        logButtonBarController.setEditButtonListener(event -> onLogsEditButtonClicked());
-        logButtonBarController.setDeleteButtonListener(event -> onLogsDeleteButtonClicked());
-      }
-    });
-
-//    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }
 
@@ -84,7 +71,7 @@ public class TourPlannerController implements Initializable {
     toursListView.setItems(tourTableViewModel.getData());
 
     // Set a custom cell factory to display only the names
-    toursListView.setCellFactory(param -> new ListCell<TourViewModel>() {
+    toursListView.setCellFactory(param -> new ListCell<>() {
       @Override
       protected void updateItem(TourViewModel tour, boolean empty) {
         super.updateItem(tour, empty);
@@ -145,19 +132,6 @@ public class TourPlannerController implements Initializable {
       }
       toursListView.setItems(tourTableViewModel.getData());
     }
-  }
-
-
-  private void onLogsDeleteButtonClicked() {
-    log.info("Logs delete button clicked");
-  }
-
-  private void onLogsEditButtonClicked() {
-    log.info("Logs edit button clicked");
-  }
-
-  private void onLogsNewButtonClicked() {
-    log.info("Logs new button clicked");
   }
 
 

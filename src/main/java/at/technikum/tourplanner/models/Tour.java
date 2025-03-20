@@ -16,8 +16,8 @@ public class Tour {
   private String from;
   private String to;
   private String transport_type;
-  private int distance;
-  private int estimated_time;
-  private String route_info; //image???
+//  private int distance;
+//  private int estimated_time;
+//  private String route_info; //image???
 
 }

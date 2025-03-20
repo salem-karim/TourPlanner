@@ -17,8 +17,8 @@ public class TourViewModel {
   private StringProperty to = new SimpleStringProperty();
   private StringProperty transport_type = new SimpleStringProperty();
   private IntegerProperty distance = new SimpleIntegerProperty();
-  private IntegerProperty estimated_time = new SimpleIntegerProperty();
-  private StringProperty route_info = new SimpleStringProperty();
+//  private IntegerProperty estimated_time = new SimpleIntegerProperty();
+//  private StringProperty route_info = new SimpleStringProperty();
 
   public TourViewModel(final Tour tour) {
     this.id = new SimpleObjectProperty<>(tour.getId());
@@ -27,9 +27,9 @@ public class TourViewModel {
     this.from = new SimpleStringProperty(tour.getFrom());
     this.to = new SimpleStringProperty(tour.getTo());
     this.transport_type = new SimpleStringProperty(tour.getTransport_type());
-    this.distance = new SimpleIntegerProperty(tour.getDistance());
-    this.estimated_time = new SimpleIntegerProperty(tour.getEstimated_time());
-    this.route_info = new SimpleStringProperty(tour.getRoute_info());
+//    this.distance = new SimpleIntegerProperty(tour.getDistance());
+//    this.estimated_time = new SimpleIntegerProperty(tour.getEstimated_time());
+//    this.route_info = new SimpleStringProperty(tour.getRoute_info());
 
   }
 
@@ -41,8 +41,8 @@ public class TourViewModel {
     this.to = new SimpleStringProperty(ttvm.getTo());
     this.transport_type = new SimpleStringProperty(ttvm.getTransport_type());
     this.distance = new SimpleIntegerProperty(ttvm.getTour_distance());
-    this.estimated_time = new SimpleIntegerProperty(ttvm.getEstimated_time());
-    this.route_info = new SimpleStringProperty(ttvm.getRoute_info());
+//    this.estimated_time = new SimpleIntegerProperty(ttvm.getEstimated_time());
+//    this.route_info = new SimpleStringProperty(ttvm.getRoute_info());
   }
 
   // getters of the properties values
@@ -74,13 +74,13 @@ public class TourViewModel {
     return distance.get();
   }
 
-  public int getEstimated_time() {
-    return estimated_time.get();
-  }
+//  public int getEstimated_time() {
+//    return estimated_time.get();
+//  }
 
-  public String getRoute_info() {
-    return route_info.get();
-  }
+//  public String getRoute_info() {
+//    return route_info.get();
+//  }
 
   // getters of the properties themselves
   public ObjectProperty<UUID> idProperty() {
@@ -111,11 +111,11 @@ public class TourViewModel {
     return distance;
   }
 
-  public IntegerProperty estimated_timeProperty() {
-    return estimated_time;
-  }
+//  public IntegerProperty estimated_timeProperty() {
+//    return estimated_time;
+//  }
 
-  public StringProperty route_infoProperty() {
-    return route_info;
-  }
+//  public StringProperty route_infoProperty() {
+//    return route_info;
+//  }
 }

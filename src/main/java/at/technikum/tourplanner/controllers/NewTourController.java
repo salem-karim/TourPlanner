@@ -13,8 +13,6 @@ public class NewTourController extends BaseTourController {
   protected void onSaveButtonClicked() {
     tourViewModel.idProperty().set(UUID.randomUUID());
     tourTableViewModel.newTour(tourViewModel);
-//    toursListView.setItems(tourTableViewModel.getDataNames());
-//    log.info(tourTableViewModel.getDataNames().toString());
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

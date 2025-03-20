@@ -5,10 +5,6 @@ module at.technikum.tourplanner {
   requires org.slf4j;
   requires static lombok;
 
-//  requires org.junit.jupiter.api;
-//  requires org.testfx;
-//  requires org.testfx.junit5;
-
   opens at.technikum.tourplanner to javafx.fxml;
   exports at.technikum.tourplanner;
   exports at.technikum.tourplanner.models;

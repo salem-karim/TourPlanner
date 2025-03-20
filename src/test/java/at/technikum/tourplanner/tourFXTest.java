@@ -29,28 +29,28 @@ class MainViewModelTest {
   void testNewButtonAndCancel(FxRobot robot) {
 
     robot.clickOn("#newButton");
+    robot.sleep(250);
 
     assertThat(robot.window("Create New Tour")).isShowing();
 
-
-    //robot.clickOn("#cancelButton");
+    // robot.clickOn("#cancelButton");
 
     // Verify that the new window is closed -> problem
-    //assertThat(robot.window("Tour Planner")).isShowing();
+    // assertThat(robot.window("Tour Planner")).isShowing();
 
   }
 
   @Test
   void testEditButtonAndCancel(FxRobot robot) {
     robot.clickOn("#editButton");
+    robot.sleep(250);
 
     assertThat(robot.window("Edit Tour")).isShowing();
 
-
-    //robot.clickOn("#cancelButton");
+    // robot.clickOn("#cancelButton");
 
     // Verify that the new window is closed -> problem
-    //assertThat(robot.window("Edit Tour")).isNotShowing();
+    // assertThat(robot.window("Edit Tour")).isNotShowing();
   }
 
   @Test
@@ -58,6 +58,7 @@ class MainViewModelTest {
     robot.clickOn("#deleteButton");
 
     robot.clickOn("OK");
+    robot.sleep(250);
 
     ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
     TourViewModel firstItem = listView.getItems().getFirst(); // Get the first item

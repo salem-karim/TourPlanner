@@ -8,19 +8,19 @@ import lombok.Getter;
 
 @Getter
 public class LogsTableViewModel {
-  private final ObjectProperty<LogsViewModel> selectedLog = new SimpleObjectProperty<>();
-  private final ObservableList<LogsViewModel> data = FXCollections.observableArrayList();
+  private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
+  private final ObservableList<LogViewModel> data = FXCollections.observableArrayList();
 
   public ObservableList<String> getDataComments() {
-    return FXCollections.observableArrayList(data.stream().map(LogsViewModel::getComment).toList());
+    return FXCollections.observableArrayList(data.stream().map(LogViewModel::getComment).toList());
   }
 
-  public void newLog(LogsViewModel log) {
+  public void newLog(LogViewModel log) {
     data.add(log);
   }
 
-  public void updateLog(LogsViewModel logViewModel) {
-    for (final LogsViewModel log : data) {
+  public void updateLog(LogViewModel logViewModel) {
+    for (final LogViewModel log : data) {
       if (log.getId().equals(logViewModel.getId())) {
         log.dateTimeProperty().set(logViewModel.dateTimeProperty().get());
         log.commentProperty().set(logViewModel.commentProperty().get());
@@ -32,7 +32,7 @@ public class LogsTableViewModel {
     }
   }
 
-  public void deleteLog(LogsViewModel logViewModel) {
+  public void deleteLog(LogViewModel logViewModel) {
     data.remove(logViewModel);
   }
 
@@ -40,7 +40,7 @@ public class LogsTableViewModel {
     data.remove(index);
   }
 
-  public void setSelectedLog(LogsViewModel log) {
+  public void setSelectedLog(LogViewModel log) {
     selectedLog.set(log);
   }
 }
