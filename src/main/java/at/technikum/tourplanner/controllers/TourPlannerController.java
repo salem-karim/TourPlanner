@@ -37,6 +37,9 @@ public class TourPlannerController implements Initializable {
 
   private TourInfoController tourInfoController;
 
+  @FXML
+  private TourLogController tourLogsController;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeListView();
@@ -91,19 +94,25 @@ public class TourPlannerController implements Initializable {
   private void initializeTourInfo() {
     tourInfoController = (TourInfoController) tourInfo.getProperties().get("tourInfoController");
 
-    // Update the TourInfoController when a new tour is selected
+    // Update both controllers when a tour is selected
     toursListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
-      if (newVal != null && tourInfoController != null) {
-        // We now have direct access to the selected TourViewModel
-        tourInfoController.setTourViewModel(newVal);
+      if (newVal != null) {
+        if (tourInfoController != null) {
+          tourInfoController.setTourViewModel(newVal);
+        }
+        if (tourLogsController != null) {
+          tourLogsController.updateSelectedTour(newVal);
+        } else {
+          log.error("Tour logs controller not initialized");
+        }
       }
     });
 
-    // Initialize with the first tour if available
-    if (!tourTableViewModel.getData().isEmpty() && tourInfoController != null) {
-      TourViewModel firstTour = toursListView.getItems().getFirst();
-      if (firstTour != null) {
-        tourInfoController.setTourViewModel(firstTour);
+    if (!tourTableViewModel.getData().isEmpty()) {
+      toursListView.getSelectionModel().select(0);
+      TourViewModel firstTour = toursListView.getSelectionModel().getSelectedItem();
+      if (firstTour != null && tourLogsController != null) {
+        tourLogsController.updateSelectedTour(firstTour);
       }
     }
   }
@@ -136,28 +145,29 @@ public class TourPlannerController implements Initializable {
 
 
   private void onEditButtonClicked() {
+    TourViewModel selectedTour = toursListView.getSelectionModel().getSelectedItem();
+    if (selectedTour == null) {
+      log.warn("No tour selected for editing");
+      return;
+    }
+
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
-
-      int selectedIndex = toursListView.getSelectionModel().getSelectedIndex();
-      TourViewModel selectedTour = tourTableViewModel.getData().get(selectedIndex);
-
       EditTourController controller = EditTourController.builder()
-              .tourTableViewModel(tourTableViewModel)
-              .mainLabel(new Label(i18n.getString("editTour.edit")))
-              .tourViewModel(selectedTour)
-              .toursListView(toursListView)
+              .tourViewModel(selectedTour) // Will be ignored by setupWithTour
               .build();
+
       loader.setController(controller);
       final Parent root = loader.load();
-      controller.initialize();
-      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.save"));
+      controller.setupWithTour(selectedTour); // This creates a copy for editing
+      controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
+      controller.getMainLabel().setText(i18n.getString("editTour.edit"));
       final Stage stage = new Stage();
       stage.setScene(new Scene(root));
-      stage.setTitle("Edit Tour");
+      stage.setTitle(i18n.getString("editTour.edit"));
       stage.show();
     } catch (IOException e) {
-      log.error(e.getMessage());
+      log.error("Failed to open edit tour dialog", e);
     }
   }
 
@@ -166,7 +176,6 @@ public class TourPlannerController implements Initializable {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
       NewTourController controller = NewTourController.builder()
               .tourTableViewModel(tourTableViewModel)
-              .mainLabel(new Label(i18n.getString("editTour.new")))
               .tourViewModel(new TourViewModel())
               .toursListView(toursListView)
               .build();
@@ -174,9 +183,10 @@ public class TourPlannerController implements Initializable {
       final Parent root = loader.load();
       controller.initialize();
       controller.getOkCancelController().getOkButton().setText(i18n.getString("button.new"));
+      controller.getMainLabel().setText(i18n.getString("editTour.new"));
       final Stage stage = new Stage();
       stage.setScene(new Scene(root));
-      stage.setTitle("Create New Tour");
+      stage.setTitle(i18n.getString("editTour.new"));
       stage.show();
     } catch (Exception e) {
       log.error(e.getMessage());

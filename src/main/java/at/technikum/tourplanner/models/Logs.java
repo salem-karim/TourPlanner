@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -11,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Logs {
   private UUID id;
-  private String date_time;
+  private LocalDate date_time;
   private String comment;
   private int difficulty;
   private int total_distance;

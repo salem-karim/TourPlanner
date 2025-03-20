@@ -5,9 +5,10 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1">
-  <Label alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0" text="%logInfo.title"
-         textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+  <Label fx:id="mainLabel" alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0"
+         text="%logInfo.title" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+         AnchorPane.topAnchor="0.0">
     <font>
       <Font name="System Bold" size="20.0"/>
     </font>
@@ -25,87 +26,74 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <Label minWidth="-Infinity" text="%logInfo.name" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
-      <GridPane.margin>
-        <Insets left="20.0"/>
-      </GridPane.margin>
-    </Label>
-    <TextField prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-               GridPane.valignment="CENTER">
-      <GridPane.margin>
-        <Insets left="20.0" right="20.0"/>
-      </GridPane.margin>
-    </TextField>
-    <DatePicker prefHeight="26.0" prefWidth="440.0" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-                GridPane.rowIndex="1" GridPane.valignment="CENTER">
+    <DatePicker fx:id="date" prefHeight="26.0" prefWidth="440.0" promptText="24.12.2004" GridPane.columnIndex="1"
+                GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" right="20.0"/>
       </GridPane.margin>
     </DatePicker>
-    <Label minWidth="-Infinity" text="%logInfo.date" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+    <Label minWidth="-Infinity" text="%logInfo.date" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+      <GridPane.margin>
+        <Insets left="20.0"/>
+      </GridPane.margin>
+    </Label>
+    <Label layoutX="20.0" layoutY="21.0" text="%logInfo.comment" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
            GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0"/>
       </GridPane.margin>
     </Label>
-    <Label layoutX="20.0" layoutY="21.0" text="%logInfo.comment" GridPane.halignment="RIGHT" GridPane.rowIndex="2"
-           GridPane.valignment="CENTER">
-      <GridPane.margin>
-        <Insets left="20.0"/>
-      </GridPane.margin>
-    </Label>
-    <TextField layoutX="223.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-               GridPane.rowIndex="2">
+    <TextField fx:id="comment" layoutX="223.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
+               GridPane.columnIndex="1" GridPane.rowIndex="1">
       <GridPane.margin>
         <Insets left="20.0" right="20.0"/>
       </GridPane.margin>
     </TextField>
-    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="3"
+    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="2"
            GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0"/>
       </GridPane.margin>
     </Label>
-    <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-               GridPane.rowIndex="3">
+    <TextField fx:id="difficulty" layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" promptText="1-5"
+               GridPane.columnIndex="1" GridPane.rowIndex="2">
       <GridPane.margin>
         <Insets left="20.0" right="20.0"/>
       </GridPane.margin>
     </TextField>
-    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaldistance" GridPane.halignment="RIGHT"
-           GridPane.rowIndex="4" GridPane.valignment="CENTER">
-      <GridPane.margin>
-        <Insets left="20.0"/>
-      </GridPane.margin>
-    </Label>
-    <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-               GridPane.rowIndex="4">
-      <GridPane.margin>
-        <Insets left="20.0" right="20.0"/>
-      </GridPane.margin>
-    </TextField>
-    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaltime" GridPane.halignment="RIGHT" GridPane.rowIndex="5"
+    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaldistance" GridPane.halignment="RIGHT" GridPane.rowIndex="3"
            GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0"/>
       </GridPane.margin>
     </Label>
-    <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-               GridPane.rowIndex="5">
+    <TextField fx:id="totalDistance" layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0"
+               promptText="40 (km)" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <GridPane.margin>
         <Insets left="20.0" right="20.0"/>
       </GridPane.margin>
     </TextField>
-    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.rating" GridPane.halignment="RIGHT" GridPane.rowIndex="6"
+    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.totaltime" GridPane.halignment="RIGHT" GridPane.rowIndex="4"
            GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0"/>
       </GridPane.margin>
     </Label>
-    <TextField layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" GridPane.columnIndex="1"
-               GridPane.rowIndex="6">
+    <TextField fx:id="totalTime" layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" promptText="5 (min)"
+               GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <GridPane.margin>
+        <Insets left="20.0" right="20.0"/>
+      </GridPane.margin>
+    </TextField>
+    <Label layoutX="10.0" layoutY="21.0" text="%logInfo.rating" GridPane.halignment="RIGHT" GridPane.rowIndex="5"
+           GridPane.valignment="CENTER">
+      <GridPane.margin>
+        <Insets left="20.0"/>
+      </GridPane.margin>
+    </Label>
+    <TextField fx:id="rating" layoutX="10.0" layoutY="17.0" prefHeight="9.0" prefWidth="150.0" promptText="1-5"
+               GridPane.columnIndex="1" GridPane.rowIndex="5">
       <GridPane.margin>
         <Insets left="20.0" right="20.0"/>
       </GridPane.margin>

@@ -4,12 +4,14 @@ import at.technikum.tourplanner.models.Logs;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @NoArgsConstructor
 public class LogViewModel {
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
-  private final StringProperty dateTime = new SimpleStringProperty();
+  private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
   private final IntegerProperty totalDistance = new SimpleIntegerProperty();
@@ -18,7 +20,7 @@ public class LogViewModel {
 
   public LogViewModel(final Logs log) {
     this.id.set(log.getId());
-    this.dateTime.set(log.getDate_time());
+    this.date.set(log.getDate_time());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotal_distance());
@@ -28,7 +30,7 @@ public class LogViewModel {
 
   public LogViewModel(final LogViewModel log) {
     this.id.set(log.getId());
-    this.dateTime.set(log.getDateTime());
+    this.date.set(log.getDate());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotalDistance());
@@ -41,8 +43,8 @@ public class LogViewModel {
     return id.get();
   }
 
-  public String getDateTime() {
-    return dateTime.get();
+  public LocalDate getDate() {
+    return date.get();
   }
 
   public String getComment() {
@@ -70,8 +72,8 @@ public class LogViewModel {
     return id;
   }
 
-  public StringProperty dateTimeProperty() {
-    return dateTime;
+  public ObjectProperty<LocalDate> dateProperty() {
+    return date;
   }
 
   public StringProperty commentProperty() {
@@ -92,5 +94,29 @@ public class LogViewModel {
 
   public IntegerProperty ratingProperty() {
     return rating;
+  }
+
+  public void setDate(LocalDateTime date) {
+    this.date.set(LocalDate.from(date));
+  }
+
+  public void setComment(String comment) {
+    this.comment.set(comment);
+  }
+
+  public void setDifficulty(int difficulty) {
+    this.difficulty.set(difficulty);
+  }
+
+  public void setTotalDistance(int totalDistance) {
+    this.totalDistance.set(totalDistance);
+  }
+
+  public void setTotalTime(int totalTime) {
+    this.totalTime.set(totalTime);
+  }
+
+  public void setRating(int rating) {
+    this.rating.set(rating);
   }
 }

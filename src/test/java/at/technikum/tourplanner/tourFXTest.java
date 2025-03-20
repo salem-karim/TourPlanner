@@ -81,7 +81,7 @@ class MainViewModelTest {
 
 
     robot.clickOn("#newButton");
-
+    robot.sleep(500);
     robot.clickOn("#name");
     robot.write("Test Wanderung");
 

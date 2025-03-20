@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import lombok.Getter;
 
 @Getter
-public class LogsTableViewModel {
+public class LogTableViewModel {
   private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
   private final ObservableList<LogViewModel> data = FXCollections.observableArrayList();
 
@@ -22,7 +22,7 @@ public class LogsTableViewModel {
   public void updateLog(LogViewModel logViewModel) {
     for (final LogViewModel log : data) {
       if (log.getId().equals(logViewModel.getId())) {
-        log.dateTimeProperty().set(logViewModel.dateTimeProperty().get());
+        log.dateProperty().set(logViewModel.dateProperty().get());
         log.commentProperty().set(logViewModel.commentProperty().get());
         log.difficultyProperty().set(logViewModel.difficultyProperty().get());
         log.totalDistanceProperty().set(logViewModel.totalDistanceProperty().get());

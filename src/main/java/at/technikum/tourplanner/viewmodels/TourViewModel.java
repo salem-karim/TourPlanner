@@ -1,7 +1,10 @@
 package at.technikum.tourplanner.viewmodels;
 
 import at.technikum.tourplanner.models.Tour;
-import javafx.beans.property.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -16,7 +19,9 @@ public class TourViewModel {
   private StringProperty from = new SimpleStringProperty();
   private StringProperty to = new SimpleStringProperty();
   private StringProperty transport_type = new SimpleStringProperty();
-  private IntegerProperty distance = new SimpleIntegerProperty();
+  private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>(new LogTableViewModel());
+
+//  private IntegerProperty distance = new SimpleIntegerProperty();
 //  private IntegerProperty estimated_time = new SimpleIntegerProperty();
 //  private StringProperty route_info = new SimpleStringProperty();
 
@@ -40,9 +45,13 @@ public class TourViewModel {
     this.from = new SimpleStringProperty(ttvm.getFrom());
     this.to = new SimpleStringProperty(ttvm.getTo());
     this.transport_type = new SimpleStringProperty(ttvm.getTransport_type());
-    this.distance = new SimpleIntegerProperty(ttvm.getTour_distance());
+//    this.distance = new SimpleIntegerProperty(ttvm.getTour_distance());
 //    this.estimated_time = new SimpleIntegerProperty(ttvm.getEstimated_time());
 //    this.route_info = new SimpleStringProperty(ttvm.getRoute_info());
+  }
+
+  public LogTableViewModel getLogs() {
+    return logs.get();
   }
 
   // getters of the properties values
@@ -70,9 +79,9 @@ public class TourViewModel {
     return transport_type.get();
   }
 
-  public int getTour_distance() {
-    return distance.get();
-  }
+//  public int getTour_distance() {
+//    return distance.get();
+//  }
 
 //  public int getEstimated_time() {
 //    return estimated_time.get();
@@ -107,9 +116,9 @@ public class TourViewModel {
     return transport_type;
   }
 
-  public IntegerProperty distanceProperty() {
-    return distance;
-  }
+//  public IntegerProperty distanceProperty() {
+//    return distance;
+//  }
 
 //  public IntegerProperty estimated_timeProperty() {
 //    return estimated_time;
@@ -118,4 +127,28 @@ public class TourViewModel {
 //  public StringProperty route_infoProperty() {
 //    return route_info;
 //  }
+
+  public void setId(UUID id) {
+    this.id.set(id);
+  }
+
+  public void setName(String name) {
+    this.name.set(name);
+  }
+
+  public void setDescription(String description) {
+    this.description.set(description);
+  }
+
+  public void setFrom(String from) {
+    this.from.set(from);
+  }
+
+  public void setTo(String to) {
+    this.to.set(to);
+  }
+
+  public void setTransportType(String transportType) {
+    this.transport_type.set(transportType);
+  }
 }

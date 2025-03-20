@@ -9,10 +9,14 @@ import javafx.scene.control.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @SuperBuilder
 @Getter
 @NoArgsConstructor
+@Slf4j
 public abstract class BaseTourController {
   @FXML
   protected Label mainLabel;
@@ -24,7 +28,7 @@ public abstract class BaseTourController {
   protected ChoiceBox<String> transportType;
 
   protected OKCancelButtonBarController okCancelController;
-  protected TourValidator validator;
+  protected TourValidator tourValidator;
 
   protected TourTableViewModel tourTableViewModel;
   protected TourViewModel tourViewModel;
@@ -34,36 +38,42 @@ public abstract class BaseTourController {
   private boolean initialized = false;
 
   public void initialize() {
-    // Prevent duplicate initialization
     if (initialized) {
       return;
     }
 
-    validator = new TourValidator(TourPlannerApplication.i18n);
+    tourValidator = new TourValidator(TourPlannerApplication.i18n);
 
-    // Clear and populate transport types from i18n
-    transportType.getItems().clear();
-    transportType.getItems().addAll(
-            TourPlannerApplication.i18n.getString("tourInfo.transportType.car"),
-            TourPlannerApplication.i18n.getString("tourInfo.transportType.bike"),
-            TourPlannerApplication.i18n.getString("tourInfo.transportType.foot"),
-            TourPlannerApplication.i18n.getString("tourInfo.transportType.bus"),
-            TourPlannerApplication.i18n.getString("tourInfo.transportType.train")
-    );
+    if (tourViewModel == null) {
+      tourViewModel = new TourViewModel();
+    }
 
-    name.textProperty().bindBidirectional(tourViewModel.nameProperty());
-    description.textProperty().bindBidirectional(tourViewModel.descriptionProperty());
-    from.textProperty().bindBidirectional(tourViewModel.fromProperty());
-    to.textProperty().bindBidirectional(tourViewModel.toProperty());
-    transportType.valueProperty().bindBidirectional(tourViewModel.transport_typeProperty());
+    // Set field values from tourViewModel (one-way)
+    name.setText(tourViewModel.getName());
+    description.setText(tourViewModel.getTour_description());
+    from.setText(tourViewModel.getFrom());
+    to.setText(tourViewModel.getTo());
+    transportType.setValue(tourViewModel.getTransport_type());
 
+    // Fix the way okCancelController is obtained
     okCancelController = (OKCancelButtonBarController)
             newCancelButtonBar.getProperties().get("okCancelButtonBarController");
 
-    // Add validation before saving
     okCancelController.setOkButtonListener(event -> {
-      if (validator.validateTour(tourViewModel)) {
-        onSaveButtonClicked();
+      // Only when Save is clicked, copy values from UI to model
+      try {
+        tourViewModel.setName(name.getText());
+        tourViewModel.setDescription(description.getText());
+        tourViewModel.setFrom(from.getText());
+        tourViewModel.setTo(to.getText());
+        tourViewModel.setTransportType(transportType.getValue());
+
+        if (tourValidator.validateTour(tourViewModel)) {
+          onSaveButtonClicked();
+        }
+      } catch (Exception e) {
+        tourValidator.showValidationError(List.of("Invalid input format"));
+        log.error("Error saving tour", e);
       }
     });
 
