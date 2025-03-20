@@ -75,4 +75,55 @@ class MainViewModelTest {
 
     assertThat(firstItemName).isEqualTo("Kahlsberg Wanderung");
   }
+
+  @Test
+  void testCreatenewTour(FxRobot robot) {
+
+
+    robot.clickOn("#newButton");
+
+    robot.clickOn("#name");
+    robot.write("Test Wanderung");
+
+    robot.clickOn("#description");
+    robot.write("Test Info");
+
+    robot.clickOn("#from");
+    robot.write("Test Start");
+
+    robot.clickOn("#to");
+    robot.write("Test Ende");
+
+    robot.clickOn("#transportType");
+    robot.clickOn("Car");
+    robot.write("Test Wanderung");
+
+    robot.clickOn("#okButton");
+
+    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    TourViewModel firstItem = listView.getItems().getLast();
+    String firstItemName = firstItem.getName();
+
+    assertThat(firstItemName).isEqualTo("Test Wanderung");
+  }
+
+  @Test
+  void testEditFirstTour(FxRobot robot) {
+
+
+    robot.clickOn("#editButton");
+
+    robot.clickOn("#name");
+    robot.eraseText(50);
+    robot.write("Andere Wanderung");
+
+    robot.clickOn("#okButton");
+
+    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    TourViewModel firstItem = listView.getItems().getFirst();
+    String firstItemName = firstItem.getName();
+
+    assertThat(firstItemName).isEqualTo("Andere Wanderung");
+  }
+
 }
