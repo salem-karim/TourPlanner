@@ -38,8 +38,11 @@ public class TourPlannerController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     toursListView.setItems(tourTableViewModel.getDataNames());
+    toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController)
             newEditDeleteButtonBar.getProperties().get("newEditDeleteButtonBarController");
+    newEditDeleteButtonBarController.setTourListView(toursListView);
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
     newEditDeleteButtonBarController.setDeleteButtonListener(event -> {
@@ -93,6 +96,7 @@ public class TourPlannerController implements Initializable {
 
 
   private void onNewButtonClicked() {
+    // check if it finds the resource
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
       loader.setController(NewTourController.builder()
@@ -106,7 +110,7 @@ public class TourPlannerController implements Initializable {
       stage.setScene(new Scene(root));
       stage.setTitle("Create New Tour");
       stage.show();
-    } catch (IOException e) {
+    } catch (Exception e) {
       log.error(e.getMessage());
     }
   }

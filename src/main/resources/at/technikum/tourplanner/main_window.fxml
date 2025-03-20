@@ -1,70 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<VBox prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tourplanner.controllers.TourPlannerController">
+
+<VBox prefHeight="600.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.tourplanner.controllers.TourPlannerController">
   <MenuBar prefWidth="904.0" VBox.vgrow="NEVER">
     <Menu mnemonicParsing="false" text="%menu.file">
-      <MenuItem mnemonicParsing="false" text="%button.new"/>
-      <MenuItem mnemonicParsing="false" text="%button.open"/>
-      <Menu mnemonicParsing="false" text="%button.openrecent"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="%button.close"/>
-      <MenuItem mnemonicParsing="false" text="%button.save"/>
-      <MenuItem mnemonicParsing="false" text="%button.saveas"/>
-      <MenuItem mnemonicParsing="false" text="%button.revert"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="%button.preferences"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit"/>
+      <MenuItem mnemonicParsing="false" text="%button.new" />
+      <MenuItem mnemonicParsing="false" text="%button.open" />
+      <Menu mnemonicParsing="false" text="%button.openrecent" />
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem mnemonicParsing="false" text="%button.close" />
+      <MenuItem mnemonicParsing="false" text="%button.save" />
+      <MenuItem mnemonicParsing="false" text="%button.saveas" />
+      <MenuItem mnemonicParsing="false" text="%button.revert" />
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem mnemonicParsing="false" text="%button.preferences" />
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit" />
     </Menu>
     <Menu mnemonicParsing="false" text="%menu.edit">
-      <MenuItem mnemonicParsing="false" text="%button.undo"/>
-      <MenuItem mnemonicParsing="false" text="%button.redo"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="%button.cut"/>
-      <MenuItem mnemonicParsing="false" text="%button.copy"/>
-      <MenuItem mnemonicParsing="false" text="%button.paste"/>
-      <MenuItem mnemonicParsing="false" text="%button.delete"/>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="%button.selectall"/>
-      <MenuItem mnemonicParsing="false" text="%button.unselectall"/>
+      <MenuItem mnemonicParsing="false" text="%button.undo" />
+      <MenuItem mnemonicParsing="false" text="%button.redo" />
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem mnemonicParsing="false" text="%button.cut" />
+      <MenuItem mnemonicParsing="false" text="%button.copy" />
+      <MenuItem mnemonicParsing="false" text="%button.paste" />
+      <MenuItem mnemonicParsing="false" text="%button.delete" />
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem mnemonicParsing="false" text="%button.selectall" />
+      <MenuItem mnemonicParsing="false" text="%button.unselectall" />
     </Menu>
     <Menu mnemonicParsing="false" text="%menu.help">
-      <MenuItem mnemonicParsing="false" text="%menu.about"/>
+      <MenuItem mnemonicParsing="false" text="%menu.about" />
     </Menu>
   </MenuBar>
   <SplitPane dividerPositions="0.35" focusTraversable="true" VBox.vgrow="ALWAYS">
     <AnchorPane>
-      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" style="&#10;"
-             text="%main.tour" textAlignment="CENTER" AnchorPane.leftAnchor="0.0"
-             AnchorPane.topAnchor="5.0">
+      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" style="&#10;" text="%main.tour" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
         <font>
-          <Font name="System Bold" size="18.0"/>
+          <Font name="System Bold" size="18.0" />
         </font>
         <padding>
-          <Insets left="20.0"/>
+          <Insets left="20.0" />
         </padding>
       </Label>
-      <ListView fx:id="toursListView" layoutX="7.0" layoutY="32.0" prefHeight="480.0" prefWidth="300.0"
-                AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-                AnchorPane.topAnchor="30.0"/>
-      <fx:include fx:id="newEditDeleteButtonBar" source="new_edit_delete_button_bar.fxml"
-                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"/>
+      <ListView fx:id="toursListView" layoutX="7.0" layoutY="32.0" prefHeight="480.0" prefWidth="300.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="30.0" />
+      <fx:include fx:id="newEditDeleteButtonBar" source="new_edit_delete_button_bar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
     </AnchorPane>
-    <AnchorPane prefHeight="575.0" prefWidth="500.0">
-      <TabPane prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane prefHeight="575.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+      <TabPane prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab text="%menu.general">
-          <fx:include fx:id="tourInfo" source="tour_info.fxml" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+          <fx:include fx:id="tourInfo" source="tour_info.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </Tab>
         <Tab text="%menu.logs">
-          <fx:include fx:id="tourLogs" source="tour_logs.fxml" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+          <fx:include fx:id="tourLogs" source="tour_logs.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </Tab>
       </TabPane>
     </AnchorPane>

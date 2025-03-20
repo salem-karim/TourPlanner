@@ -1,17 +1,16 @@
 package at.technikum.tourplanner.viewmodels;
 
 import at.technikum.tourplanner.models.Tour;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 // responsible for tour_info.fxml (listing of the tour info) !!
 @NoArgsConstructor
 public class TourViewModel {
 
-  private StringProperty id = new SimpleStringProperty();
+  private ObjectProperty<UUID> id = new SimpleObjectProperty<>();
   private StringProperty name = new SimpleStringProperty();
   private StringProperty description = new SimpleStringProperty();
   private StringProperty from = new SimpleStringProperty();
@@ -22,7 +21,7 @@ public class TourViewModel {
   private StringProperty route_info = new SimpleStringProperty();
 
   public TourViewModel(final Tour tour) {
-    this.id = new SimpleStringProperty(tour.getId().toString());
+    this.id = new SimpleObjectProperty<UUID>(tour.getId());
     this.name = new SimpleStringProperty(tour.getName());
     this.description = new SimpleStringProperty(tour.getDescription());
     this.from = new SimpleStringProperty(tour.getFrom());
@@ -35,7 +34,7 @@ public class TourViewModel {
   }
 
   public TourViewModel(final TourViewModel ttvm) {
-    this.id = new SimpleStringProperty(ttvm.getId());
+    this.id = new SimpleObjectProperty<UUID>(ttvm.getId());
     this.name = new SimpleStringProperty(ttvm.getName());
     this.description = new SimpleStringProperty(ttvm.getTour_description());
     this.from = new SimpleStringProperty(ttvm.getFrom());
@@ -47,7 +46,7 @@ public class TourViewModel {
   }
 
   // getters of the properties values
-  public String getId() {
+  public UUID getId() {
     return id.get();
   }
 
@@ -84,7 +83,7 @@ public class TourViewModel {
   }
 
   // getters of the properties themselves
-  public StringProperty idProperty() {
+  public ObjectProperty<UUID> idProperty() {
     return id;
   }
 

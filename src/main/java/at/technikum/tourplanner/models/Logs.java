@@ -4,17 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class Logs {
-    private int id;
-    private String date_time;
-    private String comment;
-    private int difficulty;
-    private int total_distance;
-    private int total_time;
-    private int rating;
+  private UUID id;
+  private String date_time;
+  private String comment;
+  private int difficulty;
+  private int total_distance;
+  private int total_time;
+  private int rating;
 
 }
 

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 @Builder
 @Slf4j
@@ -49,10 +50,13 @@ public class NewTourController implements Initializable {
   }
 
   private void onSaveButtonClicked() {
-//    tourViewModel.idProperty().get() = UUID.randomUUID();
+    tourViewModel.idProperty().set(UUID.randomUUID());
     tourTableViewModel.newTour(tourViewModel);
     log.info(tourTableViewModel.getData().toString());
+    log.info(tourTableViewModel.getDataNames().toString());
     toursListView.setItems(tourTableViewModel.getDataNames());
+//    tourTableViewModel.updateTour(tourViewModel);
+//    toursListView.refresh();
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

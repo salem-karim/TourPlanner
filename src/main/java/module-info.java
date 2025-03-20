@@ -17,4 +17,6 @@ module at.technikum.tourplanner {
   opens at.technikum.tourplanner.controllers to javafx.fxml;
   exports at.technikum.tourplanner.viewmodels;
   opens at.technikum.tourplanner.viewmodels to javafx.fxml;
+  exports at.technikum.tourplanner.mediators;
+  opens at.technikum.tourplanner.mediators to javafx.fxml;
 }

@@ -1,15 +1,19 @@
 package at.technikum.tourplanner.controllers;
 
+import at.technikum.tourplanner.mediators.Mediator;
+import at.technikum.tourplanner.mediators.TourButtonsMediator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ListView;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @SuppressWarnings("unchecked")
@@ -29,6 +33,19 @@ public class NewEditDeleteButtonBarController implements Initializable {
   private EventHandler newButtonListener;
   private EventHandler editButtonListener;
   private EventHandler deleteButtonListener;
+
+  private ArrayList<Mediator> mediators = new ArrayList<>();
+  private ListView tourListView;
+
+
+  public void setTourListView(ListView tourListView) {
+    this.tourListView = tourListView;
+
+    if (tourListView != null) {
+      mediators.add(new TourButtonsMediator(editButton, tourListView, new boolean[]{true, false, true}));
+      mediators.add(new TourButtonsMediator(deleteButton, tourListView, new boolean[]{true, false, false}));
+    }
+  }
 
   public void onNew(ActionEvent event) {
     if (newButtonListener != null) {

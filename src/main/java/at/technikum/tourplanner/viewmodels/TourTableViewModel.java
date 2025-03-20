@@ -1,6 +1,8 @@
 package at.technikum.tourplanner.viewmodels;
 
 import at.technikum.tourplanner.models.Tour;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
@@ -9,22 +11,13 @@ import java.util.UUID;
 
 @Getter
 public class TourTableViewModel {
-
+  private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
   private final ObservableList<TourViewModel> data =
           FXCollections.observableArrayList(
                   new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img")),
                   new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img"))
 
           );
-
-  // test values
-//  public ObservableList<String> getDataNames() {
-//    final ObservableList<String> names = FXCollections.observableArrayList();
-//    for (final var tourViewModel : data) {
-//      names.add(tourViewModel.getName());
-//    }
-//    return names;
-//  }
 
   public ObservableList<String> getDataNames() {
     return FXCollections.observableArrayList(data.stream().map(TourViewModel::getName).toList());
@@ -56,5 +49,9 @@ public class TourTableViewModel {
 
   public void deleteTour(int index) {
     data.remove(index);
+  }
+
+  public void setSelectedTour(TourViewModel tour) {
+    selectedTour.set(tour);
   }
 }
