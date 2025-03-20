@@ -48,6 +48,13 @@ public abstract class BaseTourController {
       tourViewModel = new TourViewModel();
     }
 
+    transportType.getItems().addAll(
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.car"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.bike"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.foot"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.bus"),
+            TourPlannerApplication.i18n.getString("tourInfo.transportType.train")
+    );
     // Set field values from tourViewModel (one-way)
     name.setText(tourViewModel.getName());
     description.setText(tourViewModel.getTour_description());

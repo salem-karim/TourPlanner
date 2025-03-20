@@ -31,7 +31,7 @@ class MainViewModelTest {
     robot.clickOn("#newButton");
     robot.sleep(250);
 
-    assertThat(robot.window("Create New Tour")).isShowing();
+    assertThat(robot.window("New Tour")).isShowing();
 
     // robot.clickOn("#cancelButton");
 
