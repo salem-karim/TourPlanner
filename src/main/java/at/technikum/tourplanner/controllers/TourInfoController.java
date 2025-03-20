@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,11 +32,16 @@ public class TourInfoController implements Initializable {
   private Label distanceLabel;
   @FXML
   private Label durationLabel;
+  @FXML
+  private SplitPane splitPane;
+
 
   private TourViewModel tourViewModel;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+    splitPane.getProperties().put("tourInfoController", this);
+
   }
 
   public void setTourViewModel(TourViewModel tourViewModel) {

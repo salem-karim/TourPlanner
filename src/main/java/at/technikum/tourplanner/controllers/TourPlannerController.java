@@ -43,7 +43,6 @@ public class TourPlannerController implements Initializable {
     toursListView.setItems(tourTableViewModel.getDataNames());
     toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     toursListView.getSelectionModel().select(0);
-    initializeTourInfo();
 
     toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal != null && newVal.intValue() >= 0) {
@@ -57,6 +56,7 @@ public class TourPlannerController implements Initializable {
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
     newEditDeleteButtonBarController.setDeleteButtonListener(event -> onDeleteButtonClicked());
+    initializeTourInfo();
 
     Platform.runLater(() -> {
       ButtonBar logsButtonBar = (ButtonBar) tourLogs.lookup("#newEditDeleteButtonBar");
@@ -74,10 +74,9 @@ public class TourPlannerController implements Initializable {
   }
 
   private void initializeTourInfo() {
-    // Get the controller that was created by fx:include
-    log.info("SplitPane properties: " + tourInfo.getProperties());
 
-    tourInfoController = (TourInfoController) tourInfo.getProperties().get("fx:controller");
+    log.info(tourInfo.getProperties().toString());
+    tourInfoController = (TourInfoController) tourInfo.getProperties().get("tourInfoController");
 
     // Update the TourInfoController when a new tour is selected
     toursListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
