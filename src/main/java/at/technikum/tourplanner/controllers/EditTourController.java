@@ -1,20 +1,17 @@
 package at.technikum.tourplanner.controllers;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import lombok.Getter;
+import at.technikum.tourplanner.TourPlannerApplication;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class EditTourController implements Initializable {
-
-  @Getter
-  @FXML
-  private Label mainLabel;
-
+@SuperBuilder
+@Slf4j
+public class EditTourController extends BaseTourController {
   @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  protected void onSaveButtonClicked() {
+    tourTableViewModel.updateTour(tourViewModel);
+    toursListView.setItems(tourTableViewModel.getDataNames());
+    log.info(tourTableViewModel.getDataNames().toString());
+    TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

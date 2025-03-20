@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -39,16 +40,20 @@ public class TourPlannerController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     toursListView.setItems(tourTableViewModel.getDataNames());
     toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    toursListView.getSelectionModel().select(0);
+
+    toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal != null && newVal.intValue() >= 0) {
+        tourTableViewModel.setSelectedTour(tourTableViewModel.getData().get(newVal.intValue()));
+      }
+    });
 
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController)
             newEditDeleteButtonBar.getProperties().get("newEditDeleteButtonBarController");
     newEditDeleteButtonBarController.setTourListView(toursListView);
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
-    newEditDeleteButtonBarController.setDeleteButtonListener(event -> {
-      tourTableViewModel.deleteTour(toursListView.getSelectionModel().getSelectedIndex());
-      toursListView.setItems(tourTableViewModel.getDataNames());
-    });
+    newEditDeleteButtonBarController.setDeleteButtonListener(event -> onDeleteButtonClicked());
 
     Platform.runLater(() -> {
       ButtonBar logsButtonBar = (ButtonBar) tourLogs.lookup("#newEditDeleteButtonBar");
@@ -65,6 +70,33 @@ public class TourPlannerController implements Initializable {
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }
 
+  private void onDeleteButtonClicked() {
+    // Get selected indices
+    var selectedIndices = new ArrayList<>(toursListView.getSelectionModel().getSelectedIndices());
+
+    if (selectedIndices.isEmpty()) {
+      log.warn("No tours selected for deletion");
+      return;
+    }
+
+    // Show confirmation alert
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle(i18n.getString("delete.confirmation.title"));
+    alert.setHeaderText(i18n.getString("delete.confirmation.header"));
+    alert.setContentText(i18n.getString("delete.confirmation.content"));
+
+    var result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+      // Delete selected tours in reverse order
+      selectedIndices.sort((a, b) -> b - a);
+      for (int index : selectedIndices) {
+        tourTableViewModel.deleteTour(index);
+      }
+      toursListView.setItems(tourTableViewModel.getDataNames());
+    }
+  }
+
+
   private void onLogsDeleteButtonClicked() {
     log.info("Logs delete button clicked");
   }
@@ -80,11 +112,21 @@ public class TourPlannerController implements Initializable {
 
   private void onEditButtonClicked() {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
-      loader.setController(new EditTourController());
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+
+      int selectedIndex = toursListView.getSelectionModel().getSelectedIndex();
+      TourViewModel selectedTour = tourTableViewModel.getData().get(selectedIndex);
+
+      EditTourController controller = EditTourController.builder()
+              .tourTableViewModel(tourTableViewModel)
+              .mainLabel(new Label(i18n.getString("editTour.edit")))
+              .tourViewModel(selectedTour)
+              .toursListView(toursListView)
+              .build();
+      loader.setController(controller);
       final Parent root = loader.load();
-      EditTourController controller = loader.getController();
-      controller.getMainLabel().setText(i18n.getString("editTour.edit"));
+      controller.initialize();
+      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.save"));
       final Stage stage = new Stage();
       stage.setScene(new Scene(root));
       stage.setTitle("Edit Tour");
@@ -94,18 +136,19 @@ public class TourPlannerController implements Initializable {
     }
   }
 
-
   private void onNewButtonClicked() {
-    // check if it finds the resource
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/edit_tours.fxml"), i18n);
-      loader.setController(NewTourController.builder()
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+      NewTourController controller = NewTourController.builder()
               .tourTableViewModel(tourTableViewModel)
-              .mainLabel(new Label(i18n.getString("editTour.edit")))
+              .mainLabel(new Label(i18n.getString("editTour.new")))
               .tourViewModel(new TourViewModel())
               .toursListView(toursListView)
-              .build());
+              .build();
+      loader.setController(controller);
       final Parent root = loader.load();
+      controller.initialize();
+      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.new"));
       final Stage stage = new Stage();
       stage.setScene(new Scene(root));
       stage.setTitle("Create New Tour");
