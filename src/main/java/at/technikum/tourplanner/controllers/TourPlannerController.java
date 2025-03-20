@@ -75,7 +75,6 @@ public class TourPlannerController implements Initializable {
 
   private void initializeTourInfo() {
 
-    log.info(tourInfo.getProperties().toString());
     tourInfoController = (TourInfoController) tourInfo.getProperties().get("tourInfoController");
 
     // Update the TourInfoController when a new tour is selected
