@@ -21,7 +21,7 @@ public class TourViewModel {
   private StringProperty route_info = new SimpleStringProperty();
 
   public TourViewModel(final Tour tour) {
-    this.id = new SimpleObjectProperty<UUID>(tour.getId());
+    this.id = new SimpleObjectProperty<>(tour.getId());
     this.name = new SimpleStringProperty(tour.getName());
     this.description = new SimpleStringProperty(tour.getDescription());
     this.from = new SimpleStringProperty(tour.getFrom());
@@ -34,7 +34,7 @@ public class TourViewModel {
   }
 
   public TourViewModel(final TourViewModel ttvm) {
-    this.id = new SimpleObjectProperty<UUID>(ttvm.getId());
+    this.id = new SimpleObjectProperty<>(ttvm.getId());
     this.name = new SimpleStringProperty(ttvm.getName());
     this.description = new SimpleStringProperty(ttvm.getTour_description());
     this.from = new SimpleStringProperty(ttvm.getFrom());

@@ -36,11 +36,14 @@ public class TourPlannerController implements Initializable {
   @FXML
   private ListView<String> toursListView;
 
+  private TourInfoController tourInfoController;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     toursListView.setItems(tourTableViewModel.getDataNames());
     toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     toursListView.getSelectionModel().select(0);
+    initializeTourInfo();
 
     toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal != null && newVal.intValue() >= 0) {
@@ -68,6 +71,32 @@ public class TourPlannerController implements Initializable {
 
 //    tourTableViewModel.selectedTourProperty().bind(toursListView.getSelectionModel().selectedItemProperty());
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
+  }
+
+  private void initializeTourInfo() {
+    // Get the controller that was created by fx:include
+    log.info("SplitPane properties: " + tourInfo.getProperties());
+
+    tourInfoController = (TourInfoController) tourInfo.getProperties().get("fx:controller");
+
+    // Update the TourInfoController when a new tour is selected
+    toursListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal != null) {
+        tourTableViewModel.getData().stream()
+                .filter(tour -> tour.getName().equals(newVal))
+                .findFirst()
+                .ifPresent(selectedTour -> tourInfoController.setTourViewModel(selectedTour));
+      }
+    });
+
+    // Initialize with the first tour if available
+    if (!tourTableViewModel.getData().isEmpty()) {
+      String firstTourName = toursListView.getItems().getFirst();
+      tourTableViewModel.getData().stream()
+              .filter(tour -> tour.getName().equals(firstTourName))
+              .findFirst()
+              .ifPresent(firstTour -> tourInfoController.setTourViewModel(firstTour));
+    }
   }
 
   private void onDeleteButtonClicked() {

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <SplitPane dividerPositions="0.6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="540.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.3-internal">
+           prefHeight="540.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
+           fx:controller="at.technikum.tourplanner.controllers.TourInfoController" xmlns:fx="http://javafx.com/fxml/1">
   <padding>
     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
   </padding>
@@ -24,33 +23,22 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       </rowConstraints>
-      <Label text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
-      <Label layoutX="263.0" layoutY="27.0" text="%tourInfo.name" GridPane.halignment="CENTER"
+      <Label fx:id="nameLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"/>
+      <Label fx:id="descriptionLabel" layoutX="263.0" layoutY="27.0" text="%tourInfo.description"
+             GridPane.halignment="CENTER"
              GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="%tourInfo.description" GridPane.halignment="CENTER"
+      <Label fx:id="fromLabel" layoutX="10.0" layoutY="27.0" text="%tourInfo.from" GridPane.halignment="CENTER"
              GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="77.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-             GridPane.rowIndex="1" GridPane.valignment="CENTER"/>
-      <Label layoutX="188.0" layoutY="77.0" text="%tourInfo.from" GridPane.halignment="CENTER" GridPane.rowIndex="2"
+      <Label fx:id="toLabel" layoutX="188.0" layoutY="77.0" text="%tourInfo.to" GridPane.halignment="CENTER"
+             GridPane.rowIndex="2"
              GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="127.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-             GridPane.rowIndex="2" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="%tourInfo.to" GridPane.halignment="CENTER" GridPane.rowIndex="3"
-             GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+      <Label fx:id="transportTypeLabel" layoutX="10.0" layoutY="127.0" text="%tourInfo.transportType"
+             GridPane.halignment="CENTER"
              GridPane.rowIndex="3" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="%tourInfo.transportType" GridPane.halignment="CENTER"
+      <Label fx:id="distanceLabel" layoutX="10.0" layoutY="27.0" text="%tourInfo.distance" GridPane.halignment="CENTER"
              GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-             GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="%tourInfo.distance" GridPane.halignment="CENTER"
+      <Label fx:id="durationLabel" layoutX="10.0" layoutY="27.0" text="%tourInfo.duration" GridPane.halignment="CENTER"
              GridPane.rowIndex="5" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-             GridPane.rowIndex="5" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="27.0" text="%tourInfo.duration" GridPane.halignment="CENTER"
-             GridPane.rowIndex="6" GridPane.valignment="CENTER"/>
-      <Label layoutX="10.0" layoutY="326.0" text="Label" GridPane.columnIndex="1" GridPane.halignment="CENTER"
-             GridPane.rowIndex="6" GridPane.valignment="CENTER"/>
     </GridPane>
   </AnchorPane>
   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"/>
