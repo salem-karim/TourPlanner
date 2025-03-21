@@ -97,23 +97,31 @@ public class TourPlannerController implements Initializable {
     // Update both controllers when a tour is selected
     toursListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal != null) {
-        if (tourInfoController != null) {
-          tourInfoController.setTourViewModel(newVal);
-        }
-        if (tourLogsController != null) {
-          tourLogsController.updateSelectedTour(newVal);
-        } else {
-          log.error("Tour logs controller not initialized");
-        }
+        updateTourDisplays(newVal);
       }
     });
 
+    // Important: Force an initial update if a tour is already selected
     if (!tourTableViewModel.getData().isEmpty()) {
       toursListView.getSelectionModel().select(0);
       TourViewModel firstTour = toursListView.getSelectionModel().getSelectedItem();
-      if (firstTour != null && tourLogsController != null) {
-        tourLogsController.updateSelectedTour(firstTour);
+      if (firstTour != null) {
+        updateTourDisplays(firstTour);
       }
+    }
+  }
+
+  private void updateTourDisplays(TourViewModel tour) {
+    if (tourInfoController != null) {
+      tourInfoController.setTourViewModel(tour);
+    } else {
+      log.error("Tour info controller not initialized");
+    }
+
+    if (tourLogsController != null) {
+      tourLogsController.updateSelectedTour(tour);
+    } else {
+      log.error("Tour logs controller not initialized");
     }
   }
 
@@ -154,12 +162,13 @@ public class TourPlannerController implements Initializable {
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
       EditTourController controller = EditTourController.builder()
-              .tourViewModel(selectedTour) // Will be ignored by setupWithTour
+              .tourViewModel(new TourViewModel(selectedTour))
+              .originalTourViewModel(selectedTour)
+              .toursListView(toursListView)
               .build();
 
       loader.setController(controller);
       final Parent root = loader.load();
-      controller.setupWithTour(selectedTour); // This creates a copy for editing
       controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
       controller.getMainLabel().setText(i18n.getString("editTour.edit"));
       final Stage stage = new Stage();

@@ -13,13 +13,6 @@ import java.time.LocalTime;
 public class EditLogController extends BaseLogController {
   private LogViewModel originalLogViewModel;
 
-  public void setupWithLog(LogViewModel logToEdit) {
-    // Create a copy of the log to edit
-    this.originalLogViewModel = logToEdit;
-    this.logViewModel = new LogViewModel(logToEdit);
-    initialize();
-  }
-
   @Override
   protected void onSaveButtonClicked() {
     // Copy values back to the original model
