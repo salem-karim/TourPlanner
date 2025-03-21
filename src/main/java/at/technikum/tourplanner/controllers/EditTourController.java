@@ -10,13 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 public class EditTourController extends BaseTourController {
   private TourViewModel originalTourViewModel;
 
-  public void setupWithTour(TourViewModel tourToEdit) {
-    // Create a copy of the tour to edit
-    this.originalTourViewModel = tourToEdit;
-    this.tourViewModel = new TourViewModel(tourToEdit);
-    initialize();
-  }
-
   @Override
   protected void onSaveButtonClicked() {
     if (originalTourViewModel == null) {
@@ -31,6 +24,8 @@ public class EditTourController extends BaseTourController {
     originalTourViewModel.setFrom(tourViewModel.getFrom());
     originalTourViewModel.setTo(tourViewModel.getTo());
     originalTourViewModel.setTransportType(tourViewModel.getTransport_type());
+
+    toursListView.refresh();
 
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }

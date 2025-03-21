@@ -125,7 +125,8 @@ public class TourLogController implements Initializable {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_logs.fxml"), i18n);
       EditLogController controller = EditLogController.builder()
               .logTableViewModel(selectedTour.getLogs())
-              .logViewModel(selectedLog)
+              .originalLogViewModel(selectedLog)
+              .logViewModel(new LogViewModel(selectedLog))
               .build();
 
       loader.setController(controller);
@@ -133,7 +134,6 @@ public class TourLogController implements Initializable {
       controller.initialize();
       controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
       controller.getMainLabel().setText(i18n.getString("editLog.edit"));
-      controller.setupWithLog(selectedLog);
       final Stage stage = new Stage();
       stage.setScene(new Scene(root));
       stage.setTitle(i18n.getString("editLog.edit"));
