@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -94,16 +95,20 @@ public class TourLogController implements Initializable {
               .mainLabel(new Label(i18n.getString("editLog.new")))
               .logViewModel(new LogViewModel())
               .build();
-
       loader.setController(controller);
+
       final Parent root = loader.load();
-      controller.initialize();
-      controller.okCancelController.getOkButton().setText(i18n.getString("button.new"));
-      controller.getMainLabel().setText(i18n.getString("editLog.new"));
       final Stage stage = new Stage();
-      stage.setScene(new Scene(root));
       stage.setTitle(i18n.getString("editLog.new"));
-      stage.show();
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(logTable.getScene().getWindow());
+      stage.setScene(new Scene(root));
+
+      controller.initialize();
+      controller.okCancelController.getOkButton().setText(i18n.getString("button.create"));
+      controller.getMainLabel().setText(i18n.getString("editLog.new"));
+
+      stage.showAndWait();
     } catch (IOException e) {
       log.error("Failed to open new log dialog", e);
     }
@@ -128,16 +133,21 @@ public class TourLogController implements Initializable {
               .originalLogViewModel(selectedLog)
               .logViewModel(new LogViewModel(selectedLog))
               .build();
-
       loader.setController(controller);
+
       final Parent root = loader.load();
+      final Stage stage = new Stage();
+
+      stage.setTitle(i18n.getString("editLog.edit"));
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(logTable.getScene().getWindow());
+      stage.setScene(new Scene(root));
+
       controller.initialize();
       controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
       controller.getMainLabel().setText(i18n.getString("editLog.edit"));
-      final Stage stage = new Stage();
-      stage.setScene(new Scene(root));
-      stage.setTitle(i18n.getString("editLog.edit"));
-      stage.show();
+
+      stage.showAndWait();
     } catch (IOException e) {
       log.error("Failed to open edit log dialog", e);
     }

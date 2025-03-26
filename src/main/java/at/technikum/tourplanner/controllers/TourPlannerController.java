@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,8 +59,8 @@ public class TourPlannerController implements Initializable {
       }
     });
 
-    NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController)
-            newEditDeleteButtonBar.getProperties().get("newEditDeleteButtonBarController");
+    NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
+            .getProperties().get("newEditDeleteButtonBarController");
     newEditDeleteButtonBarController.setTourListView(toursListView);
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
@@ -151,7 +152,6 @@ public class TourPlannerController implements Initializable {
     }
   }
 
-
   private void onEditButtonClicked() {
     TourViewModel selectedTour = toursListView.getSelectionModel().getSelectedItem();
     if (selectedTour == null) {
@@ -160,21 +160,27 @@ public class TourPlannerController implements Initializable {
     }
 
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"),
+              i18n);
       EditTourController controller = EditTourController.builder()
               .tourViewModel(new TourViewModel(selectedTour))
               .originalTourViewModel(selectedTour)
               .toursListView(toursListView)
               .build();
-
       loader.setController(controller);
+
       final Parent root = loader.load();
+      final Stage stage = new Stage();
+
+      stage.setTitle(i18n.getString("editTour.edit"));
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(toursListView.getScene().getWindow());
+      stage.setScene(new Scene(root));
+
       controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
       controller.getMainLabel().setText(i18n.getString("editTour.edit"));
-      final Stage stage = new Stage();
-      stage.setScene(new Scene(root));
-      stage.setTitle(i18n.getString("editTour.edit"));
-      stage.show();
+
+      stage.showAndWait();
     } catch (IOException e) {
       log.error("Failed to open edit tour dialog", e);
     }
@@ -182,21 +188,28 @@ public class TourPlannerController implements Initializable {
 
   private void onNewButtonClicked() {
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/tourplanner/edit_tours.fxml"),
+              i18n);
       NewTourController controller = NewTourController.builder()
               .tourTableViewModel(tourTableViewModel)
               .tourViewModel(new TourViewModel())
               .toursListView(toursListView)
               .build();
       loader.setController(controller);
+
       final Parent root = loader.load();
-      controller.initialize();
-      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.new"));
-      controller.getMainLabel().setText(i18n.getString("editTour.new"));
       final Stage stage = new Stage();
-      stage.setScene(new Scene(root));
+
       stage.setTitle(i18n.getString("editTour.new"));
-      stage.show();
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(toursListView.getScene().getWindow());
+      stage.setScene(new Scene(root));
+
+      controller.initialize();
+      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.create"));
+      controller.getMainLabel().setText(i18n.getString("editTour.new"));
+
+      stage.showAndWait();
     } catch (Exception e) {
       log.error(e.getMessage());
     }
