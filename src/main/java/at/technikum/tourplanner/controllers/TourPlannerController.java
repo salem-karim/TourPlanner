@@ -206,7 +206,7 @@ public class TourPlannerController implements Initializable {
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.new"));
+      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.create"));
       controller.getMainLabel().setText(i18n.getString("editTour.new"));
 
       stage.showAndWait();

@@ -105,7 +105,7 @@ public class TourLogController implements Initializable {
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.okCancelController.getOkButton().setText(i18n.getString("button.new"));
+      controller.okCancelController.getOkButton().setText(i18n.getString("button.create"));
       controller.getMainLabel().setText(i18n.getString("editLog.new"));
 
       stage.showAndWait();
