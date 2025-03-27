@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,6 @@ public class TourPlannerController implements Initializable {
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @FXML
-  private AnchorPane tourLogs;
-  @FXML
   private MenuItem quitButton;
   @FXML
   private ListView<TourViewModel> toursListView;
@@ -44,20 +41,7 @@ public class TourPlannerController implements Initializable {
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeListView();
-    toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
-      if (newVal != null && newVal.intValue() >= 0) {
-        tourTableViewModel.setSelectedTour(tourTableViewModel.getData().get(newVal.intValue()));
-      }
-    });
-
-    toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    toursListView.getSelectionModel().select(0);
-
-    toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
-      if (newVal != null && newVal.intValue() >= 0) {
-        tourTableViewModel.setSelectedTour(tourTableViewModel.getData().get(newVal.intValue()));
-      }
-    });
+    initializeTourInfo();
 
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
             .getProperties().get("newEditDeleteButtonBarController");
@@ -65,8 +49,10 @@ public class TourPlannerController implements Initializable {
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
     newEditDeleteButtonBarController.setDeleteButtonListener(event -> onDeleteButtonClicked());
-    initializeTourInfo();
 
+    if (tourLogsController != null) {
+      tourLogsController.getLogTable().getSelectionModel().selectFirst();
+    }
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
   }
 
@@ -89,7 +75,14 @@ public class TourPlannerController implements Initializable {
     });
 
     toursListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    toursListView.getSelectionModel().select(0);
+    toursListView.getSelectionModel().selectFirst();
+
+    toursListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal != null && newVal.intValue() >= 0) {
+        tourTableViewModel.setSelectedTour(tourTableViewModel.getData().get(newVal.intValue()));
+      }
+    });
+
   }
 
   private void initializeTourInfo() {
@@ -148,7 +141,7 @@ public class TourPlannerController implements Initializable {
       for (int index : selectedIndices) {
         tourTableViewModel.deleteTour(index);
       }
-      toursListView.setItems(tourTableViewModel.getData());
+      toursListView.refresh();
     }
   }
 

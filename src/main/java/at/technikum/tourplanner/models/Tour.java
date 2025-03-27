@@ -1,5 +1,6 @@
 package at.technikum.tourplanner.models;
 
+import at.technikum.tourplanner.utils.TransportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ public class Tour {
   private String description;
   private String from;
   private String to;
-  private String transport_type;
+  private TransportType transport_type;
 //  private int distance;
 //  private int estimated_time;
 //  private String route_info; //image???

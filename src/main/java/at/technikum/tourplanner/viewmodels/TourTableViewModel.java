@@ -1,7 +1,7 @@
 package at.technikum.tourplanner.viewmodels;
 
-import at.technikum.tourplanner.TourPlannerApplication;
 import at.technikum.tourplanner.models.Tour;
+import at.technikum.tourplanner.utils.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -18,9 +18,9 @@ public class TourTableViewModel {
           FXCollections.observableArrayList(
 //                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img")),
 //                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", "zu Fuß", 15, 5, "img"))
-                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", TourPlannerApplication.i18n.getString("tourInfo.transportType.foot"))),
-                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", TourPlannerApplication.i18n.getString("tourInfo.transportType.car")))
-
+                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", TransportType.CAR)),
+                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", TransportType.FOOT)),
+                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", TransportType.BIKE))
           );
 
   public void newTour(TourViewModel tvm) {

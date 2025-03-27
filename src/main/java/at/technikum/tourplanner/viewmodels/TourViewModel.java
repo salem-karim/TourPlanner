@@ -1,6 +1,7 @@
 package at.technikum.tourplanner.viewmodels;
 
 import at.technikum.tourplanner.models.Tour;
+import at.technikum.tourplanner.utils.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +19,7 @@ public class TourViewModel {
   private StringProperty description = new SimpleStringProperty();
   private StringProperty from = new SimpleStringProperty();
   private StringProperty to = new SimpleStringProperty();
-  private StringProperty transport_type = new SimpleStringProperty();
+  private ObjectProperty<TransportType> transport_type = new SimpleObjectProperty<>();
   private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>(new LogTableViewModel());
 
 //  private IntegerProperty distance = new SimpleIntegerProperty();
@@ -31,7 +32,7 @@ public class TourViewModel {
     this.description = new SimpleStringProperty(tour.getDescription());
     this.from = new SimpleStringProperty(tour.getFrom());
     this.to = new SimpleStringProperty(tour.getTo());
-    this.transport_type = new SimpleStringProperty(tour.getTransport_type());
+    this.transport_type = new SimpleObjectProperty<>(tour.getTransport_type());
 //    this.distance = new SimpleIntegerProperty(tour.getDistance());
 //    this.estimated_time = new SimpleIntegerProperty(tour.getEstimated_time());
 //    this.route_info = new SimpleStringProperty(tour.getRoute_info());
@@ -44,7 +45,7 @@ public class TourViewModel {
     this.description = new SimpleStringProperty(ttvm.getTour_description());
     this.from = new SimpleStringProperty(ttvm.getFrom());
     this.to = new SimpleStringProperty(ttvm.getTo());
-    this.transport_type = new SimpleStringProperty(ttvm.getTransport_type());
+    this.transport_type = new SimpleObjectProperty<>(ttvm.getTransport_type());
 //    this.distance = new SimpleIntegerProperty(ttvm.getTour_distance());
 //    this.estimated_time = new SimpleIntegerProperty(ttvm.getEstimated_time());
 //    this.route_info = new SimpleStringProperty(ttvm.getRoute_info());
@@ -75,7 +76,7 @@ public class TourViewModel {
     return to.get();
   }
 
-  public String getTransport_type() {
+  public TransportType getTransport_type() {
     return transport_type.get();
   }
 
@@ -112,7 +113,7 @@ public class TourViewModel {
     return to;
   }
 
-  public StringProperty transport_typeProperty() {
+  public ObjectProperty<TransportType> transport_typeProperty() {
     return transport_type;
   }
 
@@ -148,7 +149,7 @@ public class TourViewModel {
     this.to.set(to);
   }
 
-  public void setTransportType(String transportType) {
+  public void setTransportType(TransportType transportType) {
     this.transport_type.set(transportType);
   }
 }
