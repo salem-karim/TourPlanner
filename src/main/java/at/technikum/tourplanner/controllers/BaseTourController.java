@@ -67,7 +67,10 @@ public abstract class BaseTourController {
     okCancelController = (OKCancelButtonBarController)
             newCancelButtonBar.getProperties().get("okCancelButtonBarController");
 
-//    okCancelController.setOkButtonListener(event -> {
+    okCancelController.setOkButtonListener(event -> {
+      if (tourValidator.validateTour(tourViewModel)) {
+        onSaveButtonClicked();
+      }
 //      // Only when Save is clicked, copy values from UI to model
 //      try {
 //        tourViewModel.setName(name.getText());
@@ -83,7 +86,7 @@ public abstract class BaseTourController {
 //        tourValidator.showValidationError(List.of("Invalid input format"));
 //        log.error("Error saving tour", e);
 //      }
-//    });
+    });
 
     okCancelController.setCancelButtonListener(event ->
             TourPlannerApplication.closeWindow(newCancelButtonBar));
