@@ -71,21 +71,6 @@ public abstract class BaseTourController {
       if (tourValidator.validateTour(tourViewModel)) {
         onSaveButtonClicked();
       }
-//      // Only when Save is clicked, copy values from UI to model
-//      try {
-//        tourViewModel.setName(name.getText());
-//        tourViewModel.setDescription(description.getText());
-//        tourViewModel.setFrom(from.getText());
-//        tourViewModel.setTo(to.getText());
-//        tourViewModel.setTransportType(transportType.getValue());
-//
-//        if (tourValidator.validateTour(tourViewModel)) {
-//          onSaveButtonClicked();
-//        }
-//      } catch (Exception e) {
-//        tourValidator.showValidationError(List.of("Invalid input format"));
-//        log.error("Error saving tour", e);
-//      }
     });
 
     okCancelController.setCancelButtonListener(event ->

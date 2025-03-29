@@ -16,10 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @SuperBuilder
 @Getter
@@ -90,8 +87,8 @@ public abstract class BaseLogController {
 
     // Set up OK/Cancel button handlers
     okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
-        .getProperties()
-        .get("okCancelButtonBarController");
+            .getProperties()
+            .get("okCancelButtonBarController");
 
     okCancelController.setOkButtonListener(event -> {
       if (logValidator.validateLog(logViewModel)) {

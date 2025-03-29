@@ -1,3 +1,4 @@
+@SuppressWarnings("Java9RedundantRequiresStatement")
 module at.technikum.tourplanner {
   requires javafx.controls;
   requires javafx.fxml;

@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class TourPlannerController implements Initializable {
 
   @FXML
   public SplitPane tourInfo;
+  public AnchorPane tourLogs;
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @FXML
