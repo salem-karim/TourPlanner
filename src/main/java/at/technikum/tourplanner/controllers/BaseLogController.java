@@ -10,6 +10,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -79,44 +80,29 @@ public abstract class BaseLogController {
     date.setConverter(dateConverter);
     date.setPromptText("DD.MM.YYYY");
 
-    // Set field values from logViewModel (one-way)
-    comment.setText(logViewModel.getComment());
-    difficulty.setText(String.valueOf(logViewModel.getDifficulty()));
-    totalDistance.setText(String.valueOf(logViewModel.getTotalDistance()));
-    totalTime.setText(String.valueOf(logViewModel.getTotalTime()));
-    rating.setText(String.valueOf(logViewModel.getRating()));
-
-    if (logViewModel.getDate() != null) {
-      date.setValue(logViewModel.getDate());
-    }
+    comment.textProperty().bindBidirectional(logViewModel.commentProperty());
+    difficulty.textProperty().bindBidirectional(logViewModel.difficultyProperty(), new NumberStringConverter());
+    totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
+    // total Time still needs pattern validation (hh:mm)
+    totalTime.textProperty().bindBidirectional(logViewModel.totalTimeProperty(), new NumberStringConverter());
+    rating.textProperty().bindBidirectional(logViewModel.ratingProperty(), new NumberStringConverter());
+    date.valueProperty().bindBidirectional(logViewModel.dateProperty());
 
     // Set up OK/Cancel button handlers
-    okCancelController = (OKCancelButtonBarController)
-            saveCancelButtonBar.getProperties().get("okCancelButtonBarController");
+    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
+        .getProperties()
+        .get("okCancelButtonBarController");
 
     okCancelController.setOkButtonListener(event -> {
-      // Only when Save is clicked, copy values from UI to model
-      try {
-        logViewModel.setComment(comment.getText());
-        logViewModel.setDifficulty(Integer.parseInt(difficulty.getText()));
-        logViewModel.setTotalDistance((int) Double.parseDouble(totalDistance.getText()));
-        logViewModel.setTotalTime((int) Double.parseDouble(totalTime.getText()));
-        logViewModel.setRating(Integer.parseInt(rating.getText()));
-        if (date.getValue() != null) {
-          logViewModel.setDate(LocalDateTime.of(date.getValue(), LocalTime.now()));
-        }
-
-        if (validateLog()) {
-          onSaveButtonClicked();
-        }
-      } catch (NumberFormatException e) {
-        // Show validation error for number parsing
-        logValidator.showValidationError(List.of("Invalid number format"));
+      if (logValidator.validateLog(logViewModel)) {
+        onSaveButtonClicked();
       }
+      // if (date.getValue() != null) {
+      // logViewModel.setDate(LocalDateTime.of(date.getValue(), LocalTime.now()));
+      // }
     });
 
-    okCancelController.setCancelButtonListener(event ->
-            TourPlannerApplication.closeWindow(saveCancelButtonBar));
+    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
 
     initialized = true;
   }

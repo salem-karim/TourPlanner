@@ -25,8 +25,6 @@ public class EditTourController extends BaseTourController {
     originalTourViewModel.setTo(tourViewModel.getTo());
     originalTourViewModel.setTransportType(tourViewModel.getTransport_type());
 
-    toursListView.refresh();
-
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }
