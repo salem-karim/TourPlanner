@@ -15,6 +15,12 @@ public class EditLogController extends BaseLogController {
 
   @Override
   protected void onSaveButtonClicked() {
+    if (originalLogViewModel == null) {
+      log.error("originalLogViewModel is null");
+      TourPlannerApplication.closeWindow(saveCancelButtonBar);
+      return;
+    }
+   
     // Copy values back to the original model
     originalLogViewModel.setComment(logViewModel.getComment());
     originalLogViewModel.setDifficulty(logViewModel.getDifficulty());

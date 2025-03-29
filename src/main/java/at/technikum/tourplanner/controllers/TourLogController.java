@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,9 +37,10 @@ public class TourLogController implements Initializable {
   @FXML
   private TableColumn<LogViewModel, Date> date;
   @FXML
-  private TableView<LogViewModel> logTable;
-  @FXML
   private ButtonBar newEditDeleteButtonBar;
+  @Getter
+  @FXML
+  private TableView<LogViewModel> logTable;
 
   @Setter
   private TourViewModel selectedTour;
@@ -60,6 +62,7 @@ public class TourLogController implements Initializable {
     rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
     logTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    logTable.getSelectionModel().selectFirst();
   }
 
   private void setupButtonBar() {

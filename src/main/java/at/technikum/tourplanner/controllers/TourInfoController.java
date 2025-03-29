@@ -54,7 +54,7 @@ public class TourInfoController implements Initializable {
       descriptionLabel.textProperty().bind(tourViewModel.descriptionProperty());
       fromLabel.textProperty().bind(tourViewModel.fromProperty());
       toLabel.textProperty().bind(tourViewModel.toProperty());
-      transportTypeLabel.textProperty().bind(tourViewModel.transport_typeProperty());
+      transportTypeLabel.textProperty().bind(tourViewModel.transport_typeProperty().asString());
 //      distanceLabel.textProperty().bind(Bindings.convert(tourViewModel.distanceProperty()));
 //      durationLabel.textProperty().bind(Bindings.convert(tourViewModel.estimated_timeProperty()));
     }
