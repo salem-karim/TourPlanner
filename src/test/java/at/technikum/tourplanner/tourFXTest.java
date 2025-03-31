@@ -60,7 +60,7 @@ class MainViewModelTest {
     robot.clickOn("OK");
     robot.sleep(250);
 
-    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
     TourViewModel firstItem = listView.getItems().getFirst(); // Get the first item
     String firstItemName = firstItem.getName();
 
@@ -69,7 +69,7 @@ class MainViewModelTest {
 
   @Test
   void testNameOfFirstListItem(FxRobot robot) {
-    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
     TourViewModel firstItem = listView.getItems().getFirst();
     String firstItemName = firstItem.getName();
 
@@ -96,11 +96,10 @@ class MainViewModelTest {
 
     robot.clickOn("#transportType");
     robot.clickOn("Car");
-    robot.write("Test Wanderung");
 
     robot.clickOn("#okButton");
 
-    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
     TourViewModel firstItem = listView.getItems().getLast();
     String firstItemName = firstItem.getName();
 
@@ -119,7 +118,7 @@ class MainViewModelTest {
 
     robot.clickOn("#okButton");
 
-    ListView<TourViewModel> listView = robot.lookup("#toursListView").query();
+    ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
     TourViewModel firstItem = listView.getItems().getFirst();
     String firstItemName = firstItem.getName();
 
