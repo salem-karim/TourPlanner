@@ -1,7 +1,7 @@
 package at.technikum.frontend.viewmodels;
 
-import at.technikum.frontend.models.Tour;
-import at.technikum.frontend.utils.TransportType;
+import at.technikum.common.models.Tour;
+import at.technikum.common.models.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,6 +9,8 @@ import javafx.beans.property.StringProperty;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
+
+import static at.technikum.frontend.utils.Localization.i18n;
 
 // responsible for tour_info.fxml (listing of the tour info) !!
 @NoArgsConstructor
@@ -78,6 +80,11 @@ public class TourViewModel {
 
   public TransportType getTransport_type() {
     return transport_type.get();
+  }
+
+  public String getLocalizedTransportType() {
+    TransportType transportType = getTransport_type();
+    return transportType == null ? "" : i18n.getString("tourInfo.transportType." + transportType.name().toLowerCase());
   }
 
 //  public int getTour_distance() {

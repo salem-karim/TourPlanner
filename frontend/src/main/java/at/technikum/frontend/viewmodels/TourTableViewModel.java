@@ -1,7 +1,7 @@
 package at.technikum.frontend.viewmodels;
 
-import at.technikum.frontend.models.Tour;
-import at.technikum.frontend.utils.TransportType;
+import at.technikum.common.models.Tour;
+import at.technikum.common.models.TransportType;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;

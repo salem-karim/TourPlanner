@@ -18,6 +18,8 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static at.technikum.frontend.utils.Localization.i18n;
+
 @SuperBuilder
 @Getter
 @NoArgsConstructor
@@ -48,7 +50,7 @@ public abstract class BaseLogController {
       return;
     }
 
-    logValidator = new LogValidator(TourPlannerApplication.i18n);
+    logValidator = new LogValidator(i18n);
 
     if (logViewModel == null) {
       logViewModel = new LogViewModel();

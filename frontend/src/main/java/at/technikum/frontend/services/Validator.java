@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
-import static at.technikum.frontend.TourPlannerApplication.i18n;
+import static at.technikum.frontend.utils.Localization.i18n;
 
 @Slf4j
 public abstract class Validator {

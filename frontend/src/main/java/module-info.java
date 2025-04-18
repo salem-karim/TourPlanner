@@ -12,15 +12,11 @@ module at.technikum.frontend {
 
   opens at.technikum.frontend to javafx.fxml;
   exports at.technikum.frontend ;
-  exports at.technikum.frontend .models;
-  opens at.technikum.frontend .models to javafx.fxml;
   exports at.technikum.frontend .controllers;
   opens at.technikum.frontend .controllers to javafx.fxml;
   exports at.technikum.frontend .viewmodels;
   opens at.technikum.frontend .viewmodels to javafx.fxml;
   exports at.technikum.frontend .mediators;
   opens at.technikum.frontend .mediators to javafx.fxml;
-  exports at.technikum.frontend .utils;
-  opens at.technikum.frontend .utils to javafx.fxml;
   exports at.technikum.frontend .services;
 }

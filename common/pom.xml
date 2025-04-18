@@ -11,10 +11,15 @@
 
   <artifactId>common</artifactId>
 
-  <properties>
-    <maven.compiler.source>23</maven.compiler.source>
-    <maven.compiler.target>23</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+<!--  <properties>-->
+<!--  </properties>-->
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

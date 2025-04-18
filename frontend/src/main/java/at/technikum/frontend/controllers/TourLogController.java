@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import static at.technikum.frontend.utils.Localization.i18n;
+
 @Slf4j
 public class TourLogController implements Initializable {
   @FXML
@@ -44,7 +46,6 @@ public class TourLogController implements Initializable {
 
   @Setter
   private TourViewModel selectedTour;
-  private final ResourceBundle i18n = TourPlannerApplication.i18n;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

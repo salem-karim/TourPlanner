@@ -1,4 +1,4 @@
-package at.technikum.frontend.models;
+package at.technikum.common.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

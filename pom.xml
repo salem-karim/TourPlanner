@@ -13,6 +13,8 @@
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>5.12.1</junit.version>
+    <lombok.version>1.18.32</lombok.version>
   </properties>
 
   <modules>

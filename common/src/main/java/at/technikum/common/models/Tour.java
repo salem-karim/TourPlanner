@@ -1,6 +1,5 @@
-package at.technikum.frontend.models;
+package at.technikum.common.models;
 
-import at.technikum.frontend.utils.TransportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

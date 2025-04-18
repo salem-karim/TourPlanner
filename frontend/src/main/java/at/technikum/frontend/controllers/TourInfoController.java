@@ -1,6 +1,7 @@
 package at.technikum.frontend.controllers;
 
 import at.technikum.frontend.viewmodels.TourViewModel;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -54,7 +55,7 @@ public class TourInfoController implements Initializable {
       descriptionLabel.textProperty().bind(tourViewModel.descriptionProperty());
       fromLabel.textProperty().bind(tourViewModel.fromProperty());
       toLabel.textProperty().bind(tourViewModel.toProperty());
-      transportTypeLabel.textProperty().bind(tourViewModel.transport_typeProperty().asString());
+      transportTypeLabel.textProperty().bind(Bindings.createStringBinding(() -> tourViewModel.getLocalizedTransportType(), tourViewModel.transport_typeProperty()));
 //      distanceLabel.textProperty().bind(Bindings.convert(tourViewModel.distanceProperty()));
 //      durationLabel.textProperty().bind(Bindings.convert(tourViewModel.estimated_timeProperty()));
     }

@@ -1,6 +1,6 @@
 package at.technikum.frontend.viewmodels;
 
-import at.technikum.frontend.models.Logs;
+import at.technikum.common.models.Logs;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 

@@ -19,11 +19,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static at.technikum.frontend.utils.Localization.i18n;
+
 @Slf4j
 public class TourPlannerController implements Initializable {
 
   private final TourTableViewModel tourTableViewModel = new TourTableViewModel();
-  private final ResourceBundle i18n = TourPlannerApplication.i18n;
 
   @FXML
   public SplitPane tourInfo;
