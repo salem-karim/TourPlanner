@@ -35,6 +35,19 @@ public class TourViewModel {
     this.estimated_time.set(tour.getEstimated_time());
     this.route_info.set(tour.getRoute_info());
   }
+  
+  public TourViewModel(final TourViewModel tourViewModel) {
+    this.id.set(tourViewModel.getId());
+    this.name.set(tourViewModel.getName());
+    this.description.set(tourViewModel.getTour_description());
+    this.from.set(tourViewModel.getFrom());
+    this.to.set(tourViewModel.getTo());
+    this.transport_type.set(tourViewModel.getTransport_type());
+    this.total_distance.set(tourViewModel.getTour_distance());
+    this.estimated_time.set(tourViewModel.getEstimated_time());
+    this.route_info.set(tourViewModel.getRoute_info());
+    this.logs.set(tourViewModel.getLogs());
+  }
 
   // Property value getters
   public UUID getId() { return id.get(); }
@@ -46,6 +59,10 @@ public class TourViewModel {
   public int getTour_distance() { return total_distance.get(); }
   public int getEstimated_time() { return estimated_time.get(); }
   public byte[] getRoute_info() { return route_info.get(); }
+  public String getLocalizedTransportType() {
+    TransportType transportType = getTransport_type();
+    return transportType == null ? "" : i18n.getString("tourInfo.transportType." + transportType.name().toLowerCase());
+  }
 
   // Property getters
   public ObjectProperty<UUID> idProperty() { return id; }

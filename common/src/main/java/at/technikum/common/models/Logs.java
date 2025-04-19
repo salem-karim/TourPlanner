@@ -19,8 +19,8 @@ import java.util.UUID;
 public class Logs {
 
   @Id
-  @GeneratedValue
-  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+//  @GeneratedValue
+//  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 

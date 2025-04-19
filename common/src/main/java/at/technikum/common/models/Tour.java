@@ -18,8 +18,8 @@ import java.util.UUID;
 public class Tour {
 
   @Id
-  @GeneratedValue
-  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+//  @GeneratedValue
+//  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/tours")
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class TourController {
 
     private final TourService tourService;
