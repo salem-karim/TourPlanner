@@ -9,6 +9,8 @@ module at.technikum.frontend {
   requires org.kordamp.ikonli.javafx;
 
   requires at.technikum.common;
+    requires java.net.http;
+  requires com.fasterxml.jackson.databind;
 
   opens at.technikum.frontend to javafx.fxml;
   exports at.technikum.frontend ;
