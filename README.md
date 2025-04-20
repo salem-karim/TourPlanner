@@ -1,10 +1,37 @@
 # Tour Planner
 Technikum Wien SWEN2 Project Tour Planner  
+## Running the Application
 
+### Linux
 
+1. Build and run the entire project:
 
+   ```bash
+   ./run.sh
+   ```
 
-fxml files need to be version 21.0.5
+### Windows
 
-fxml element need to  have the same id as the  name in the controller !!!!
+1. Build and run the entire project:
 
+   ```bat
+   run.bat
+   ```
+
+### Notice for IntelliJ Users
+
+When running the **Spring Boot backend** from IntelliJ, set the **Working Directory** to the `backend` module directory:
+
+1. Go to **Run > Edit Configurations**.
+2. Select the **Spring Boot** configuration.
+3. Set the **Working Directory** to `backend`.
+
+### Docker Compose
+
+To stop Docker containers:
+
+```bash
+docker-compose down
+```
+
+---
