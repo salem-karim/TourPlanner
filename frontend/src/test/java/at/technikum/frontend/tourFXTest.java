@@ -4,6 +4,7 @@ import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -14,6 +15,25 @@ import static org.testfx.assertions.api.Assertions.assertThat;
 
 @ExtendWith(ApplicationExtension.class)
 class MainViewModelTest {
+  
+  @BeforeAll
+  static void setUp() {
+    
+    // Set up test flag
+    System.setProperty("app.test", "true");
+    
+    // Set up the system properties for headless testing
+    if (System.getProperty("os.name").toLowerCase().contains("win")) {
+      return;
+    }
+    System.setProperty("testfx.robot", "glass");
+    System.setProperty("testfx.headless", "true");
+    System.setProperty("prism.order", "sw");
+    System.setProperty("prism.text", "t2k");
+    System.setProperty("java.awt.headless", "true");
+    System.setProperty("glass.platform", "Monocle");
+    System.setProperty("monocle.platform", "Headless");
+  }
 
   /**
    * Will be called with {@code @Before} semantics, i.e. before each test method.

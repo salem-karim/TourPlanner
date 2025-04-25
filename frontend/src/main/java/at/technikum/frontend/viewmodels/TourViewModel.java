@@ -13,15 +13,15 @@ import static at.technikum.frontend.utils.Localization.i18n;
 @NoArgsConstructor
 public class TourViewModel {
 
-  private ObjectProperty<UUID> id = new SimpleObjectProperty<>();
-  private StringProperty name = new SimpleStringProperty();
-  private StringProperty description = new SimpleStringProperty();
-  private StringProperty from = new SimpleStringProperty();
-  private StringProperty to = new SimpleStringProperty();
-  private ObjectProperty<TransportType> transport_type = new SimpleObjectProperty<>();
-  private IntegerProperty total_distance = new SimpleIntegerProperty();
-  private IntegerProperty estimated_time = new SimpleIntegerProperty();
-  private ObjectProperty<byte[]> route_info = new SimpleObjectProperty<>();
+  private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
+  private final StringProperty name = new SimpleStringProperty();
+  private final StringProperty description = new SimpleStringProperty();
+  private final StringProperty from = new SimpleStringProperty();
+  private final StringProperty to = new SimpleStringProperty();
+  private final ObjectProperty<TransportType> transport_type = new SimpleObjectProperty<>();
+  private final IntegerProperty total_distance = new SimpleIntegerProperty();
+  private final IntegerProperty estimated_time = new SimpleIntegerProperty();
+  private final ObjectProperty<byte[]> route_info = new SimpleObjectProperty<>();
   private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>(new LogTableViewModel());
 
   public TourViewModel(final Tour tour) {
@@ -59,6 +59,7 @@ public class TourViewModel {
   public int getTour_distance() { return total_distance.get(); }
   public int getEstimated_time() { return estimated_time.get(); }
   public byte[] getRoute_info() { return route_info.get(); }
+  public LogTableViewModel getLogs() { return logs.get(); }
   public String getLocalizedTransportType() {
     TransportType transportType = getTransport_type();
     return transportType == null ? "" : i18n.getString("tourInfo.transportType." + transportType.name().toLowerCase());
@@ -86,5 +87,4 @@ public class TourViewModel {
   public void setEstimatedTime(int estimatedTime) { this.estimated_time.set(estimatedTime); }
   public void setRouteInfo(byte[] routeInfo) { this.route_info.set(routeInfo); }
 
-  public LogTableViewModel getLogs() { return logs.get(); }
 }

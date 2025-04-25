@@ -20,15 +20,33 @@ import java.util.UUID;
 @Getter
 public class TourTableViewModel {
   private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
-  private final ObservableList<TourViewModel> data =
-          FXCollections.observableArrayList(
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img")),
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", "zu Fuß", 15, 5, "img"))
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", TransportType.BIKE)),
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", TransportType.FOOT))
-          );
+  private final ObservableList<TourViewModel> data = FXCollections.observableArrayList(
+          new TourViewModel(
+                  new Tour(
+                          UUID.randomUUID(),
+                          "Kahlsberg Wanderung",
+                          "Schöne Wanderung aufm Kahlsberg",
+                          "Nußdorf",
+                          "Kahlsberg",
+                          TransportType.CAR,
+                          100,
+                          120,
+                          new byte[0],
+                          new ArrayList<>())),
+          new TourViewModel(
+                  new Tour(
+                          UUID.randomUUID(),
+                          "Schneeberg Wanderung",
+                          "Schöne Wanderung aufm Schneeberg",
+                          "Schneeberg Startpunkt",
+                          "Schneeberg Spitze",
+                          TransportType.BIKE,
+                          100,
+                          120,
+                          new byte[0],
+                          new ArrayList<>())));
 
-  //new part for backend
+  // new part for backend
   public void newTour(TourViewModel tvm) {
     data.add(tvm); // local list
 
@@ -43,10 +61,10 @@ public class TourTableViewModel {
             tvm.getTour_distance(),
             tvm.getEstimated_time(),
             tvm.getRoute_info(),
-            new ArrayList<>()
-    );
+            null);
 
     // Send POST to backend
+    if (System.getProperty("app.test") != null) return;
     try {
       ObjectMapper mapper = new ObjectMapper(); // Jackson
       String json = mapper.writeValueAsString(tour);
@@ -77,9 +95,9 @@ public class TourTableViewModel {
         tour.fromProperty().set(tourViewModel.fromProperty().get());
         tour.toProperty().set(tourViewModel.toProperty().get());
         tour.transport_typeProperty().set(tourViewModel.transport_typeProperty().get());
-//        tour.distanceProperty().set(tourViewModel.distanceProperty().get());
-//        tour.estimated_timeProperty().set(tourViewModel.estimated_timeProperty().get());
-//        tour.route_infoProperty().set(tourViewModel.route_infoProperty().get());
+        // tour.distanceProperty().set(tourViewModel.distanceProperty().get());
+        // tour.estimated_timeProperty().set(tourViewModel.estimated_timeProperty().get());
+        // tour.route_infoProperty().set(tourViewModel.route_infoProperty().get());
       }
     }
   }
@@ -96,7 +114,6 @@ public class TourTableViewModel {
   public void setSelectedTour(TourViewModel tour) {
     selectedTour.set(tour);
   }
-
 
   public TourTableViewModel() {
     // Add sample logs to each tour

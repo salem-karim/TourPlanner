@@ -2,9 +2,7 @@ package at.technikum.common.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +48,4 @@ public class Tour {
   @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Logs> logs = new ArrayList<>();
 
-  public String getName() {
-    return name;
-  }
 }
