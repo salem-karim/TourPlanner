@@ -87,4 +87,18 @@ public class TourViewModel {
   public void setEstimatedTime(int estimatedTime) { this.estimated_time.set(estimatedTime); }
   public void setRouteInfo(byte[] routeInfo) { this.route_info.set(routeInfo); }
 
+
+  public void updateTour(final TourViewModel other) {
+    this.setId(other.getId());
+    this.setName(other.getName());
+    this.setDescription(other.getTour_description());
+    this.setFrom(other.getFrom());
+    this.setTo(other.getTo());
+    this.setTransportType(other.getTransport_type());
+//    this.setTour_distance(tourViewModel.getTour_distance());
+//    this.setEstimated_time(tourViewModel.getEstimated_time());
+//    this.setRoute_info(tourViewModel.getRoute_info());
+//    this.setLogs(tourViewModel.getLogs());
+//    this.setTour_image(tourViewModel.getTour_image());
+  }
 }

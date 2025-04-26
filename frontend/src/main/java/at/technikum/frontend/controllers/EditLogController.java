@@ -22,14 +22,7 @@ public class EditLogController extends BaseLogController {
     }
    
     // Copy values back to the original model
-    //TODO: Maybe use updateLog instead of setting each property
-    originalLogViewModel.setComment(logViewModel.getComment());
-    originalLogViewModel.setDifficulty(logViewModel.getDifficulty());
-    originalLogViewModel.setTotalDistance(logViewModel.getTotalDistance());
-    originalLogViewModel.setTotalTime(logViewModel.getTotalTime());
-    originalLogViewModel.setRating(logViewModel.getRating());
-    originalLogViewModel.setDate(LocalDateTime.of(logViewModel.getDate(), LocalTime.now()));
-
+    originalLogViewModel.updateLog(logViewModel);
     TourPlannerApplication.closeWindow(saveCancelButtonBar);
   }
 }

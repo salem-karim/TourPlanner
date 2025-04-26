@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @NoArgsConstructor
 public class LogViewModel {
+  // TODO: change the Date to LocalDateTime
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
   private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
@@ -118,5 +120,14 @@ public class LogViewModel {
 
   public void setRating(int rating) {
     this.rating.set(rating);
+  }
+  
+  public void updateLog(final LogViewModel other) {
+    this.setComment(other.getComment());
+    this.setDifficulty(other.getDifficulty());
+    this.setTotalDistance(other.getTotalDistance());
+    this.setTotalTime(other.getTotalTime());
+    this.setRating(other.getRating());
+    this.setDate(LocalDateTime.of(other.getDate(), LocalTime.now()));
   }
 }

@@ -17,16 +17,9 @@ public class EditTourController extends BaseTourController {
       TourPlannerApplication.closeWindow(newCancelButtonBar);
       return;
     }
-
     
     // Copy values back to the original model
-    //TODO: Maybe use updateTour instead of setting each property
-    originalTourViewModel.setName(tourViewModel.getName());
-    originalTourViewModel.setDescription(tourViewModel.getTour_description());
-    originalTourViewModel.setFrom(tourViewModel.getFrom());
-    originalTourViewModel.setTo(tourViewModel.getTo());
-    originalTourViewModel.setTransportType(tourViewModel.getTransport_type());
-
+    originalTourViewModel.updateTour(tourViewModel);
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

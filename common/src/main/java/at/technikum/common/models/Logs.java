@@ -19,8 +19,6 @@ import java.util.UUID;
 public class Logs {
 
   @Id
-//  @GeneratedValue
-//  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
@@ -28,8 +26,9 @@ public class Logs {
   @JoinColumn(name = "tour_id", nullable = false)
   private Tour tour;
 
+  //TODO: change the Date to LocalDateTime
   @Column(name = "log_time")
-  private LocalDate date_time; //maybe LocalDateTime??
+  private LocalDate date_time;
 
   private String comment;
 
