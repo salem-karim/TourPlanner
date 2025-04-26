@@ -18,7 +18,9 @@ public class EditTourController extends BaseTourController {
       return;
     }
 
+    
     // Copy values back to the original model
+    //TODO: Maybe use updateTour instead of setting each property
     originalTourViewModel.setName(tourViewModel.getName());
     originalTourViewModel.setDescription(tourViewModel.getTour_description());
     originalTourViewModel.setFrom(tourViewModel.getFrom());
