@@ -2,6 +2,7 @@ package at.technikum.frontend.viewmodels;
 
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
+import at.technikum.frontend.utils.RequestHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Getter
 public class TourTableViewModel {
+
   private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
   private final ObservableList<TourViewModel> data = FXCollections.observableArrayList(
           new TourViewModel(
@@ -46,69 +48,46 @@ public class TourTableViewModel {
                           new byte[0],
                           new ArrayList<>())));
 
-  // new part for backend
+
   public void newTour(TourViewModel tvm) {
     data.add(tvm); // local list
 
     // Convert to Tour (model from common)
-    Tour tour = new Tour(
-            tvm.getId(),
-            tvm.getName(),
-            tvm.getTour_description(),
-            tvm.getFrom(),
-            tvm.getTo(),
-            tvm.getTransport_type(),
-            tvm.getTour_distance(),
-            tvm.getEstimated_time(),
-            tvm.getRoute_info(),
-            null);
+    Tour tour = tvm.toTour();
 
-    // Send POST to backend
-    if (System.getProperty("app.test") != null) return;
-    try {
-      ObjectMapper mapper = new ObjectMapper(); // Jackson
-      String json = mapper.writeValueAsString(tour);
-
-      HttpRequest request = HttpRequest.newBuilder()
-              .uri(URI.create("http://localhost:8080/api/tours"))
-              .header("Content-Type", "application/json")
-              .POST(HttpRequest.BodyPublishers.ofString(json))
-              .build();
-
-      HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
-              .thenAccept(response -> {
-                if (response.statusCode() == 201) {
-                  System.out.println("Tour successfully saved to backend");
-                } else {
-                  System.err.println("Failed to save tour: " + response.body());
-                }
-              });
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    RequestHandler.postTour(tour);
   }
 
-  public void updateTour(TourViewModel tourViewModel) {
+  public void updateTour(TourViewModel updatedViewModel) {
+    // Update local data (UI)
     for (final TourViewModel tour : data) {
-      if (tour.getId().equals(tourViewModel.getId())) {
-        tour.nameProperty().set(tourViewModel.nameProperty().get());
-        tour.fromProperty().set(tourViewModel.fromProperty().get());
-        tour.toProperty().set(tourViewModel.toProperty().get());
-        tour.transport_typeProperty().set(tourViewModel.transport_typeProperty().get());
-        // tour.distanceProperty().set(tourViewModel.distanceProperty().get());
-        // tour.estimated_timeProperty().set(tourViewModel.estimated_timeProperty().get());
-        // tour.route_infoProperty().set(tourViewModel.route_infoProperty().get());
+      if (tour.getId().equals(updatedViewModel.getId())) {
+        tour.nameProperty().set(updatedViewModel.nameProperty().get());
+        tour.fromProperty().set(updatedViewModel.fromProperty().get());
+        tour.toProperty().set(updatedViewModel.toProperty().get());
+        tour.transport_typeProperty().set(updatedViewModel.transport_typeProperty().get());
+        // tour.distanceProperty().set(updatedViewModel.distanceProperty().get());
+        // tour.estimated_timeProperty().set(updatedViewModel.estimated_timeProperty().get());
+        // tour.route_infoProperty().set(updatedViewModel.route_infoProperty().get());
+        break;
       }
     }
+
+    RequestHandler.putTour(updatedViewModel);
   }
+
 
   public void deleteTour(TourViewModel tourViewModel) {
     data.remove(tourViewModel);
-    // sonstiges??
+
+    RequestHandler.deleteTour(tourViewModel.getId());
   }
 
   public void deleteTour(int index) {
-    data.remove(index);
+    TourViewModel removed = data.remove(index);
+    if (removed != null) {
+      RequestHandler.deleteTour(removed.getId());
+    }
   }
 
   public void setSelectedTour(TourViewModel tour) {

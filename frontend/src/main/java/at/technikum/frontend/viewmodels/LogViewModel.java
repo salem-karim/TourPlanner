@@ -38,6 +38,21 @@ public class LogViewModel {
     this.rating.set(log.getRating());
   }
 
+  public Logs toLog() {
+    Logs log = new Logs();
+    log.setId(this.getId());
+    log.setDate_time(this.dateProperty().get());
+    log.setComment(this.commentProperty().get());
+    log.setDifficulty(this.difficultyProperty().get());
+    log.setTotal_distance(this.totalDistanceProperty().get());
+    log.setTotal_time(this.totalTimeProperty().get());
+    log.setRating(this.ratingProperty().get());
+    //log.setTour(this.getTour()); // You may need to pass this explicitly if Tour is not in ViewModel
+    log.setTour(this.toLog().getTour()); //todo: correct?
+    return log;
+  }
+
+
   // Value getters
   public UUID getId() {
     return id.get();

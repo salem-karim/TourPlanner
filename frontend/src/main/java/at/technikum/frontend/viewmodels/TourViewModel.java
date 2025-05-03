@@ -49,6 +49,21 @@ public class TourViewModel {
     this.logs.set(tourViewModel.getLogs());
   }
 
+  public Tour toTour() {
+    return new Tour(
+            getId(),
+            getName(),
+            getTour_description(),
+            getFrom(),
+            getTo(),
+            getTransport_type(),
+            getTour_distance(),
+            getEstimated_time(),
+            getRoute_info(),
+            null
+    );
+  }
+
   // Property value getters
   public UUID getId() { return id.get(); }
   public String getName() { return name.get(); }
