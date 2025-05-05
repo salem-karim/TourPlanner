@@ -3,17 +3,12 @@ package at.technikum.frontend.viewmodels;
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
 import at.technikum.frontend.utils.RequestHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -58,22 +53,18 @@ public class TourTableViewModel {
     RequestHandler.postTour(tour);
   }
 
-  public void updateTour(TourViewModel updatedViewModel) {
+  public void updateTour(final TourViewModel otherViewModel, final TourViewModel tourViewModel) {
     // Update local data (UI)
-    for (final TourViewModel tour : data) {
-      if (tour.getId().equals(updatedViewModel.getId())) {
-        tour.nameProperty().set(updatedViewModel.nameProperty().get());
-        tour.fromProperty().set(updatedViewModel.fromProperty().get());
-        tour.toProperty().set(updatedViewModel.toProperty().get());
-        tour.transport_typeProperty().set(updatedViewModel.transport_typeProperty().get());
-        // tour.distanceProperty().set(updatedViewModel.distanceProperty().get());
-        // tour.estimated_timeProperty().set(updatedViewModel.estimated_timeProperty().get());
-        // tour.route_infoProperty().set(updatedViewModel.route_infoProperty().get());
-        break;
-      }
-    }
+    tourViewModel.setName(otherViewModel.getName());
+    tourViewModel.setDescription(otherViewModel.getDescription());
+    tourViewModel.setFrom(otherViewModel.getFrom());
+    tourViewModel.setTo(otherViewModel.getTo());
+    tourViewModel.setTransportType(otherViewModel.getTransportType());
+//    tourViewModel.setDistance(otherViewModel.getDistance());
+//    tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
+//    tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
 
-    RequestHandler.putTour(updatedViewModel);
+    RequestHandler.putTour(tourViewModel);
   }
 
 

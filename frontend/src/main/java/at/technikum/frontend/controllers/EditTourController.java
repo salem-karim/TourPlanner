@@ -19,7 +19,7 @@ public class EditTourController extends BaseTourController {
     }
     
     // Copy values back to the original model
-    originalTourViewModel.updateTour(tourViewModel);
+    tourTableViewModel.updateTour(tourViewModel, originalTourViewModel);
     TourPlannerApplication.closeWindow(newCancelButtonBar);
   }
 }

@@ -10,6 +10,7 @@ module at.technikum.frontend {
 
   requires at.technikum.common;
     requires java.net.http;
+  requires com.fasterxml.jackson.datatype.jsr310;
   requires com.fasterxml.jackson.databind;
 
   opens at.technikum.frontend to javafx.fxml;

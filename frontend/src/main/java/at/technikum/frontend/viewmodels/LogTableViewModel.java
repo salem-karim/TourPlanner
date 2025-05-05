@@ -7,6 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Getter
 public class LogTableViewModel {
   private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
@@ -21,18 +24,14 @@ public class LogTableViewModel {
     RequestHandler.postLog(log);
   }
 
-  public void updateLog(LogViewModel logViewModel) {
-    for (final LogViewModel log : data) {
-      if (log.getId().equals(logViewModel.getId())) {
-        log.dateProperty().set(logViewModel.dateProperty().get());
-        log.commentProperty().set(logViewModel.commentProperty().get());
-        log.difficultyProperty().set(logViewModel.difficultyProperty().get());
-        log.totalDistanceProperty().set(logViewModel.totalDistanceProperty().get());
-        log.totalTimeProperty().set(logViewModel.totalTimeProperty().get());
-        log.ratingProperty().set(logViewModel.ratingProperty().get());
-        break;
-      }
-    }
+  public void updateLog(final LogViewModel otherViewModel, final LogViewModel logViewModel) {
+    logViewModel.setComment(otherViewModel.getComment());
+    logViewModel.setDifficulty(otherViewModel.getDifficulty());
+    logViewModel.setTotalDistance(otherViewModel.getTotalDistance());
+    logViewModel.setTotalTime(otherViewModel.getTotalTime());
+    logViewModel.setRating(otherViewModel.getRating());
+    // TODO: change this line so it uses the correct time
+    logViewModel.setDate(LocalDateTime.of(otherViewModel.getDate(), LocalTime.now()));
 
     RequestHandler.putLog(logViewModel);
   }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -50,7 +49,8 @@ public class LogViewModel {
     log.setTotal_time(this.totalTimeProperty().get());
     log.setRating(this.ratingProperty().get());
     //log.setTour(this.getTour()); // You may need to pass this explicitly if Tour is not in ViewModel
-    log.setTour(this.toLog().getTour()); //todo: correct?
+    //todo: correct?
+//    log.setTour(this.toLog().getTour());
     return log;
   }
 
@@ -135,14 +135,5 @@ public class LogViewModel {
 
   public void setRating(int rating) {
     this.rating.set(rating);
-  }
-  
-  public void updateLog(final LogViewModel other) {
-    this.setComment(other.getComment());
-    this.setDifficulty(other.getDifficulty());
-    this.setTotalDistance(other.getTotalDistance());
-    this.setTotalTime(other.getTotalTime());
-    this.setRating(other.getRating());
-    this.setDate(LocalDateTime.of(other.getDate(), LocalTime.now()));
   }
 }

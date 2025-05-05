@@ -19,7 +19,7 @@ public class TourViewModel {
   private final StringProperty from = new SimpleStringProperty();
   private final StringProperty to = new SimpleStringProperty();
   private final ObjectProperty<TransportType> transport_type = new SimpleObjectProperty<>();
-  private final IntegerProperty total_distance = new SimpleIntegerProperty();
+  private final IntegerProperty distance = new SimpleIntegerProperty();
   private final IntegerProperty estimated_time = new SimpleIntegerProperty();
   private final ObjectProperty<byte[]> route_info = new SimpleObjectProperty<>();
   private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>(new LogTableViewModel());
@@ -31,7 +31,7 @@ public class TourViewModel {
     this.from.set(tour.getFrom());
     this.to.set(tour.getTo());
     this.transport_type.set(tour.getTransport_type());
-    this.total_distance.set(tour.getTotal_distance());
+    this.distance.set(tour.getTotal_distance());
     this.estimated_time.set(tour.getEstimated_time());
     this.route_info.set(tour.getRoute_info());
   }
@@ -39,13 +39,13 @@ public class TourViewModel {
   public TourViewModel(final TourViewModel tourViewModel) {
     this.id.set(tourViewModel.getId());
     this.name.set(tourViewModel.getName());
-    this.description.set(tourViewModel.getTour_description());
+    this.description.set(tourViewModel.getDescription());
     this.from.set(tourViewModel.getFrom());
     this.to.set(tourViewModel.getTo());
-    this.transport_type.set(tourViewModel.getTransport_type());
-    this.total_distance.set(tourViewModel.getTour_distance());
-    this.estimated_time.set(tourViewModel.getEstimated_time());
-    this.route_info.set(tourViewModel.getRoute_info());
+    this.transport_type.set(tourViewModel.getTransportType());
+    this.distance.set(tourViewModel.getDistance());
+    this.estimated_time.set(tourViewModel.getEstimatedTime());
+    this.route_info.set(tourViewModel.getRouteInfo());
     this.logs.set(tourViewModel.getLogs());
   }
 
@@ -53,13 +53,13 @@ public class TourViewModel {
     return new Tour(
             getId(),
             getName(),
-            getTour_description(),
+            getDescription(),
             getFrom(),
             getTo(),
-            getTransport_type(),
-            getTour_distance(),
-            getEstimated_time(),
-            getRoute_info(),
+            getTransportType(),
+            getDistance(),
+            getEstimatedTime(),
+            getRouteInfo(),
             null
     );
   }
@@ -67,16 +67,16 @@ public class TourViewModel {
   // Property value getters
   public UUID getId() { return id.get(); }
   public String getName() { return name.get(); }
-  public String getTour_description() { return description.get(); }
+  public String getDescription() { return description.get(); }
   public String getFrom() { return from.get(); }
   public String getTo() { return to.get(); }
-  public TransportType getTransport_type() { return transport_type.get(); }
-  public int getTour_distance() { return total_distance.get(); }
-  public int getEstimated_time() { return estimated_time.get(); }
-  public byte[] getRoute_info() { return route_info.get(); }
+  public TransportType getTransportType() { return transport_type.get(); }
+  public int getDistance() { return distance.get(); }
+  public int getEstimatedTime() { return estimated_time.get(); }
+  public byte[] getRouteInfo() { return route_info.get(); }
   public LogTableViewModel getLogs() { return logs.get(); }
   public String getLocalizedTransportType() {
-    TransportType transportType = getTransport_type();
+    TransportType transportType = getTransportType();
     return transportType == null ? "" : i18n.getString("tourInfo.transportType." + transportType.name().toLowerCase());
   }
 
@@ -87,9 +87,9 @@ public class TourViewModel {
   public StringProperty fromProperty() { return from; }
   public StringProperty toProperty() { return to; }
   public ObjectProperty<TransportType> transport_typeProperty() { return transport_type; }
-  public IntegerProperty distanceProperty() { return total_distance; }
-  public IntegerProperty estimated_timeProperty() { return estimated_time; }
-  public ObjectProperty<byte[]> route_infoProperty() { return route_info; }
+  public IntegerProperty distanceProperty() { return distance; }
+  public IntegerProperty estimatedTimeProperty() { return estimated_time; }
+  public ObjectProperty<byte[]> routeInfoProperty() { return route_info; }
 
   // Setters
   public void setId(UUID id) { this.id.set(id); }
@@ -98,22 +98,8 @@ public class TourViewModel {
   public void setFrom(String from) { this.from.set(from); }
   public void setTo(String to) { this.to.set(to); }
   public void setTransportType(TransportType transportType) { this.transport_type.set(transportType); }
-  public void setTotalDistance(int distance) { this.total_distance.set(distance); }
+  public void setDistance(int distance) { this.distance.set(distance); }
   public void setEstimatedTime(int estimatedTime) { this.estimated_time.set(estimatedTime); }
   public void setRouteInfo(byte[] routeInfo) { this.route_info.set(routeInfo); }
 
-
-  public void updateTour(final TourViewModel other) {
-    this.setId(other.getId());
-    this.setName(other.getName());
-    this.setDescription(other.getTour_description());
-    this.setFrom(other.getFrom());
-    this.setTo(other.getTo());
-    this.setTransportType(other.getTransport_type());
-//    this.setTour_distance(tourViewModel.getTour_distance());
-//    this.setEstimated_time(tourViewModel.getEstimated_time());
-//    this.setRoute_info(tourViewModel.getRoute_info());
-//    this.setLogs(tourViewModel.getLogs());
-//    this.setTour_image(tourViewModel.getTour_image());
-  }
 }

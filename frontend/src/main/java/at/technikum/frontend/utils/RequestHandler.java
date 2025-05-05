@@ -4,6 +4,8 @@ import at.technikum.common.models.Tour;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -15,8 +17,11 @@ import java.util.UUID;
 public class RequestHandler {
 
     private static final String BASE_URL = "http://localhost:8080/api/tours";
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static final HttpClient httpClient = HttpClient.newHttpClient();
+    // needed for serialization of LocalDateTime
+    private static final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     public static void postTour(Tour tour) {
         // Send POST to backend
@@ -30,7 +35,7 @@ public class RequestHandler {
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
-
+            // TODO: use try-with-resources to ensure the client is closed
             HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() == 201) {
@@ -40,6 +45,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
+          //TODO: use logger
             e.printStackTrace();
         }
     }

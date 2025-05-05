@@ -19,7 +19,7 @@ public class Tour {
 //  @GeneratedValue
 //  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
-  @id
+//  @id
   private UUID id;
 
   private String name;

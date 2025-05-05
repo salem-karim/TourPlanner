@@ -160,6 +160,7 @@ public class TourPlannerController implements Initializable {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_tours.fxml"),
               i18n);
       EditTourController controller = EditTourController.builder()
+              .tourTableViewModel(tourTableViewModel)
               .tourViewModel(new TourViewModel(selectedTour))
               .originalTourViewModel(selectedTour)
               .toursListView(tourListView)
