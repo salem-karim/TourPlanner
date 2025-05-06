@@ -1,6 +1,5 @@
 package at.technikum.frontend.controllers;
 
-import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
@@ -18,8 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 import static at.technikum.frontend.utils.Localization.i18n;
@@ -29,15 +29,13 @@ public class TourLogController implements Initializable {
   @FXML
   private TableColumn<LogViewModel, Integer> rating;
   @FXML
-  private TableColumn<LogViewModel, Double> totalTime;
-  @FXML
   private TableColumn<LogViewModel, Double> totalDistance;
   @FXML
   private TableColumn<LogViewModel, Integer> difficulty;
   @FXML
   private TableColumn<LogViewModel, String> comment;
   @FXML
-  private TableColumn<LogViewModel, Date> date;
+  private TableColumn<LogViewModel, LocalDateTime> startDate, endDate;
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @Getter
@@ -55,15 +53,33 @@ public class TourLogController implements Initializable {
   }
 
   private void setupTableColumns() {
-    date.setCellValueFactory(new PropertyValueFactory<>("date"));
+    startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+    startDate.setCellFactory(column -> setupDateCellFactory());
+    endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+    endDate.setCellFactory(column -> setupDateCellFactory());
     comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
-    totalTime.setCellValueFactory(new PropertyValueFactory<>("totalTime"));
     rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
     logTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     logTable.getSelectionModel().selectFirst();
+  }
+
+  private TableCell<LogViewModel, LocalDateTime> setupDateCellFactory() {
+    return new TableCell<>(){
+      private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+      
+      @Override
+      protected void updateItem(LocalDateTime item, boolean empty) {
+        super.updateItem(item, empty);
+        if (empty || item == null) {
+          setText(null);
+        } else {
+          setText(formatter.format(item));
+        }
+      }
+    };
   }
 
   private void setupButtonBar() {

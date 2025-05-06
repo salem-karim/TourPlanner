@@ -9,15 +9,14 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
+import static at.technikum.frontend.utils.DateTimeBinding.bindBidirectionalDateTime;
 import static at.technikum.frontend.utils.Localization.i18n;
 
 @SuperBuilder
@@ -29,19 +28,15 @@ public abstract class BaseLogController {
   @FXML
   protected ButtonBar saveCancelButtonBar;
   @FXML
-  protected TextField comment, difficulty, totalDistance, totalTime, rating;
+  protected TextField comment, difficulty, totalDistance, rating, startTime, endTime;
   @FXML
-  protected DatePicker date;
-
+  protected DatePicker startDate, endDate;
+  
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
   protected LogViewModel logViewModel;
 
   protected LogValidator logValidator;
-
-  protected boolean validateLog() {
-    return logValidator.validateLog(logViewModel);
-  }
 
   private boolean initialized = false;
 
@@ -56,36 +51,17 @@ public abstract class BaseLogController {
       logViewModel = new LogViewModel();
     }
 
-    // Configure date picker
-    StringConverter<LocalDate> dateConverter = new StringConverter<>() {
-      private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-      @Override
-      public String toString(LocalDate date) {
-        if (date != null) {
-          return dateFormatter.format(date);
-        }
-        return "";
-      }
-
-      @Override
-      public LocalDate fromString(String string) {
-        if (string != null && !string.isEmpty()) {
-          return LocalDate.parse(string, dateFormatter);
-        }
-        return null;
-      }
-    };
-    date.setConverter(dateConverter);
-    date.setPromptText("DD.MM.YYYY");
+    for (DatePicker datePicker : Arrays.asList(startDate, endDate)) {
+      datePicker.setPromptText("DD.MM.YYYY");
+    }
 
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
     difficulty.textProperty().bindBidirectional(logViewModel.difficultyProperty(), new NumberStringConverter());
     totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
-    // total Time still needs pattern validation (hh:mm)
-    totalTime.textProperty().bindBidirectional(logViewModel.totalTimeProperty(), new NumberStringConverter());
     rating.textProperty().bindBidirectional(logViewModel.ratingProperty(), new NumberStringConverter());
-    date.valueProperty().bindBidirectional(logViewModel.dateProperty());
+    bindBidirectionalDateTime(logViewModel.startDateProperty(), startDate, startTime);
+    bindBidirectionalDateTime(logViewModel.endDateProperty(), endDate, endTime);
+    
 
     // Set up OK/Cancel button handlers
     okCancelController = (OKCancelButtonBarController) saveCancelButtonBar

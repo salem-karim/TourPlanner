@@ -2,11 +2,7 @@ package at.technikum.common.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,10 +22,12 @@ public class Logs {
   @JoinColumn(name = "tour_id", nullable = false)
   private Tour tour;
 
-  //TODO: change the Date to LocalDateTime
-  @Column(name = "log_time")
-  private LocalDate date_time;
+  @Column(name = "start_date_time")
+  private LocalDateTime start_date_time;
 
+  @Column(name = "end_date_time")
+  private LocalDateTime end_date_time;
+  
   private String comment;
 
   private int difficulty;

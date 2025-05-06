@@ -23,7 +23,8 @@ public class LogService {
     public Logs updateLog(UUID id, Logs updatedLog) {
         return logRepository.findById(id)
                 .map(existing -> {
-                    existing.setDate_time(updatedLog.getDate_time());
+                    existing.setStart_date_time(updatedLog.getStart_date_time());
+                    existing.setEnd_date_time(updatedLog.getEnd_date_time());
                     existing.setComment(updatedLog.getComment());
                     existing.setDifficulty(updatedLog.getDifficulty());
                     existing.setTotal_distance(updatedLog.getTotal_distance());

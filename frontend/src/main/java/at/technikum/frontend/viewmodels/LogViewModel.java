@@ -4,7 +4,6 @@ import at.technikum.common.models.Logs;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,41 +11,39 @@ import java.util.UUID;
 public class LogViewModel {
   // TODO: change the Date to LocalDateTime
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
-  private final ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalDateTime> startDateTime = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalDateTime> endDateTime = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
   private final IntegerProperty totalDistance = new SimpleIntegerProperty();
-  private final IntegerProperty totalTime = new SimpleIntegerProperty();
   private final IntegerProperty rating = new SimpleIntegerProperty();
 
   public LogViewModel(final Logs log) {
     this.id.set(log.getId());
-    this.date.set(log.getDate_time());
+    this.startDateTime.set(log.getStart_date_time());
+    this.endDateTime.set(log.getEnd_date_time());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotal_distance());
-    this.totalTime.set(log.getTotal_time());
     this.rating.set(log.getRating());
   }
 
   public LogViewModel(final LogViewModel log) {
     this.id.set(log.getId());
-    this.date.set(log.getDate());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotalDistance());
-    this.totalTime.set(log.getTotalTime());
     this.rating.set(log.getRating());
   }
 
   public Logs toLog() {
     Logs log = new Logs();
     log.setId(this.getId());
-    log.setDate_time(this.dateProperty().get());
+    log.setStart_date_time(this.getStartDateTime());
+    log.setEnd_date_time(this.getEndDateTime());
     log.setComment(this.commentProperty().get());
     log.setDifficulty(this.difficultyProperty().get());
     log.setTotal_distance(this.totalDistanceProperty().get());
-    log.setTotal_time(this.totalTimeProperty().get());
     log.setRating(this.ratingProperty().get());
     //log.setTour(this.getTour()); // You may need to pass this explicitly if Tour is not in ViewModel
     //todo: correct?
@@ -60,8 +57,12 @@ public class LogViewModel {
     return id.get();
   }
 
-  public LocalDate getDate() {
-    return date.get();
+  public LocalDateTime getStartDateTime() {
+    return startDateTime.get();
+  }
+
+  public LocalDateTime getEndDateTime() {
+    return endDateTime.get();
   }
 
   public String getComment() {
@@ -76,10 +77,6 @@ public class LogViewModel {
     return totalDistance.get();
   }
 
-  public int getTotalTime() {
-    return totalTime.get();
-  }
-
   public int getRating() {
     return rating.get();
   }
@@ -89,10 +86,14 @@ public class LogViewModel {
     return id;
   }
 
-  public ObjectProperty<LocalDate> dateProperty() {
-    return date;
+  public ObjectProperty<LocalDateTime> startDateProperty() {
+    return startDateTime;
   }
 
+  public ObjectProperty<LocalDateTime> endDateProperty() {
+    return endDateTime;
+  }
+  
   public StringProperty commentProperty() {
     return comment;
   }
@@ -105,18 +106,18 @@ public class LogViewModel {
     return totalDistance;
   }
 
-  public IntegerProperty totalTimeProperty() {
-    return totalTime;
-  }
-
   public IntegerProperty ratingProperty() {
     return rating;
   }
 
-  public void setDate(LocalDateTime date) {
-    this.date.set(LocalDate.from(date));
+  public void setStartDateTime(LocalDateTime date) {
+    this.startDateTime.set(date);
   }
 
+  public void setEndDateTime(LocalDateTime date) {
+    this.endDateTime.set(date);
+  }
+  
   public void setComment(String comment) {
     this.comment.set(comment);
   }
@@ -127,10 +128,6 @@ public class LogViewModel {
 
   public void setTotalDistance(int totalDistance) {
     this.totalDistance.set(totalDistance);
-  }
-
-  public void setTotalTime(int totalTime) {
-    this.totalTime.set(totalTime);
   }
 
   public void setRating(int rating) {

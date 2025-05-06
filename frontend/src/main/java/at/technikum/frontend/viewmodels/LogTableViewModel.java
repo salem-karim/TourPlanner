@@ -28,10 +28,9 @@ public class LogTableViewModel {
     logViewModel.setComment(otherViewModel.getComment());
     logViewModel.setDifficulty(otherViewModel.getDifficulty());
     logViewModel.setTotalDistance(otherViewModel.getTotalDistance());
-    logViewModel.setTotalTime(otherViewModel.getTotalTime());
     logViewModel.setRating(otherViewModel.getRating());
-    // TODO: change this line so it uses the correct time
-    logViewModel.setDate(LocalDateTime.of(otherViewModel.getDate(), LocalTime.now()));
+    logViewModel.setStartDateTime(otherViewModel.getStartDateTime());
+    logViewModel.setEndDateTime(otherViewModel.getEndDateTime());
 
     RequestHandler.putLog(logViewModel);
   }

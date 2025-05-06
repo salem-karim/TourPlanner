@@ -14,7 +14,8 @@ CREATE TABLE tours (
 CREATE TABLE tour_logs (
     id SERIAL PRIMARY KEY,
     tour_id INTEGER NOT NULL,
-    log_time TIMESTAMP NOT NULL,
+    start_date_time TIMESTAMP NOT NULL,
+    end_date_time TIMESTAMP NOT NULL,
     comment TEXT,
     difficulty INTEGER CHECK (difficulty BETWEEN 1 AND 5),
     distance_km DECIMAL(10, 2),
