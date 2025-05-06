@@ -7,9 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 @Getter
 public class LogTableViewModel {
   private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
