@@ -22,7 +22,7 @@ public class TourViewModel {
   private final IntegerProperty distance = new SimpleIntegerProperty();
   private final IntegerProperty estimated_time = new SimpleIntegerProperty();
   private final ObjectProperty<byte[]> route_info = new SimpleObjectProperty<>();
-  private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>(new LogTableViewModel());
+  private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>();
 
   public TourViewModel(final Tour tour) {
     this.id.set(tour.getId());
@@ -34,6 +34,7 @@ public class TourViewModel {
     this.distance.set(tour.getTotal_distance());
     this.estimated_time.set(tour.getEstimated_time());
     this.route_info.set(tour.getRoute_info());
+    this.logs.set(new LogTableViewModel(tour.getLogs()));
   }
   
   public TourViewModel(final TourViewModel tourViewModel) {
@@ -90,6 +91,7 @@ public class TourViewModel {
   public IntegerProperty distanceProperty() { return distance; }
   public IntegerProperty estimatedTimeProperty() { return estimated_time; }
   public ObjectProperty<byte[]> routeInfoProperty() { return route_info; }
+  public ObjectProperty<LogTableViewModel> logsProperty() { return logs; }
 
   // Setters
   public void setId(UUID id) { this.id.set(id); }
@@ -101,5 +103,6 @@ public class TourViewModel {
   public void setDistance(int distance) { this.distance.set(distance); }
   public void setEstimatedTime(int estimatedTime) { this.estimated_time.set(estimatedTime); }
   public void setRouteInfo(byte[] routeInfo) { this.route_info.set(routeInfo); }
+  public void setLogs(LogTableViewModel logs) { this.logs.set(logs); }
 
 }

@@ -1,6 +1,8 @@
 package at.technikum.backend.Logs;
 
+import at.technikum.backend.Tour.TourRepository;
 import at.technikum.common.models.Logs;
+import at.technikum.common.models.Tour;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -8,12 +10,18 @@ import java.util.UUID;
 @Service
 public class LogService {
     private final LogRepository logRepository;
+    private final TourRepository tourRepository;
 
-    public LogService(LogRepository logRepository) {
+    public LogService(LogRepository logRepository, TourRepository tourRepository) {
         this.logRepository = logRepository;
+      this.tourRepository = tourRepository;
     }
 
-    public Logs saveLog(Logs log) {
+    public Logs saveLog(final Logs log, final UUID tourId) {
+
+      Tour tour = tourRepository.findById(tourId)
+              .orElseThrow(() -> new IllegalArgumentException("Tour not found with id: " + tourId));
+        log.setTour(tour);
         if (log.getId() == null) {
             log.setId(UUID.randomUUID());
         }

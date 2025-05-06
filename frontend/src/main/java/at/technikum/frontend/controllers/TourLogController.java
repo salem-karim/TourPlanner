@@ -112,6 +112,7 @@ public class TourLogController implements Initializable {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), i18n);
       NewLogController controller = NewLogController.builder()
               .logTableViewModel(selectedTour.getLogs())
+              .selectedTour(selectedTour)
               .mainLabel(new Label(i18n.getString("editLog.new")))
               .logViewModel(new LogViewModel())
               .build();
@@ -150,6 +151,7 @@ public class TourLogController implements Initializable {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), i18n);
       EditLogController controller = EditLogController.builder()
               .logTableViewModel(selectedTour.getLogs())
+              .selectedTour(selectedTour)
               .originalLogViewModel(selectedLog)
               .logViewModel(new LogViewModel(selectedLog))
               .build();

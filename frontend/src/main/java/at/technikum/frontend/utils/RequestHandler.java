@@ -36,7 +36,7 @@ public class RequestHandler {
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
             // TODO: use try-with-resources to ensure the client is closed
-            HttpClient.newHttpClient().sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() == 201) {
                             System.out.println("Tour successfully saved to backend");
@@ -107,7 +107,7 @@ public class RequestHandler {
         try {
             String json = mapper.writeValueAsString(lvm.toLog());
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/logs"))
+                    .uri(URI.create("http://localhost:8080/api/logs/" + lvm.getTour().getId()))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

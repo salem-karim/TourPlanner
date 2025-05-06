@@ -13,6 +13,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * ViewModel for the TourTableView.
+ * This class is responsible for managing the data and logic of the TourTableView.
+ * It handles the creation, updating, and deletion of tours.
+ */
 @Getter
 public class TourTableViewModel {
 
@@ -86,6 +91,7 @@ public class TourTableViewModel {
   }
 
   public TourTableViewModel() {
+    if (System.getProperty("app.test") == null) return;
     // Add sample logs to each tour
     for (TourViewModel tour : data) {
       addSampleLogsToTour(tour);

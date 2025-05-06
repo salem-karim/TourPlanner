@@ -4,6 +4,7 @@ import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.services.LogValidator;
 import at.technikum.frontend.viewmodels.LogTableViewModel;
 import at.technikum.frontend.viewmodels.LogViewModel;
+import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.DatePicker;
@@ -35,6 +36,7 @@ public abstract class BaseLogController {
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
   protected LogViewModel logViewModel;
+  protected TourViewModel selectedTour;
 
   protected LogValidator logValidator;
 

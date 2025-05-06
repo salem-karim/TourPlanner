@@ -1,5 +1,6 @@
 package at.technikum.common.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Logs {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "tour_id", nullable = false)
+  @JsonBackReference
   private Tour tour;
 
   @Column(name = "start_date_time")

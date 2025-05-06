@@ -12,6 +12,7 @@ public class NewLogController extends BaseLogController {
   @Override
   protected void onSaveButtonClicked() {
     logViewModel.idProperty().set(UUID.randomUUID());
+    logViewModel.tourProperty().set(selectedTour);
     logTableViewModel.newLog(logViewModel);
     TourPlannerApplication.closeWindow(saveCancelButtonBar);
   }

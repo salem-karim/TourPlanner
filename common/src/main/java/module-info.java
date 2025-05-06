@@ -4,4 +4,5 @@ module at.technikum.common {
   requires static lombok;
     requires jakarta.persistence;
   requires org.hibernate.orm.core;
+  requires com.fasterxml.jackson.annotation;
 }

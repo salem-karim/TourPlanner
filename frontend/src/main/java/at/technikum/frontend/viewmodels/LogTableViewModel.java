@@ -1,5 +1,6 @@
 package at.technikum.frontend.viewmodels;
 
+import at.technikum.common.models.Logs;
 import at.technikum.frontend.utils.RequestHandler;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -7,10 +8,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class LogTableViewModel {
   private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
   private final ObservableList<LogViewModel> data = FXCollections.observableArrayList();
+
+  public LogTableViewModel(List<Logs> logs) {
+    for (Logs log : logs) {
+      LogViewModel logViewModel = new LogViewModel(log);
+      data.add(logViewModel);
+    }
+  }
 
   public ObservableList<String> getDataComments() {
     return FXCollections.observableArrayList(data.stream().map(LogViewModel::getComment).toList());

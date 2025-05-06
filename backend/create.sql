@@ -1,6 +1,6 @@
 -- Create table for tours
 CREATE TABLE tours (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
     description TEXT,
     origin VARCHAR(255) NOT NULL,
@@ -11,15 +11,14 @@ CREATE TABLE tours (
     route_image BYTEA  -- Stores binary image data (e.g. tour map)
 );
 
-CREATE TABLE tour_logs (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE tour_logs 
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     tour_id INTEGER NOT NULL,
     start_date_time TIMESTAMP NOT NULL,
     end_date_time TIMESTAMP NOT NULL,
     comment TEXT,
     difficulty INTEGER CHECK (difficulty BETWEEN 1 AND 5),
     distance_km DECIMAL(10, 2),
-    total_time_minutes INTEGER,
     rating INTEGER CHECK (rating BETWEEN 1 AND 5),
 
     CONSTRAINT fk_tour
