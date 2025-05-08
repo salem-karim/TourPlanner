@@ -16,9 +16,9 @@ public class LogController {
         this.logService = logService;
     }
 
-    @PostMapping("/{tourId}")
-    public ResponseEntity<Logs> createLog(@PathVariable UUID tourId,@RequestBody Logs log) {
-        return new ResponseEntity<>(logService.saveLog(log, tourId), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Logs> createLog(@RequestBody Logs log) {
+        return new ResponseEntity<>(logService.saveLog(log), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

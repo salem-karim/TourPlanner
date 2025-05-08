@@ -107,7 +107,7 @@ public class RequestHandler {
         try {
             String json = mapper.writeValueAsString(lvm.toLog());
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/logs/" + lvm.getTour().getId()))
+                    .uri(URI.create("http://localhost:8080/api/logs"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

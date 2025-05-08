@@ -13,7 +13,7 @@ public class LogViewModel {
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
   private final ObjectProperty<LocalDateTime> startDateTime = new SimpleObjectProperty<>();
   private final ObjectProperty<LocalDateTime> endDateTime = new SimpleObjectProperty<>();
-  private final ObjectProperty<TourViewModel> tour = new SimpleObjectProperty<>();
+  private final ObjectProperty<UUID> tourId = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
   private final IntegerProperty totalDistance = new SimpleIntegerProperty();
@@ -23,7 +23,7 @@ public class LogViewModel {
     this.id.set(log.getId());
     this.startDateTime.set(log.getStart_date_time());
     this.endDateTime.set(log.getEnd_date_time());
-    this.tour.set(new TourViewModel(log.getTour()));
+    this.tourId.set(log.getTour_id());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotal_distance());
@@ -38,7 +38,7 @@ public class LogViewModel {
     this.rating.set(log.getRating());
     this.startDateTime.set(log.getStartDateTime());
     this.endDateTime.set(log.getEndDateTime());
-    this.tour.set(log.getTour());
+    this.tourId.set(log.getTourId());
   }
 
   public Logs toLog() {
@@ -50,7 +50,7 @@ public class LogViewModel {
     log.setDifficulty(this.difficultyProperty().get());
     log.setTotal_distance(this.totalDistanceProperty().get());
     log.setRating(this.ratingProperty().get());
-    log.setTour(this.tour.get().toTour());
+    log.setTour_id(this.getTourId());
     return log;
   }
 
@@ -68,8 +68,8 @@ public class LogViewModel {
     return endDateTime.get();
   }
 
-  public TourViewModel getTour() {
-    return tour.get();
+  public UUID getTourId() {
+    return tourId.get();
   }
 
   public String getComment() {
@@ -101,8 +101,8 @@ public class LogViewModel {
     return endDateTime;
   }
   
-  public ObjectProperty<TourViewModel> tourProperty() {
-    return tour;
+  public ObjectProperty<UUID> tourIdProperty() {
+    return tourId;
   }
   
   public StringProperty commentProperty() {
@@ -129,8 +129,8 @@ public class LogViewModel {
     this.endDateTime.set(date);
   }
   
-  public void setTour(TourViewModel tour) {
-    this.tour.set(tour);
+  public void setTour(UUID tourId) {
+    this.tourId.set(tourId);
   }
   
   public void setComment(String comment) {

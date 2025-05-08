@@ -1,6 +1,5 @@
 package at.technikum.common.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,8 +46,9 @@ public class Tour {
   @Column(name = "route_image")
   private byte[] route_info;
 
-  @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
-  @JsonManagedReference
+//  @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "tour_id")
   private List<Logs> logs = new ArrayList<>();
 
 }

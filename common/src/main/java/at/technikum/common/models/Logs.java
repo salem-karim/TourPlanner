@@ -1,6 +1,5 @@
 package at.technikum.common.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,11 +17,9 @@ public class Logs {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "tour_id", nullable = false)
-  @JsonBackReference
-  private Tour tour;
+  
+  @Column(name = "tour_id")
+  private UUID tour_id;
 
   @Column(name = "start_date_time")
   private LocalDateTime start_date_time;
@@ -30,15 +27,12 @@ public class Logs {
   @Column(name = "end_date_time")
   private LocalDateTime end_date_time;
   
-  private String comment;
-
-  private int difficulty;
-
   @Column(name = "distance_km")
   private int total_distance;
 
-  @Column(name = "total_time_minutes")
-  private int total_time;
+  private String comment;
+
+  private int difficulty;
 
   private int rating;
 }
