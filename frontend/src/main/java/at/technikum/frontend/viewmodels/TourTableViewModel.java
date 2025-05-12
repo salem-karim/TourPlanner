@@ -49,6 +49,15 @@ public class TourTableViewModel {
                           new ArrayList<>())));
 
 
+  public TourTableViewModel() {
+     // Touren direkt beim Initialisieren laden
+    if (System.getProperty("app.test") == null) loadTours();
+    // Add sample logs to each tour
+    for (TourViewModel tour : data) {
+      addSampleLogsToTour(tour);
+    }
+  }
+
   public void newTour(TourViewModel tvm) {
     data.add(tvm); // local list
 
@@ -90,13 +99,7 @@ public class TourTableViewModel {
     selectedTour.set(tour);
   }
 
-  public TourTableViewModel() {
-    if (System.getProperty("app.test") == null) return;
-    // Add sample logs to each tour
-    for (TourViewModel tour : data) {
-      addSampleLogsToTour(tour);
-    }
-  }
+
 
   private void addSampleLogsToTour(TourViewModel tour) {
     // Create first sample log
@@ -122,5 +125,14 @@ public class TourTableViewModel {
     // Add logs to the tour
     tour.getLogs().newLog(log1);
     tour.getLogs().newLog(log2);
+  }
+
+  public void loadTours() {
+    RequestHandler.loadTours(tourList -> {
+      for (Tour tour : tourList) {
+        TourViewModel tvm = new TourViewModel(tour);
+        data.add(tvm);
+      }
+    });
   }
 }

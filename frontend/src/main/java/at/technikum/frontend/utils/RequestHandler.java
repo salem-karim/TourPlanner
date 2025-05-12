@@ -11,7 +11,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 // Is responsible for sending the request to the backend via http
 public class RequestHandler {
@@ -96,6 +99,26 @@ public class RequestHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void loadTours(Consumer<List<Tour>> callback) {
+        if (System.getProperty("app.test") != null) return;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL))
+                .GET()
+                .build();
+
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(body -> {
+                    try {
+                        List<Tour> tours = Arrays.asList(mapper.readValue(body, Tour[].class));
+                        callback.accept(tours);
+                    } catch (Exception e) {
+                        e.printStackTrace(); // Use logger in real apps
+                    }
+                });
     }
 
     // ----------------------LOGS--------------------------------

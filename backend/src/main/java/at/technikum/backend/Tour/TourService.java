@@ -3,6 +3,7 @@ package at.technikum.backend.Tour;
 import org.springframework.stereotype.Service;
 import at.technikum.common.models.Tour;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -44,5 +45,9 @@ public class TourService {
             throw new IllegalArgumentException("Tour not found");
         }
         tourRepository.deleteById(id);
+    }
+
+    public List<Tour> getAllTours() {
+        return tourRepository.findAll();
     }
 }
