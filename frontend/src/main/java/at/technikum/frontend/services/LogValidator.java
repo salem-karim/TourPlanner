@@ -19,11 +19,19 @@ public class LogValidator extends Validator {
     List<String> errors = new ArrayList<>();
 
     // Check date
-    if (logViewModel.getStartDateTime() == null) {
+    if (logViewModel.getStartDate() == null) {
       errors.add(i18n.getString("validation.date.required"));
     }
-    
-    if (logViewModel.getEndDateTime() == null) {
+
+    if (logViewModel.getEndDate() == null) {
+      errors.add(i18n.getString("validation.date.required"));
+    }
+
+    if (logViewModel.getStartTime() == null) {
+      errors.add(i18n.getString("validation.date.required"));
+    }
+
+    if (logViewModel.getEndTime() == null) {
       errors.add(i18n.getString("validation.date.required"));
     }
 

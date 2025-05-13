@@ -9,14 +9,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * ViewModel for the TourTableView.
- * This class is responsible for managing the data and logic of the TourTableView.
- * It handles the creation, updating, and deletion of tours.
+ * ViewModel for the TourTableView. This class is responsible for managing the data and logic of the TourTableView. It
+ * handles the creation, updating, and deletion of tours.
  */
 @Getter
 public class TourTableViewModel {
@@ -50,7 +50,7 @@ public class TourTableViewModel {
 
 
   public TourTableViewModel() {
-     // Touren direkt beim Initialisieren laden
+    // Touren direkt beim Initialisieren laden
     if (System.getProperty("app.test") == null) loadTours();
     // Add sample logs to each tour
     for (TourViewModel tour : data) {
@@ -100,13 +100,14 @@ public class TourTableViewModel {
   }
 
 
-
   private void addSampleLogsToTour(TourViewModel tour) {
     // Create first sample log
     LogViewModel log1 = new LogViewModel();
     log1.idProperty().set(UUID.randomUUID());
-    log1.startDateProperty().set(LocalDateTime.now().minusDays(5));
-    log1.endDateProperty().set(LocalDateTime.now().minusDays(4));
+    log1.startDateProperty().set(LocalDate.now());
+    log1.endDateProperty().set(LocalDate.now().plusDays(1));
+    log1.startTimeProperty().set(LocalTime.now());
+    log1.endTimeProperty().set(LocalTime.now().plusHours(2));
     log1.commentProperty().set("Great weather, enjoyed the hike!");
     log1.difficultyProperty().set(3);
     log1.totalDistanceProperty().set(8);
@@ -115,8 +116,10 @@ public class TourTableViewModel {
     // Create second sample log
     LogViewModel log2 = new LogViewModel();
     log2.idProperty().set(UUID.randomUUID());
-    log2.startDateProperty().set(LocalDateTime.now().minusDays(8));
-    log2.endDateProperty().set(LocalDateTime.now().minusDays(6));
+    log2.startDateProperty().set(LocalDate.now());
+    log2.endDateProperty().set(LocalDate.now().plusDays(4));
+    log2.startTimeProperty().set(LocalTime.now());
+    log2.endTimeProperty().set(LocalTime.now().plusHours(7));
     log2.commentProperty().set("Rainy day but still fun");
     log2.difficultyProperty().set(4);
     log2.totalDistanceProperty().set(8);

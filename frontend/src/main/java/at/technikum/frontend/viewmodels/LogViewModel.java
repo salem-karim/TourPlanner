@@ -4,15 +4,19 @@ import at.technikum.common.models.Logs;
 import javafx.beans.property.*;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @NoArgsConstructor
 public class LogViewModel {
   // TODO: change the Date to LocalDateTime
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
-  private final ObjectProperty<LocalDateTime> startDateTime = new SimpleObjectProperty<>();
-  private final ObjectProperty<LocalDateTime> endDateTime = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalDate> startDate = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalTime> startTime = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalDate> endDate = new SimpleObjectProperty<>();
+  private final ObjectProperty<LocalTime> endTime = new SimpleObjectProperty<>();
   private final ObjectProperty<UUID> tourId = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
@@ -21,8 +25,10 @@ public class LogViewModel {
 
   public LogViewModel(final Logs log) {
     this.id.set(log.getId());
-    this.startDateTime.set(log.getStart_date_time());
-    this.endDateTime.set(log.getEnd_date_time());
+    this.startDate.set(log.getStart_date_time().toLocalDate());
+    this.startTime.set(log.getStart_date_time().toLocalTime());
+    this.endDate.set(log.getEnd_date_time().toLocalDate());
+    this.endTime.set(log.getEnd_date_time().toLocalTime());
     this.tourId.set(log.getTour_id());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
@@ -36,16 +42,18 @@ public class LogViewModel {
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotalDistance());
     this.rating.set(log.getRating());
-    this.startDateTime.set(log.getStartDateTime());
-    this.endDateTime.set(log.getEndDateTime());
+    this.startDate.set(log.getStartDate());
+    this.startTime.set(log.getStartTime());
+    this.endDate.set(log.getEndDate());
+    this.endTime.set(log.getEndTime());
     this.tourId.set(log.getTourId());
   }
 
   public Logs toLog() {
     Logs log = new Logs();
     log.setId(this.getId());
-    log.setStart_date_time(this.getStartDateTime());
-    log.setEnd_date_time(this.getEndDateTime());
+    log.setStart_date_time(LocalDateTime.of(getStartDate(), getStartTime()));
+    log.setEnd_date_time(LocalDateTime.of(getEndDate(), getEndTime()));
     log.setComment(this.commentProperty().get());
     log.setDifficulty(this.difficultyProperty().get());
     log.setTotal_distance(this.totalDistanceProperty().get());
@@ -60,12 +68,20 @@ public class LogViewModel {
     return id.get();
   }
 
-  public LocalDateTime getStartDateTime() {
-    return startDateTime.get();
+  public LocalDate getStartDate() {
+    return startDate.get();
   }
 
-  public LocalDateTime getEndDateTime() {
-    return endDateTime.get();
+  public LocalTime getStartTime() {
+    return startTime.get();
+  }
+
+  public LocalDate getEndDate() {
+    return endDate.get();
+  }
+
+  public LocalTime getEndTime() {
+    return endTime.get();
   }
 
   public UUID getTourId() {
@@ -93,18 +109,26 @@ public class LogViewModel {
     return id;
   }
 
-  public ObjectProperty<LocalDateTime> startDateProperty() {
-    return startDateTime;
+  public ObjectProperty<LocalDate> startDateProperty() {
+    return startDate;
   }
 
-  public ObjectProperty<LocalDateTime> endDateProperty() {
-    return endDateTime;
+  public ObjectProperty<LocalTime> startTimeProperty() {
+    return startTime;
   }
-  
+
+  public ObjectProperty<LocalDate> endDateProperty() {
+    return endDate;
+  }
+
+  public ObjectProperty<LocalTime> endTimeProperty() {
+    return endTime;
+  }
+
   public ObjectProperty<UUID> tourIdProperty() {
     return tourId;
   }
-  
+
   public StringProperty commentProperty() {
     return comment;
   }
@@ -121,18 +145,26 @@ public class LogViewModel {
     return rating;
   }
 
-  public void setStartDateTime(LocalDateTime date) {
-    this.startDateTime.set(date);
+  public void setStartDate(LocalDate date) {
+    this.startDate.set(date);
   }
 
-  public void setEndDateTime(LocalDateTime date) {
-    this.endDateTime.set(date);
+  public void setStartTime(LocalTime time) {
+    this.startTime.set(time);
   }
-  
+
+  public void setEndDate(LocalDate date) {
+    this.endDate.set(date);
+  }
+
+  public void setEndTime(LocalTime time) {
+    this.endTime.set(time);
+  }
+
   public void setTour(UUID tourId) {
     this.tourId.set(tourId);
   }
-  
+
   public void setComment(String comment) {
     this.comment.set(comment);
   }

@@ -10,14 +10,14 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Arrays;
+import java.time.LocalTime;
 
-import static at.technikum.frontend.utils.DateTimeBinding.bindBidirectionalDateTime;
 import static at.technikum.frontend.utils.Localization.i18n;
 
 @SuperBuilder
@@ -32,7 +32,7 @@ public abstract class BaseLogController {
   protected TextField comment, difficulty, totalDistance, rating, startTime, endTime;
   @FXML
   protected DatePicker startDate, endDate;
-  
+
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
   protected LogViewModel logViewModel;
@@ -53,17 +53,35 @@ public abstract class BaseLogController {
       logViewModel = new LogViewModel();
     }
 
-    for (DatePicker datePicker : Arrays.asList(startDate, endDate)) {
-      datePicker.setPromptText("DD.MM.YYYY");
-    }
-
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
     difficulty.textProperty().bindBidirectional(logViewModel.difficultyProperty(), new NumberStringConverter());
     totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
     rating.textProperty().bindBidirectional(logViewModel.ratingProperty(), new NumberStringConverter());
-    bindBidirectionalDateTime(logViewModel.startDateProperty(), startDate, startTime);
-    bindBidirectionalDateTime(logViewModel.endDateProperty(), endDate, endTime);
-    
+    startDate.valueProperty().bindBidirectional(logViewModel.startDateProperty());
+    endDate.valueProperty().bindBidirectional(logViewModel.endDateProperty());
+    startTime.textProperty().bindBidirectional(logViewModel.startTimeProperty(), new StringConverter<>() {
+      @Override
+      public String toString(LocalTime object) {
+        return object != null ? object.toString() : "";
+      }
+
+      @Override
+      public LocalTime fromString(String string) {
+        return null;
+      }
+    });
+    endTime.textProperty().bindBidirectional(logViewModel.endTimeProperty(), new StringConverter<>() {
+      @Override
+      public String toString(LocalTime object) {
+        return object != null ? object.toString() : "";
+      }
+
+      @Override
+      public LocalTime fromString(String string) {
+        return null;
+      }
+    });
+
 
     // Set up OK/Cancel button handlers
     okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
@@ -74,9 +92,6 @@ public abstract class BaseLogController {
       if (logValidator.validateLog(logViewModel)) {
         onSaveButtonClicked();
       }
-      // if (date.getValue() != null) {
-      // logViewModel.setDate(LocalDateTime.of(date.getValue(), LocalTime.now()));
-      // }
     });
 
     okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
