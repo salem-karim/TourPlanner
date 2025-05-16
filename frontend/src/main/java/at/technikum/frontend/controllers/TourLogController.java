@@ -54,7 +54,7 @@ public class TourLogController implements Initializable {
     setupButtonBar();
 
   }
-
+// TODO: Fix Bugs with the Date and Time Columns
   private void setupTableColumns() {
     startDate.setCellValueFactory(cellData -> {
       LogViewModel log = cellData.getValue();
