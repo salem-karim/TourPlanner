@@ -53,7 +53,7 @@ public abstract class BaseLogController {
       logViewModel = new LogViewModel();
     }
     
-    // TODO: Fix bugs with the date and time pickers, and fix the placeholder text
+    // TODO: Fix bugs with the date and fix the placeholder text
 
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
     difficulty.textProperty().bindBidirectional(logViewModel.difficultyProperty(), new NumberStringConverter());
