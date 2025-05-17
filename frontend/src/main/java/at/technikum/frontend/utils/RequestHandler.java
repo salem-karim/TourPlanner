@@ -1,11 +1,13 @@
 package at.technikum.frontend.utils;
 
+import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.extern.java.Log;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -19,7 +21,8 @@ import java.util.function.Consumer;
 // Is responsible for sending the request to the backend via http
 public class RequestHandler {
 
-    private static final String BASE_URL = "http://localhost:8080/api/tours";
+    private static final String BASE_URL_TOUR = "http://localhost:8080/api/tours";
+    private static final String BASE_URL_LOG = "http://localhost:8080/api/logs";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     // needed for serialization of LocalDateTime
     private static final ObjectMapper mapper = new ObjectMapper()
@@ -61,7 +64,7 @@ public class RequestHandler {
             String json = mapper.writeValueAsString(tvm.toTour());
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/" + tvm.getId()))
+                    .uri(URI.create(BASE_URL_TOUR + "/" + tvm.getId()))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -84,7 +87,7 @@ public class RequestHandler {
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/" + tourId))
+                    .uri(URI.create(BASE_URL_TOUR + "/" + tourId))
                     .DELETE()
                     .build();
 
@@ -105,7 +108,7 @@ public class RequestHandler {
         if (System.getProperty("app.test") != null) return;
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL))
+                .uri(URI.create(BASE_URL_TOUR))
                 .GET()
                 .build();
 
@@ -130,7 +133,7 @@ public class RequestHandler {
         try {
             String json = mapper.writeValueAsString(lvm.toLog());
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/logs"))
+                    .uri(URI.create(BASE_URL_LOG))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -154,7 +157,7 @@ public class RequestHandler {
         try {
             String json = mapper.writeValueAsString(lvm.toLog());
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/logs/" + lvm.getId()))
+                    .uri(URI.create(BASE_URL_LOG + "/" + lvm.getId()))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -177,7 +180,7 @@ public class RequestHandler {
 
         try {
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/api/logs/" + logId))
+                    .uri(URI.create(BASE_URL_LOG + "/" + logId))
                     .DELETE()
                     .build();
 
@@ -192,6 +195,26 @@ public class RequestHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void loadLogs(Consumer<List<Logs>> callback) {
+        if (System.getProperty("app.test") != null) return;
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL_LOG))
+                .GET()
+                .build();
+
+        httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(body -> {
+                    try {
+                        List<Logs> logs = Arrays.asList(mapper.readValue(body, Logs[].class));
+                        callback.accept(logs);
+                    } catch (Exception e) {
+                        e.printStackTrace(); // Use logger in real apps
+                    }
+                });
     }
 
 }

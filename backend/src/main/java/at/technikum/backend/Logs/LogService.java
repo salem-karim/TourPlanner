@@ -1,8 +1,10 @@
 package at.technikum.backend.Logs;
 
 import at.technikum.common.models.Logs;
+import at.technikum.common.models.Tour;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,5 +41,9 @@ public class LogService {
             throw new IllegalArgumentException("Log not found");
         }
         logRepository.deleteById(id);
+    }
+
+    public List<Logs> getAllLogs() {
+        return logRepository.findAll();
     }
 }

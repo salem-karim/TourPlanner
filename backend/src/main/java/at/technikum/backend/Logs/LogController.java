@@ -1,9 +1,11 @@
 package at.technikum.backend.Logs;
 
 import at.technikum.common.models.Logs;
+import at.technikum.common.models.Tour;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*")
@@ -11,9 +13,11 @@ import java.util.UUID;
 @RequestMapping("/api/logs")
 public class LogController {
     private final LogService logService;
+    private final LogRepository logRepository;
 
-    public LogController(LogService logService) {
+    public LogController(LogService logService, LogRepository logRepository) {
         this.logService = logService;
+        this.logRepository = logRepository;
     }
 
     @PostMapping
@@ -39,4 +43,10 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping
+    public ResponseEntity<List<Logs>> getAllLogs() {
+        return new ResponseEntity<>(logService.getAllLogs(), HttpStatus.OK);
+    }
+
 }
