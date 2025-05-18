@@ -84,8 +84,19 @@ public class TimePicker extends Spinner<LocalTime> {
 
     getEditor().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
       if (e.getCode() == KeyCode.TAB) {
-        mode.set(mode.get() == TimePickerMode.HOURS ? TimePickerMode.MINUTES : TimePickerMode.HOURS);
-        e.consume();
+        boolean isHoursMode = mode.get() == TimePickerMode.HOURS;
+        boolean isShiftDown = e.isShiftDown();
+
+        // Consume event and switch mode only when:
+        // - Tab press in hours mode (switch to minutes)
+        // - Shift+Tab press in minutes mode (switch to hours)
+        boolean shouldConsumeEvent = isShiftDown != isHoursMode;
+
+        if (shouldConsumeEvent) {
+          mode.set(isHoursMode ? TimePickerMode.MINUTES : TimePickerMode.HOURS);
+          e.consume();
+        }
+        // Otherwise let event bubble up to move focus to next/previous field
       }
     });
 
