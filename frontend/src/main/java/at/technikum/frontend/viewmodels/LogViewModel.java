@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @NoArgsConstructor
 public class LogViewModel {
-  // TODO: change the Date to LocalDateTime
   private final ObjectProperty<UUID> id = new SimpleObjectProperty<>();
   private final ObjectProperty<LocalDate> startDate = new SimpleObjectProperty<>();
   private final ObjectProperty<LocalTime> startTime = new SimpleObjectProperty<>();

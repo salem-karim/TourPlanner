@@ -92,10 +92,9 @@ public abstract class BaseLogController {
     startDate.setPromptText("DD.MM.YYYY");
     endDate.setPromptText("DD.MM.YYYY");
 
-    // TODO: fix placeholder
-
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
     totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
+    totalDistance.setText("");
     startDate.valueProperty().bindBidirectional(logViewModel.startDateProperty());
     endDate.valueProperty().bindBidirectional(logViewModel.endDateProperty());
     // Bind the time pickers value to the ViewModel not the other way around

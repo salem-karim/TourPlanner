@@ -42,7 +42,6 @@ public class RequestHandler {
               .header("Content-Type", "application/json")
               .POST(HttpRequest.BodyPublishers.ofString(json))
               .build();
-      // TODO: use try-with-resources to ensure the client is closed -> nicht notwendig?
       httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
               .thenAccept(response -> {
                 if (response.statusCode() == 201) {
