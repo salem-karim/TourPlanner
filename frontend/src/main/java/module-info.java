@@ -13,6 +13,7 @@ module at.technikum.frontend {
   requires com.fasterxml.jackson.datatype.jsr310;
   requires com.fasterxml.jackson.databind;
   requires jakarta.persistence;
+  requires org.hibernate.orm.core;
 
   opens at.technikum.frontend to javafx.fxml;
   exports at.technikum.frontend;
