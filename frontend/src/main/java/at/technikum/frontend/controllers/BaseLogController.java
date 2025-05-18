@@ -11,13 +11,20 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.control.Rating;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static at.technikum.frontend.utils.Localization.i18n;
 
+@Slf4j
 @SuperBuilder
 @Getter
 @NoArgsConstructor
@@ -27,11 +34,13 @@ public abstract class BaseLogController {
   @FXML
   protected ButtonBar saveCancelButtonBar;
   @FXML
-  protected TextField comment, difficulty, totalDistance, rating;
+  protected TextField comment, totalDistance;
   @FXML
   protected DatePicker startDate, endDate;
   @FXML
   protected TimePicker startTime, endTime;
+  @FXML
+  protected Rating difficulty, rating;
   
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
@@ -52,16 +61,49 @@ public abstract class BaseLogController {
     if (logViewModel == null) {
       logViewModel = new LogViewModel();
     }
+        // Configure date picker
+    StringConverter<LocalDate> dateConverter = new StringConverter<>() {
+      private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+      @Override
+      public String toString(LocalDate date) {
+        if (date != null) {
+          return dateFormatter.format(date);
+        }
+        return "";
+      }
+
+      @Override
+      public LocalDate fromString(String string) {
+        if (string != null && !string.isEmpty()) {
+          try {
+            return LocalDate.parse(string, dateFormatter);
+          } catch (Exception e) {
+            log.error("Error in parsing Date: ", e);
+          }
+        }
+        return null;
+      }
+    };
     
-    // TODO: Fix bugs with the date and fix the placeholder text
+    // TODO: Harden validation of date input
+    startDate.setConverter(dateConverter);
+    endDate.setConverter(dateConverter);
+    startDate.setPromptText("DD.MM.YYYY");
+    endDate.setPromptText("DD.MM.YYYY");
+
+    // TODO: fix placeholder
 
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
-    difficulty.textProperty().bindBidirectional(logViewModel.difficultyProperty(), new NumberStringConverter());
     totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
-    rating.textProperty().bindBidirectional(logViewModel.ratingProperty(), new NumberStringConverter());
-    startTime.localTimeProperty().bindBidirectional(logViewModel.startTimeProperty());
-    endTime.localTimeProperty().bindBidirectional(logViewModel.endTimeProperty());
-    
+    startDate.valueProperty().bindBidirectional(logViewModel.startDateProperty());
+    endDate.valueProperty().bindBidirectional(logViewModel.endDateProperty());
+    // Bind the time pickers value to the ViewModel not the other way around
+    logViewModel.endTimeProperty().bindBidirectional(endTime.localTimeProperty());
+    logViewModel.startTimeProperty().bindBidirectional(startTime.localTimeProperty());
+    logViewModel.difficultyProperty().bindBidirectional(difficulty.ratingProperty());
+    logViewModel.ratingProperty().bindBidirectional(rating.ratingProperty());
+
 
     // Set up OK/Cancel button handlers
     okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
