@@ -1,5 +1,6 @@
 package at.technikum.frontend.viewmodels;
 
+import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
 import at.technikum.frontend.utils.RequestHandler;
@@ -8,10 +9,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import lombok.extern.java.Log;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -137,5 +140,27 @@ public class TourTableViewModel {
         data.add(tvm);
       }
     });
+
+    // Load logs for each tour and add to the TourViewModel
+    List<LogViewModel> all_logs = new ArrayList<>(List.of());
+    RequestHandler.loadLogs(logs -> {
+      for (Logs log : logs) {
+        LogViewModel lvm = new LogViewModel(log);
+        all_logs.add(lvm);
+      }
+    });
+
+    while(all_logs.size() > 0) {
+        for (TourViewModel tour : data) {
+          for (LogViewModel log : all_logs) {
+            if (tour.getId().equals(log.getTourId())) {
+              tour.getLogs().newLog(log);
+              all_logs.remove(log);
+              break;
+            }
+          }
+        }
+    }
   }
+
 }
