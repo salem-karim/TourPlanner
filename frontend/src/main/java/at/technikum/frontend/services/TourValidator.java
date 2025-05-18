@@ -31,7 +31,7 @@ public class TourValidator extends Validator {
       errors.add(i18n.getString("validation.to.required"));
     }
 
-    if (tourViewModel.getTransport_type() == null) {
+    if (tourViewModel.getTransportType() == null) {
       errors.add(i18n.getString("validation.transportType.required"));
     }
 

@@ -1,52 +1,101 @@
 package at.technikum.frontend.viewmodels;
 
+import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
+import at.technikum.frontend.utils.RequestHandler;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
+import lombok.extern.java.Log;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+/**
+ * ViewModel for the TourTableView.
+ * This class is responsible for managing the data and logic of the TourTableView.
+ * It handles the creation, updating, and deletion of tours.
+ */
 @Getter
 public class TourTableViewModel {
+
   private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
-  private final ObservableList<TourViewModel> data =
-          FXCollections.observableArrayList(
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", "zu Fuß", 5, 2, "img")),
-//                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", "zu Fuß", 15, 5, "img"))
-                  new TourViewModel(new Tour(UUID.randomUUID(), "Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg", "Nußdorf", "Kahlsberg", TransportType.BIKE)),
-                  new TourViewModel(new Tour(UUID.randomUUID(), "Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg", "Schneeberg Startpunkt", "Schneeberg spitze", TransportType.FOOT))
-          );
+  private final ObservableList<TourViewModel> data = FXCollections.observableArrayList(
+          new TourViewModel(
+                  new Tour(
+                          UUID.randomUUID(),
+                          "Kahlsberg Wanderung",
+                          "Schöne Wanderung aufm Kahlsberg",
+                          "Nußdorf",
+                          "Kahlsberg",
+                          TransportType.CAR,
+                          100,
+                          120,
+                          new byte[0],
+                          new ArrayList<>())),
+          new TourViewModel(
+                  new Tour(
+                          UUID.randomUUID(),
+                          "Schneeberg Wanderung",
+                          "Schöne Wanderung aufm Schneeberg",
+                          "Schneeberg Startpunkt",
+                          "Schneeberg Spitze",
+                          TransportType.BIKE,
+                          100,
+                          120,
+                          new byte[0],
+                          new ArrayList<>())));
 
-  public void newTour(TourViewModel tvm) {
-    data.add(tvm);
-  }
 
-  public void updateTour(TourViewModel tourViewModel) {
-    for (final TourViewModel tour : data) {
-      if (tour.getId().equals(tourViewModel.getId())) {
-        tour.nameProperty().set(tourViewModel.nameProperty().get());
-        tour.fromProperty().set(tourViewModel.fromProperty().get());
-        tour.toProperty().set(tourViewModel.toProperty().get());
-        tour.transport_typeProperty().set(tourViewModel.transport_typeProperty().get());
-//        tour.distanceProperty().set(tourViewModel.distanceProperty().get());
-//        tour.estimated_timeProperty().set(tourViewModel.estimated_timeProperty().get());
-//        tour.route_infoProperty().set(tourViewModel.route_infoProperty().get());
-      }
+  public TourTableViewModel() {
+     // Touren direkt beim Initialisieren laden
+    if (System.getProperty("app.test") == null) loadTours();
+    // Add sample logs to each tour
+    for (TourViewModel tour : data) {
+      addSampleLogsToTour(tour);
     }
   }
 
+  public void newTour(TourViewModel tvm) {
+    data.add(tvm); // local list
+
+    // Convert to Tour (model from common)
+    Tour tour = tvm.toTour();
+
+    RequestHandler.postTour(tour);
+  }
+
+  public void updateTour(final TourViewModel otherViewModel, final TourViewModel tourViewModel) {
+    // Update local data (UI)
+    tourViewModel.setName(otherViewModel.getName());
+    tourViewModel.setDescription(otherViewModel.getDescription());
+    tourViewModel.setFrom(otherViewModel.getFrom());
+    tourViewModel.setTo(otherViewModel.getTo());
+    tourViewModel.setTransportType(otherViewModel.getTransportType());
+//    tourViewModel.setDistance(otherViewModel.getDistance());
+//    tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
+//    tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
+
+    RequestHandler.putTour(tourViewModel);
+  }
+
+
   public void deleteTour(TourViewModel tourViewModel) {
     data.remove(tourViewModel);
-    // sonstiges??
+
+    RequestHandler.deleteTour(tourViewModel.getId());
   }
 
   public void deleteTour(int index) {
-    data.remove(index);
+    TourViewModel removed = data.remove(index);
+    if (removed != null) {
+      RequestHandler.deleteTour(removed.getId());
+    }
   }
 
   public void setSelectedTour(TourViewModel tour) {
@@ -54,36 +103,61 @@ public class TourTableViewModel {
   }
 
 
-  public TourTableViewModel() {
-    // Add sample logs to each tour
-    for (TourViewModel tour : data) {
-      addSampleLogsToTour(tour);
-    }
-  }
 
   private void addSampleLogsToTour(TourViewModel tour) {
     // Create first sample log
     LogViewModel log1 = new LogViewModel();
     log1.idProperty().set(UUID.randomUUID());
-    log1.dateProperty().set(LocalDate.now().minusDays(5));
+    log1.startDateProperty().set(LocalDateTime.now().minusDays(5));
+    log1.endDateProperty().set(LocalDateTime.now().minusDays(4));
     log1.commentProperty().set("Great weather, enjoyed the hike!");
     log1.difficultyProperty().set(3);
     log1.totalDistanceProperty().set(8);
-    log1.totalTimeProperty().set(120);
     log1.ratingProperty().set(4);
 
     // Create second sample log
     LogViewModel log2 = new LogViewModel();
     log2.idProperty().set(UUID.randomUUID());
-    log2.dateProperty().set(LocalDate.now().minusDays(2));
+    log2.startDateProperty().set(LocalDateTime.now().minusDays(8));
+    log2.endDateProperty().set(LocalDateTime.now().minusDays(6));
     log2.commentProperty().set("Rainy day but still fun");
     log2.difficultyProperty().set(4);
     log2.totalDistanceProperty().set(8);
-    log2.totalTimeProperty().set(140);
     log2.ratingProperty().set(3);
 
     // Add logs to the tour
     tour.getLogs().newLog(log1);
     tour.getLogs().newLog(log2);
   }
+
+  public void loadTours() {
+    RequestHandler.loadTours(tourList -> {
+      for (Tour tour : tourList) {
+        TourViewModel tvm = new TourViewModel(tour);
+        data.add(tvm);
+      }
+    });
+
+    // Load logs for each tour and add to the TourViewModel
+    List<LogViewModel> all_logs = new ArrayList<>(List.of());
+    RequestHandler.loadLogs(logs -> {
+      for (Logs log : logs) {
+        LogViewModel lvm = new LogViewModel(log);
+        all_logs.add(lvm);
+      }
+    });
+
+    while(all_logs.size() > 0) {
+        for (TourViewModel tour : data) {
+          for (LogViewModel log : all_logs) {
+            if (tour.getId().equals(log.getTourId())) {
+              tour.getLogs().newLog(log);
+              all_logs.remove(log);
+              break;
+            }
+          }
+        }
+    }
+  }
+
 }

@@ -13,11 +13,11 @@
              AnchorPane.bottomAnchor="60.0"
              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <columns>
-      <TableColumn fx:id="date" prefWidth="105.0" text="%logInfo.date"/>
+      <TableColumn fx:id="startDate" prefWidth="105.0" text="%logInfo.startDate"/>
+      <TableColumn fx:id="endDate" prefWidth="105.0" text="%logInfo.endDate"/>
       <TableColumn fx:id="comment" prefWidth="105.0" text="%logInfo.comment"/>
       <TableColumn fx:id="difficulty" prefWidth="105.0" text="%logInfo.difficulty"/>
       <TableColumn fx:id="totalDistance" prefWidth="105.0" text="%logInfo.totaldistance"/>
-      <TableColumn fx:id="totalTime" prefWidth="105.0" text="%logInfo.totaltime"/>
       <TableColumn fx:id="rating" prefWidth="105.0" text="%logInfo.rating"/>
     </columns>
   </TableView>
