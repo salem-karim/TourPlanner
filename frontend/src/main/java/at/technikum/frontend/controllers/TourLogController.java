@@ -54,26 +54,13 @@ public class TourLogController implements Initializable {
     setupButtonBar();
 
   }
-// TODO: Fix Bugs with the Date and Time Columns
+
   private void setupTableColumns() {
-    startDate.setCellValueFactory(cellData -> {
-      LogViewModel log = cellData.getValue();
-      if (log.getStartDate() != null && log.getStartTime() != null) {
-        return new SimpleObjectProperty<>(LocalDateTime.of(log.getStartDate(), log.getStartTime()));
-      }
-      return new SimpleObjectProperty<>(null);
-    });
-    startDate.setCellFactory(column -> setupDateCellFactory());
+    // Set up date columns using the reusable method
+    setupDateTimeColumn(startDate, true);
+    setupDateTimeColumn(endDate, false);
 
-    endDate.setCellValueFactory(cellData -> {
-      LogViewModel log = cellData.getValue();
-      if (log.getEndDate() != null && log.getEndTime() != null) {
-        return new SimpleObjectProperty<>(LocalDateTime.of(log.getEndDate(), log.getEndTime()));
-      }
-      return new SimpleObjectProperty<>(null);
-    });
-    endDate.setCellFactory(column -> setupDateCellFactory());
-
+    // Other column setup remains the same
     comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
@@ -83,30 +70,50 @@ public class TourLogController implements Initializable {
     logTable.getSelectionModel().selectFirst();
   }
 
-  private TableCell<LogViewModel, LocalDateTime> setupDateCellFactory() {
-    return new TableCell<>() {
+  private void setupDateTimeColumn(TableColumn<LogViewModel, LocalDateTime> column,
+                                   boolean isStart) {
+    column.setCellValueFactory(cellData -> {
+      LogViewModel log = cellData.getValue();
+      return new SimpleObjectProperty<>() {
+        {
+          // Create listeners for both date and time properties
+          if (isStart) {
+            log.startDateProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getStartDate(), log.getStartTime()));
+            log.startTimeProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getStartDate(), log.getStartTime()));
+          } else {
+            log.endDateProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getEndDate(), log.getEndTime()));
+            log.endTimeProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getEndDate(), log.getEndTime()));
+          }
+
+          // Set initial value
+          LocalDate date = isStart ? log.getStartDate() : log.getEndDate();
+          LocalTime time = isStart ? log.getStartTime() : log.getEndTime();
+          refreshValue(date, time);
+        }
+
+        private void refreshValue(LocalDate date, LocalTime time) {
+          if (date != null && time != null) {
+            set(LocalDateTime.of(date, time));
+          } else {
+            set(null);
+          }
+        }
+      };
+    });
+
+    column.setCellFactory(col -> new TableCell<>() {
       private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
       @Override
-      protected void updateItem(LocalDateTime item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null) {
-          setText(null);
-        } else {
-          // Combine LocalDate and LocalTime into a formatted string
-          LogViewModel log = getTableView().getItems().get(getIndex());
-          if (log != null) {
-            LocalDate date = log.getStartDate(); // or getEndDate() for end column
-            LocalTime time = log.getStartTime(); // or getEndTime() for end column
-            if (date != null && time != null) {
-              setText(formatter.format(LocalDateTime.of(date, time)));
-            } else {
-              setText(null);
-            }
-          }
-        }
+      protected void updateItem(LocalDateTime dateTime, boolean empty) {
+        super.updateItem(dateTime, empty);
+        setText(empty || dateTime == null ? null : formatter.format(dateTime));
       }
-    };
+    });
   }
 
 
