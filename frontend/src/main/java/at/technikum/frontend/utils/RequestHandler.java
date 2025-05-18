@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 // Is responsible for sending the request to the backend via http
+@Log
 public class RequestHandler {
 
     private static final String BASE_URL_TOUR = "http://localhost:8080/api/tours";
@@ -41,7 +42,7 @@ public class RequestHandler {
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
-            // TODO: use try-with-resources to ensure the client is closed
+            // TODO: use try-with-resources to ensure the client is closed -> nicht notwendig?
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() == 201) {
@@ -51,8 +52,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-          //TODO: use logger
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -78,7 +78,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -100,7 +100,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -119,7 +119,7 @@ public class RequestHandler {
                         List<Tour> tours = Arrays.asList(mapper.readValue(body, Tour[].class));
                         callback.accept(tours);
                     } catch (Exception e) {
-                        e.printStackTrace(); // Use logger in real apps
+                        log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
                     }
                 });
     }
@@ -147,7 +147,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -171,7 +171,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -193,7 +193,7 @@ public class RequestHandler {
                         }
                     });
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
         }
     }
 
@@ -212,7 +212,7 @@ public class RequestHandler {
                         List<Logs> logs = Arrays.asList(mapper.readValue(body, Logs[].class));
                         callback.accept(logs);
                     } catch (Exception e) {
-                        e.printStackTrace(); // Use logger in real apps
+                        log.log(java.util.logging.Level.SEVERE, "Error while processing request", e);
                     }
                 });
     }
