@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
-import lombok.extern.java.Log;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,36 +24,39 @@ import java.util.UUID;
 public class TourTableViewModel {
 
   private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
-  private final ObservableList<TourViewModel> data = FXCollections.observableArrayList(
-          new TourViewModel(
-                  new Tour(
-                          UUID.randomUUID(),
-                          "Kahlsberg Wanderung",
-                          "Schöne Wanderung aufm Kahlsberg",
-                          "Nußdorf",
-                          "Kahlsberg",
-                          TransportType.CAR,
-                          100,
-                          120,
-                          new byte[0],
-                          new ArrayList<>())),
-          new TourViewModel(
-                  new Tour(
-                          UUID.randomUUID(),
-                          "Schneeberg Wanderung",
-                          "Schöne Wanderung aufm Schneeberg",
-                          "Schneeberg Startpunkt",
-                          "Schneeberg Spitze",
-                          TransportType.BIKE,
-                          100,
-                          120,
-                          new byte[0],
-                          new ArrayList<>())));
-
+  private final ObservableList<TourViewModel> data = FXCollections.observableArrayList();
 
   public TourTableViewModel() {
     // Touren direkt beim Initialisieren laden
-    if (System.getProperty("app.test") == null) loadTours();
+    if (System.getProperty("app.test") == null) {
+      loadTours();
+      return;
+    }
+    data.add(new TourViewModel(new Tour(
+            UUID.randomUUID(),
+            "Kahlsberg Wanderung",
+            "Schöne Wanderung aufm Kahlsberg",
+            "Nußdorf",
+            "Kahlsberg",
+            TransportType.CAR,
+            100,
+            120,
+            new byte[0],
+            new ArrayList<>())));
+
+
+    data.add(new TourViewModel(new Tour(
+            UUID.randomUUID(),
+            "Schneeberg Wanderung",
+            "Schöne Wanderung aufm Schneeberg",
+            "Schneeberg Startpunkt",
+            "Schneeberg Spitze",
+            TransportType.BIKE,
+            100,
+            120,
+            new byte[0],
+            new ArrayList<>())));
+    
     // Add sample logs to each tour
     for (TourViewModel tour : data) {
       addSampleLogsToTour(tour);
@@ -134,6 +136,7 @@ public class TourTableViewModel {
   }
 
   public void loadTours() {
+    // sets callback for the request handler to load tours
     RequestHandler.loadTours(tourList -> {
       for (Tour tour : tourList) {
         TourViewModel tvm = new TourViewModel(tour);
@@ -150,16 +153,16 @@ public class TourTableViewModel {
       }
     });
 
-    while(all_logs.size() > 0) {
-        for (TourViewModel tour : data) {
-          for (LogViewModel log : all_logs) {
-            if (tour.getId().equals(log.getTourId())) {
-              tour.getLogs().newLog(log);
-              all_logs.remove(log);
-              break;
-            }
+    while (!all_logs.isEmpty()) {
+      for (TourViewModel tour : data) {
+        for (LogViewModel log : all_logs) {
+          if (tour.getId().equals(log.getTourId())) {
+            tour.getLogs().getData().add(log);
+            all_logs.remove(log);
+            break;
           }
         }
+      }
     }
   }
 
