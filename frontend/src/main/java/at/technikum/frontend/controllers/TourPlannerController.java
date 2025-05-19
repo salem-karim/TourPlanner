@@ -1,6 +1,7 @@
 package at.technikum.frontend.controllers;
 
 import at.technikum.frontend.TourPlannerApplication;
+import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourTableViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
@@ -18,8 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import static at.technikum.frontend.utils.Localization.i18n;
 
 @Slf4j
 public class TourPlannerController implements Initializable {
@@ -40,6 +39,8 @@ public class TourPlannerController implements Initializable {
 
   @FXML
   private TourLogController tourLogsController;
+  
+  private final ResourceBundle i18n = AppProperties.getInstance().getI18n();
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

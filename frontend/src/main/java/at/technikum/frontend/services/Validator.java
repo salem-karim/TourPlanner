@@ -1,15 +1,17 @@
 package at.technikum.frontend.services;
 
+import at.technikum.frontend.utils.AppProperties;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-
-import static at.technikum.frontend.utils.Localization.i18n;
+import java.util.ResourceBundle;
 
 @Slf4j
 public abstract class Validator {
+  
+  protected final ResourceBundle i18n = AppProperties.getInstance().getI18n();
 
   public void showValidationError(List<String> errors) {
     Alert alert = new Alert(Alert.AlertType.ERROR);

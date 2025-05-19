@@ -3,20 +3,20 @@ package at.technikum.frontend.controllers;
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.services.TourValidator;
 import at.technikum.common.models.TransportType;
-import at.technikum.frontend.utils.Localization;
+import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourTableViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.StringConverter;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import static at.technikum.frontend.utils.Localization.i18n;
+import java.util.ResourceBundle;
 
 @SuperBuilder
 @Getter
@@ -39,7 +39,10 @@ public abstract class BaseTourController {
   protected TourViewModel tourViewModel;
   protected ListView<TourViewModel> toursListView;
 
+  protected final ResourceBundle i18n = AppProperties.getInstance().getI18n();
+
   // Flag to prevent duplicate initialization
+  @Builder.Default
   private boolean initialized = false;
 
   public void initialize() {
@@ -47,7 +50,7 @@ public abstract class BaseTourController {
       return;
     }
 
-    tourValidator = new TourValidator(i18n);
+    tourValidator = new TourValidator();
 
     if (tourViewModel == null) {
       tourViewModel = new TourViewModel();

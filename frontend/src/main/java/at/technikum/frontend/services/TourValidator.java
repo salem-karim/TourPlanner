@@ -1,19 +1,15 @@
 package at.technikum.frontend.services;
 
 import at.technikum.frontend.viewmodels.TourViewModel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 @Slf4j
+@NoArgsConstructor
 public class TourValidator extends Validator {
-  private final ResourceBundle i18n;
-
-  public TourValidator(ResourceBundle i18n) {
-    this.i18n = i18n;
-  }
 
   public boolean validateTour(TourViewModel tourViewModel) {
     List<String> errors = new ArrayList<>();

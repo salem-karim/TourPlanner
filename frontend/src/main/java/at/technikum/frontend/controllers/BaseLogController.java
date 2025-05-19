@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -21,8 +22,6 @@ import org.controlsfx.control.Rating;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
-import static at.technikum.frontend.utils.Localization.i18n;
 
 @Slf4j
 @SuperBuilder
@@ -49,6 +48,7 @@ public abstract class BaseLogController {
 
   protected LogValidator logValidator;
 
+  @Builder.Default
   private boolean initialized = false;
 
   public void initialize() {
@@ -56,7 +56,7 @@ public abstract class BaseLogController {
       return;
     }
 
-    logValidator = new LogValidator(i18n);
+    logValidator = new LogValidator();
 
     if (logViewModel == null) {
       logViewModel = new LogViewModel();

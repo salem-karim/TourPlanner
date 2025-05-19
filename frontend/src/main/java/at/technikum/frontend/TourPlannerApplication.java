@@ -1,6 +1,6 @@
 package at.technikum.frontend;
 
-import at.technikum.frontend.utils.Localization;
+import at.technikum.frontend.utils.AppProperties;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TourPlannerApplication extends Application {
@@ -19,7 +18,7 @@ public class TourPlannerApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    ResourceBundle i18n = Localization.getBundle();
+    ResourceBundle i18n = AppProperties.getInstance().getI18n();
     FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"), i18n);
     Scene scene = new Scene(fxmlLoader.load(), 1040, 600);
     stage.setTitle(i18n.getString("main.title"));

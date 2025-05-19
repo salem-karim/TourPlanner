@@ -22,8 +22,8 @@ import java.util.function.Consumer;
 @Slf4j
 public class RequestHandler {
 
-  private static final String BASE_URL_TOUR = "http://localhost:8080/api/tours";
-  private static final String BASE_URL_LOG = "http://localhost:8080/api/logs";
+  private static final String BASE_URL_TOUR = AppProperties.getInstance().getTourApiUrl();
+  private static final String BASE_URL_LOG = AppProperties.getInstance().getLogApiUrl();
   private static final HttpClient httpClient = HttpClient.newHttpClient();
   // needed for serialization of LocalDateTime
   private static final ObjectMapper mapper = new ObjectMapper()
