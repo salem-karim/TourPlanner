@@ -79,14 +79,15 @@ public abstract class BaseLogController {
           try {
             return LocalDate.parse(string, dateFormatter);
           } catch (Exception e) {
-            log.error("Error in parsing Date: ", e);
+            log.error("Error in parsing Date: {}", string);
+            throw new RuntimeException(e);
           }
         }
         return null;
       }
     };
     
-    // TODO: Harden validation of date input
+    // TODO: Harden validation of date, comment and distance
     startDate.setConverter(dateConverter);
     endDate.setConverter(dateConverter);
     startDate.setPromptText("DD.MM.YYYY");

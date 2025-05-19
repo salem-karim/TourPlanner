@@ -68,19 +68,19 @@
     </TextField>
 
     <!-- Difficulty -->
-    <Label text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+    <Label text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
 
     <!-- Total Distance -->
-    <Label text="%logInfo.totaldistance" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+    <Label text="%logInfo.totaldistance" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
-    <TextField fx:id="totalDistance" promptText="40 (km)" GridPane.columnIndex="1" GridPane.rowIndex="5">
+    <TextField fx:id="totalDistance" promptText="40 (km)" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <GridPane.margin>
         <Insets left="20.0" right="20.0" />
       </GridPane.margin>
@@ -92,7 +92,7 @@
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
-      <Rating fx:id="difficulty" maxHeight="-Infinity" prefWidth="335.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Rating fx:id="difficulty" maxHeight="-Infinity" prefWidth="335.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
       <Rating fx:id="rating" maxHeight="-Infinity" prefHeight="8.0" prefWidth="176.0" rating="4.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
   </GridPane>
   <fx:include fx:id="saveCancelButtonBar" source="ok_cancel_button_bar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
