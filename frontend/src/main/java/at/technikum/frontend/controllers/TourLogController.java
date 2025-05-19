@@ -2,6 +2,7 @@ package at.technikum.frontend.controllers;
 
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -53,10 +56,11 @@ public class TourLogController implements Initializable {
   }
 
   private void setupTableColumns() {
-    startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-    startDate.setCellFactory(column -> setupDateCellFactory());
-    endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-    endDate.setCellFactory(column -> setupDateCellFactory());
+    // Set up date columns using the reusable method
+    setupDateTimeColumn(startDate, true);
+    setupDateTimeColumn(endDate, false);
+
+    // Other column setup remains the same
     comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
@@ -66,21 +70,52 @@ public class TourLogController implements Initializable {
     logTable.getSelectionModel().selectFirst();
   }
 
-  private TableCell<LogViewModel, LocalDateTime> setupDateCellFactory() {
-    return new TableCell<>(){
-      private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-      
-      @Override
-      protected void updateItem(LocalDateTime item, boolean empty) {
-        super.updateItem(item, empty);
-        if (empty || item == null) {
-          setText(null);
-        } else {
-          setText(formatter.format(item));
+  private void setupDateTimeColumn(TableColumn<LogViewModel, LocalDateTime> column,
+                                   boolean isStart) {
+    column.setCellValueFactory(cellData -> {
+      LogViewModel log = cellData.getValue();
+      return new SimpleObjectProperty<>() {
+        {
+          // Create listeners for both date and time properties
+          if (isStart) {
+            log.startDateProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getStartDate(), log.getStartTime()));
+            log.startTimeProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getStartDate(), log.getStartTime()));
+          } else {
+            log.endDateProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getEndDate(), log.getEndTime()));
+            log.endTimeProperty().addListener((obs, oldVal, newVal) ->
+                    refreshValue(log.getEndDate(), log.getEndTime()));
+          }
+
+          // Set initial value
+          LocalDate date = isStart ? log.getStartDate() : log.getEndDate();
+          LocalTime time = isStart ? log.getStartTime() : log.getEndTime();
+          refreshValue(date, time);
         }
+
+        private void refreshValue(LocalDate date, LocalTime time) {
+          if (date != null && time != null) {
+            set(LocalDateTime.of(date, time));
+          } else {
+            set(null);
+          }
+        }
+      };
+    });
+
+    column.setCellFactory(col -> new TableCell<>() {
+      private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+      @Override
+      protected void updateItem(LocalDateTime dateTime, boolean empty) {
+        super.updateItem(dateTime, empty);
+        setText(empty || dateTime == null ? null : formatter.format(dateTime));
       }
-    };
+    });
   }
+
 
   private void setupButtonBar() {
     NewEditDeleteButtonBarController controller = (NewEditDeleteButtonBarController)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import at.technikum.frontend.utils.TimePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.Rating?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1">
   <Label fx:id="mainLabel" alignment="CENTER" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0" text="%logInfo.title" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -39,7 +41,7 @@
     </Label>
     <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
       <DatePicker fx:id="startDate" prefWidth="300.0" promptText="24.12.2004" />
-      <TextField fx:id="startTime" prefWidth="154.0" promptText="hh:mm" />
+      <TimePicker fx:id="startTime" defaultTime="08:00" prefWidth="154.0" />
     </HBox>
 
     <!-- End Date -->
@@ -50,7 +52,7 @@
     </Label>
     <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
       <DatePicker fx:id="endDate" prefWidth="300.0" promptText="24.12.2004" />
-      <TextField fx:id="endTime" prefWidth="154.0" promptText="hh:mm" />
+      <TimePicker fx:id="endTime" defaultTime="14:30" prefWidth="154.0" />
     </HBox>
 
     <!-- Comment -->
@@ -66,40 +68,32 @@
     </TextField>
 
     <!-- Difficulty -->
-    <Label text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+    <Label text="%logInfo.difficulty" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
-    <TextField fx:id="difficulty" promptText="1-5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-      <GridPane.margin>
-        <Insets left="20.0" right="20.0" />
-      </GridPane.margin>
-    </TextField>
 
     <!-- Total Distance -->
-    <Label text="%logInfo.totaldistance" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+    <Label text="%logInfo.totaldistance" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
-    <TextField fx:id="totalDistance" promptText="40 (km)" GridPane.columnIndex="1" GridPane.rowIndex="4">
+    <TextField fx:id="totalDistance" promptText="40 (km)" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <GridPane.margin>
         <Insets left="20.0" right="20.0" />
       </GridPane.margin>
     </TextField>
 
     <!-- Rating -->
-    <Label text="%logInfo.rating" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+    <Label text="%logInfo.rating" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
       <GridPane.margin>
         <Insets left="20.0" />
       </GridPane.margin>
     </Label>
-    <TextField fx:id="rating" promptText="1-5" GridPane.columnIndex="1" GridPane.rowIndex="5">
-      <GridPane.margin>
-        <Insets left="20.0" right="20.0" />
-      </GridPane.margin>
-    </TextField>
+      <Rating fx:id="difficulty" maxHeight="-Infinity" prefWidth="335.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+      <Rating fx:id="rating" maxHeight="-Infinity" prefHeight="8.0" prefWidth="176.0" rating="4.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
   </GridPane>
   <fx:include fx:id="saveCancelButtonBar" source="ok_cancel_button_bar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 

@@ -36,8 +36,10 @@ public class LogTableViewModel {
     logViewModel.setDifficulty(otherViewModel.getDifficulty());
     logViewModel.setTotalDistance(otherViewModel.getTotalDistance());
     logViewModel.setRating(otherViewModel.getRating());
-    logViewModel.setStartDateTime(otherViewModel.getStartDateTime());
-    logViewModel.setEndDateTime(otherViewModel.getEndDateTime());
+    logViewModel.setStartDate(otherViewModel.getStartDate());
+    logViewModel.setEndDate(otherViewModel.getEndDate());
+    logViewModel.setStartTime(otherViewModel.getStartTime());
+    logViewModel.setEndTime(otherViewModel.getEndTime());
 
     RequestHandler.putLog(logViewModel);
   }
