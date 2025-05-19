@@ -11,10 +11,11 @@ import java.util.ResourceBundle;
 
 // TODO: change this to a singleton
 @Slf4j
-@Getter
 public class AppProperties {
   private static AppProperties instance;
+  @Getter
   public ResourceBundle i18n;
+  @Getter
   private Locale locale;
   private final Properties appProperties;
 
@@ -46,10 +47,6 @@ public class AppProperties {
     i18n = ResourceBundle.getBundle("at.technikum.frontend.i18n", locale);
   }
 
-  public ResourceBundle getBundle() {
-    return i18n;
-  }
-
   public String get(String key) {
     return i18n.getString(key);
   }
@@ -69,5 +66,4 @@ public class AppProperties {
   public String getLogApiUrl() {
     return getProperty("LogAPIURL");
   }
-  
 }

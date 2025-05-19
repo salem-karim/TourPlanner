@@ -28,6 +28,7 @@ public class TourPlannerController implements Initializable {
   @FXML
   public SplitPane tourInfo;
   public AnchorPane tourLogs;
+  public MenuItem englishButton, germanButton, polishButton;
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @FXML
@@ -39,8 +40,6 @@ public class TourPlannerController implements Initializable {
 
   @FXML
   private TourLogController tourLogsController;
-  
-  private final ResourceBundle i18n = AppProperties.getInstance().getI18n();
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -58,6 +57,9 @@ public class TourPlannerController implements Initializable {
       tourLogsController.getLogTable().getSelectionModel().selectFirst();
     }
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
+    englishButton.setOnAction(event -> changeLanguage("en"));
+    germanButton.setOnAction(event -> changeLanguage("de"));
+    polishButton.setOnAction(event -> changeLanguage("pl"));
   }
 
   private void initializeListView() {
@@ -135,9 +137,9 @@ public class TourPlannerController implements Initializable {
 
     // Show confirmation alert
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle(i18n.getString("delete.confirmation.title"));
-    alert.setHeaderText(i18n.getString("delete.confirmation.header"));
-    alert.setContentText(i18n.getString("delete.confirmation.content"));
+    alert.setTitle(AppProperties.getInstance().getI18n().getString("delete.confirmation.title"));
+    alert.setHeaderText(AppProperties.getInstance().getI18n().getString("delete.confirmation.header"));
+    alert.setContentText(AppProperties.getInstance().getI18n().getString("delete.confirmation.content"));
 
     var result = alert.showAndWait();
     if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -159,7 +161,7 @@ public class TourPlannerController implements Initializable {
 
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_tours.fxml"),
-              i18n);
+              AppProperties.getInstance().getI18n());
       EditTourController controller = EditTourController.builder()
               .tourTableViewModel(tourTableViewModel)
               .tourViewModel(new TourViewModel(selectedTour))
@@ -171,13 +173,13 @@ public class TourPlannerController implements Initializable {
       final Parent root = loader.load();
       final Stage stage = new Stage();
 
-      stage.setTitle(i18n.getString("editTour.edit"));
+      stage.setTitle(AppProperties.getInstance().getI18n().getString("editTour.edit"));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(tourListView.getScene().getWindow());
       stage.setScene(new Scene(root));
 
-      controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
-      controller.getMainLabel().setText(i18n.getString("editTour.edit"));
+      controller.okCancelController.getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.save"));
+      controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editTour.edit"));
 
       stage.showAndWait();
     } catch (IOException e) {
@@ -188,7 +190,7 @@ public class TourPlannerController implements Initializable {
   private void onNewButtonClicked() {
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_tours.fxml"),
-              i18n);
+              AppProperties.getInstance().getI18n());
       NewTourController controller = NewTourController.builder()
               .tourTableViewModel(tourTableViewModel)
               .tourViewModel(new TourViewModel())
@@ -199,18 +201,41 @@ public class TourPlannerController implements Initializable {
       final Parent root = loader.load();
       final Stage stage = new Stage();
 
-      stage.setTitle(i18n.getString("editTour.new"));
+      stage.setTitle(AppProperties.getInstance().getI18n().getString("editTour.new"));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(tourListView.getScene().getWindow());
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.getOkCancelController().getOkButton().setText(i18n.getString("button.create"));
-      controller.getMainLabel().setText(i18n.getString("editTour.new"));
+      controller.getOkCancelController().getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.create"));
+      controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editTour.new"));
 
       stage.showAndWait();
     } catch (Exception e) {
       log.error(e.getMessage());
+    }
+  }
+
+  private void changeLanguage(String newLang) {
+    if (newLang.equals(AppProperties.getInstance().getLocale().getLanguage())) return;
+
+    // Update the language
+    AppProperties.getInstance().setLanguage(newLang);
+
+    try {
+      // Reload the entire scene with the new language
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/main_window.fxml"),
+              AppProperties.getInstance().getI18n());
+      Parent root = loader.load();
+
+      // Get the current stage
+      Stage stage = (Stage) tourListView.getScene().getWindow();
+
+      // Replace the scene content
+      Scene scene = new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight());
+      stage.setScene(scene);
+    } catch (IOException e) {
+      log.error("Failed to reload view after language change", e);
     }
   }
 }

@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class TourPlannerApplication extends Application {
   static public void closeWindow(Node node) {
@@ -18,10 +17,9 @@ public class TourPlannerApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    ResourceBundle i18n = AppProperties.getInstance().getI18n();
-    FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"), i18n);
+    FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"), AppProperties.getInstance().getI18n());
     Scene scene = new Scene(fxmlLoader.load(), 1040, 600);
-    stage.setTitle(i18n.getString("main.title"));
+    stage.setTitle(AppProperties.getInstance().getI18n().getString("main.title"));
     stage.setScene(scene);
     stage.show();
   }

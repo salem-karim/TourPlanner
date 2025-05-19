@@ -47,8 +47,6 @@ public class TourLogController implements Initializable {
   @Setter
   private TourViewModel selectedTour;
 
-  private final ResourceBundle i18n = AppProperties.getInstance().getI18n();
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     setupTableColumns();
@@ -145,25 +143,25 @@ public class TourLogController implements Initializable {
     }
 
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), AppProperties.getInstance().getI18n());
       NewLogController controller = NewLogController.builder()
               .logTableViewModel(selectedTour.getLogs())
               .selectedTour(selectedTour)
-              .mainLabel(new Label(i18n.getString("editLog.new")))
+              .mainLabel(new Label(AppProperties.getInstance().getI18n().getString("editLog.new")))
               .logViewModel(new LogViewModel())
               .build();
       loader.setController(controller);
 
       final Parent root = loader.load();
       final Stage stage = new Stage();
-      stage.setTitle(i18n.getString("editLog.new"));
+      stage.setTitle(AppProperties.getInstance().getI18n().getString("editLog.new"));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(logTable.getScene().getWindow());
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.okCancelController.getOkButton().setText(i18n.getString("button.create"));
-      controller.getMainLabel().setText(i18n.getString("editLog.new"));
+      controller.okCancelController.getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.create"));
+      controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editLog.new"));
 
       stage.showAndWait();
     } catch (IOException e) {
@@ -184,7 +182,7 @@ public class TourLogController implements Initializable {
     }
 
     try {
-      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), i18n);
+      final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"), AppProperties.getInstance().getI18n());
       EditLogController controller = EditLogController.builder()
               .logTableViewModel(selectedTour.getLogs())
               .selectedTour(selectedTour)
@@ -196,14 +194,14 @@ public class TourLogController implements Initializable {
       final Parent root = loader.load();
       final Stage stage = new Stage();
 
-      stage.setTitle(i18n.getString("editLog.edit"));
+      stage.setTitle(AppProperties.getInstance().getI18n().getString("editLog.edit"));
       stage.initModality(Modality.WINDOW_MODAL);
       stage.initOwner(logTable.getScene().getWindow());
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.okCancelController.getOkButton().setText(i18n.getString("button.save"));
-      controller.getMainLabel().setText(i18n.getString("editLog.edit"));
+      controller.okCancelController.getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.save"));
+      controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editLog.edit"));
 
       stage.showAndWait();
     } catch (IOException e) {
@@ -222,9 +220,9 @@ public class TourLogController implements Initializable {
     }
 
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle(i18n.getString("delete.confirmation.title"));
-    alert.setHeaderText(i18n.getString("delete.confirmation.header"));
-    alert.setContentText(i18n.getString("delete.confirmation.content"));
+    alert.setTitle(AppProperties.getInstance().getI18n().getString("delete.confirmation.title"));
+    alert.setHeaderText(AppProperties.getInstance().getI18n().getString("delete.confirmation.header"));
+    alert.setContentText(AppProperties.getInstance().getI18n().getString("delete.confirmation.content"));
 
     var result = alert.showAndWait();
     if (result.isPresent() && result.get() == ButtonType.OK) {

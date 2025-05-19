@@ -17,7 +17,11 @@
       <MenuItem mnemonicParsing="false" text="%button.saveas"/>
       <MenuItem mnemonicParsing="false" text="%button.revert"/>
       <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem mnemonicParsing="false" text="%button.preferences"/>
+      <Menu mnemonicParsing="false" text="%button.preferences">
+        <MenuItem fx:id="englishButton" mnemonicParsing="false" text="English"/>
+        <MenuItem fx:id="germanButton" mnemonicParsing="false" text="Deutsch"/>
+        <MenuItem fx:id="polishButton" mnemonicParsing="false" text="Polski"/>
+      </Menu>
       <SeparatorMenuItem mnemonicParsing="false"/>
       <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit"/>
     </Menu>

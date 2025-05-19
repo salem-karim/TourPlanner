@@ -1,5 +1,6 @@
 package at.technikum.frontend.services;
 
+import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,19 +17,19 @@ public class TourValidator extends Validator {
 
     // Check for empty required fields
     if (isEmpty(tourViewModel.getName())) {
-      errors.add(i18n.getString("validation.name.required"));
+      errors.add(AppProperties.getInstance().getI18n().getString("validation.name.required"));
     }
 
     if (isEmpty(tourViewModel.getFrom())) {
-      errors.add(i18n.getString("validation.from.required"));
+      errors.add(AppProperties.getInstance().getI18n().getString("validation.from.required"));
     }
 
     if (isEmpty(tourViewModel.getTo())) {
-      errors.add(i18n.getString("validation.to.required"));
+      errors.add(AppProperties.getInstance().getI18n().getString("validation.to.required"));
     }
 
     if (tourViewModel.getTransportType() == null) {
-      errors.add(i18n.getString("validation.transportType.required"));
+      errors.add(AppProperties.getInstance().getI18n().getString("validation.transportType.required"));
     }
 
     // If validation failed, show error message

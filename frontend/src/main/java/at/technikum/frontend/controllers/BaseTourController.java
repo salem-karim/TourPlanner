@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ResourceBundle;
-
 @SuperBuilder
 @Getter
 @NoArgsConstructor
@@ -39,8 +37,6 @@ public abstract class BaseTourController {
   protected TourViewModel tourViewModel;
   protected ListView<TourViewModel> toursListView;
 
-  protected final ResourceBundle i18n = AppProperties.getInstance().getI18n();
-
   // Flag to prevent duplicate initialization
   @Builder.Default
   private boolean initialized = false;
@@ -61,7 +57,7 @@ public abstract class BaseTourController {
       @Override
       public String toString(TransportType type) {
         if (type == null) return "";
-        return i18n.getString("tourInfo.transportType." + type.name().toLowerCase());
+        return AppProperties.getInstance().getI18n().getString("tourInfo.transportType." + type.name().toLowerCase());
       }
 
       @Override
