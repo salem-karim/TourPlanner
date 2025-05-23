@@ -69,7 +69,7 @@ public class TourTableViewModel {
     // Convert to Tour (model from common)
     Tour tour = tvm.toTour();
 
-    RequestHandler.postTour(tour);
+    RequestHandler.getInstance().postTour(tour);
   }
 
   public void updateTour(final TourViewModel otherViewModel, final TourViewModel tourViewModel) {
@@ -83,20 +83,20 @@ public class TourTableViewModel {
 //    tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
 //    tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
 
-    RequestHandler.putTour(tourViewModel);
+    RequestHandler.getInstance().putTour(tourViewModel);
   }
 
 
   public void deleteTour(TourViewModel tourViewModel) {
     data.remove(tourViewModel);
 
-    RequestHandler.deleteTour(tourViewModel.getId());
+    RequestHandler.getInstance().deleteTour(tourViewModel.getId());
   }
 
   public void deleteTour(int index) {
     TourViewModel removed = data.remove(index);
     if (removed != null) {
-      RequestHandler.deleteTour(removed.getId());
+      RequestHandler.getInstance().deleteTour(removed.getId());
     }
   }
 
@@ -137,7 +137,7 @@ public class TourTableViewModel {
 
   public void loadTours() {
     // sets callback for the request handler to load tours
-    RequestHandler.loadTours(tourList -> {
+    RequestHandler.getInstance().loadTours(tourList -> {
       for (Tour tour : tourList) {
         TourViewModel tvm = new TourViewModel(tour);
         data.add(tvm);
@@ -146,7 +146,7 @@ public class TourTableViewModel {
 
     // Load logs for each tour and add to the TourViewModel
     List<LogViewModel> all_logs = new ArrayList<>(List.of());
-    RequestHandler.loadLogs(logs -> {
+    RequestHandler.getInstance().loadLogs(logs -> {
       for (Logs log : logs) {
         LogViewModel lvm = new LogViewModel(log);
         all_logs.add(lvm);

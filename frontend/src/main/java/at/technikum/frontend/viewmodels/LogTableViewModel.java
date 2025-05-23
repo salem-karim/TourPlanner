@@ -28,7 +28,7 @@ public class LogTableViewModel {
 
   public void newLog(LogViewModel log) {
     data.add(log);
-    RequestHandler.postLog(log);
+    RequestHandler.getInstance().postLog(log);
   }
 
   public void updateLog(final LogViewModel otherViewModel, final LogViewModel logViewModel) {
@@ -41,19 +41,19 @@ public class LogTableViewModel {
     logViewModel.setStartTime(otherViewModel.getStartTime());
     logViewModel.setEndTime(otherViewModel.getEndTime());
 
-    RequestHandler.putLog(logViewModel);
+    RequestHandler.getInstance().putLog(logViewModel);
   }
 
 
   public void deleteLog(LogViewModel logViewModel) {
     data.remove(logViewModel);
-    RequestHandler.deleteLog(logViewModel.getId());
+    RequestHandler.getInstance().deleteLog(logViewModel.getId());
   }
 
   public void deleteLog(int index) {
     LogViewModel removed = data.remove(index);
     if (removed != null) {
-      RequestHandler.deleteLog(removed.getId());
+      RequestHandler.getInstance().deleteLog(removed.getId());
     }
   }
 
