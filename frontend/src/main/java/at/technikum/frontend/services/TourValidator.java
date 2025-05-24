@@ -11,6 +11,10 @@ import java.util.List;
 @Slf4j
 @NoArgsConstructor
 public class TourValidator extends Validator {
+  
+  //TODO: Add methods to validate only specific fields like:
+  // validateString for Name and Description
+  // use the API to validate From and To locations
 
   public boolean validateTour(TourViewModel tourViewModel) {
     List<String> errors = new ArrayList<>();

@@ -9,7 +9,8 @@ import java.util.List;
 
 @Slf4j
 public abstract class Validator {
-
+  
+  // TODO: Change this to show the warning label in the UI instead of using an alert dialog
   public void showValidationError(List<String> errors) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle(AppProperties.getInstance().getI18n().getString("validation.error.title"));

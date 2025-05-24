@@ -12,6 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class LogValidator extends Validator {
 
+  //TODO: Add methods to validate only specific fields like:
+  // validateComment for the comment field
+  // validateDate for start and end date
+
   public boolean validateLog(LogViewModel logViewModel) {
     List<String> errors = new ArrayList<>();
 
