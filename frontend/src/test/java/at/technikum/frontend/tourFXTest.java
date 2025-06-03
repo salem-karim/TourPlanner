@@ -53,10 +53,10 @@ class MainViewModelTest {
 
     assertThat(robot.window("New Tour")).isShowing();
 
-    // robot.clickOn("#cancelButton");
+    robot.clickOn("#cancelButton");
 
-    // Verify that the new window is closed -> problem
-    // assertThat(robot.window("Tour Planner")).isShowing();
+    // Verify that the new window is closed
+    assertThat(robot.window("Tour Planner")).isShowing();
 
   }
 
@@ -67,10 +67,15 @@ class MainViewModelTest {
 
     assertThat(robot.window("Edit Tour")).isShowing();
 
-    // robot.clickOn("#cancelButton");
+    robot.clickOn("#cancelButton");
+    robot.sleep(250);
 
-    // Verify that the new window is closed -> problem
-    // assertThat(robot.window("Edit Tour")).isNotShowing();
+    // Check that "Edit Tour" window is not present in the list of open windows
+    boolean editTourWindowOpen = robot.listWindows().stream()
+            .filter(window -> window instanceof Stage)
+            .map(window -> ((Stage) window).getTitle())
+            .anyMatch(title -> "Edit Tour".equals(title));
+    Assertions.assertThat(editTourWindowOpen).isFalse();
   }
 
   @Test
@@ -96,10 +101,9 @@ class MainViewModelTest {
     assertThat(firstItemName).isEqualTo("Kahlsberg Wanderung");
   }
 
+  //todo: problem with transport button
   @Test
   void testCreatenewTour(FxRobot robot) {
-
-
     robot.clickOn("#newButton");
     robot.sleep(500);
     robot.clickOn("#name");
@@ -115,15 +119,16 @@ class MainViewModelTest {
     robot.write("Test Ende");
 
     robot.clickOn("#transportType");
-    robot.clickOn("Car");
+    robot.clickOn("#Car");
 
     robot.clickOn("#okButton");
+    robot.sleep(500); // Give time for UI to update
 
     ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
-    TourViewModel firstItem = listView.getItems().getLast();
-    String firstItemName = firstItem.getName();
+    TourViewModel lastItem = listView.getItems().getLast();
+    String lastItemName = lastItem.getName();
 
-    assertThat(firstItemName).isEqualTo("Test Wanderung");
+    assertThat(lastItemName).isEqualTo("Test Wanderung");
   }
 
   @Test
@@ -143,6 +148,92 @@ class MainViewModelTest {
     String firstItemName = firstItem.getName();
 
     assertThat(firstItemName).isEqualTo("Andere Wanderung");
+  }
+
+  @Test
+  void testDeleteTourEntry(FxRobot robot) {
+    ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
+    int initialSize = listView.getItems().size();
+
+    robot.clickOn("#deleteButton");
+    robot.clickOn("OK");
+    robot.sleep(250);
+
+    int newSize = listView.getItems().size();
+    Assertions.assertThat(newSize).isEqualTo(initialSize - 1);
+  }
+
+  // todo:all logs test dont work
+
+
+  @Test
+  void testCreateLog(FxRobot robot) {
+    // Select a tour
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+
+    // Go to logs page
+    robot.clickOn("#logsMenu");
+    robot.sleep(250);
+
+    // Create new log
+    robot.clickOn("#newLogButton");
+    robot.sleep(250);
+
+    robot.clickOn("#logComment");
+    robot.write("Test log comment");
+
+    robot.clickOn("#logOkButton");
+    robot.sleep(250);
+
+    ListView<?> logListView = robot.lookup("#logListView").query();
+    boolean found = logListView.getItems().stream()
+            .anyMatch(item -> item.toString().contains("Test log comment"));
+    Assertions.assertThat(found).isTrue();
+  }
+
+  @Test
+  void testEditLog(FxRobot robot) {
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+    robot.clickOn("#logsButton");
+    robot.sleep(250);
+
+    ListView<?> logListView = robot.lookup("#logListView").query();
+    robot.interact(() -> logListView.getSelectionModel().selectFirst());
+
+    robot.clickOn("#editLogButton");
+    robot.sleep(250);
+
+    robot.clickOn("#logComment");
+    robot.eraseText(50);
+    robot.write("Edited log comment");
+
+    robot.clickOn("#logOkButton");
+    robot.sleep(250);
+
+    boolean found = logListView.getItems().stream()
+            .anyMatch(item -> item.toString().contains("Edited log comment"));
+    Assertions.assertThat(found).isTrue();
+  }
+
+  @Test
+  void testDeleteLog(FxRobot robot) {
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+    robot.clickOn("#logsButton");
+    robot.sleep(250);
+
+    ListView<?> logListView = robot.lookup("#logListView").query();
+    int initialSize = logListView.getItems().size();
+
+    robot.interact(() -> logListView.getSelectionModel().selectFirst());
+    robot.clickOn("#deleteLogButton");
+    robot.clickOn("OK");
+    robot.sleep(250);
+
+    int newSize = logListView.getItems().size();
+    Assertions.assertThat(newSize).isEqualTo(initialSize - 1);
   }
 
 }
