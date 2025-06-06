@@ -15,12 +15,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Getter;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 @Setter
+@Getter
 @NoArgsConstructor
 public class NewEditDeleteButtonBarController implements Initializable {
 

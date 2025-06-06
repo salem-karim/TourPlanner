@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 # Kill background processes on script exit
-trap 'kill $(jobs -p); docker-compose down' EXIT
+cleanup() {
+  echo "Shutting down backend and docker..."
+  jobs -p | xargs -r kill
+  docker-compose down
+}
+trap cleanup EXIT
 
 # Build only the parent POM and common module
 ./mvnw clean install -N

@@ -18,6 +18,11 @@ timeout /T 4 /NOBREAK
 :: Start frontend (JavaFX)
 call mvnw javafx:run -pl frontend
 
-:: Trap Ctrl+C to stop background processes and docker-compose
-:: Killing processes
-trap "kill %BACKEND_PID% && docker-compose down" EXIT
+echo Press any key to stop the backend and exit.
+:: Wait for user input
+pause >nul
+:: Kill the backend process
+taskkill /F /PID %BACKEND_PID%
+:: Stop docker-compose
+docker-compose down
+

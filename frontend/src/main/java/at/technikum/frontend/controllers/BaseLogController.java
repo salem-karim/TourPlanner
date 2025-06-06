@@ -117,6 +117,9 @@ public abstract class BaseLogController {
     });
 
     okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
+    
+    okCancelController.getCancelButton().setId("logCancelButton");
+    okCancelController.getOkButton().setId("logOkButton");
 
     initialized = true;
   }
