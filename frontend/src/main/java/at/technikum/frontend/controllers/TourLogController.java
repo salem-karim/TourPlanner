@@ -127,6 +127,7 @@ public class TourLogController implements Initializable {
     controller.getNewButton().setId("newLogButton");
     controller.getEditButton().setId("editLogButton");
     controller.getDeleteButton().setId("deleteLogButton");
+    logTable.setId("logTable");
   }
 
   public void updateSelectedTour(TourViewModel tour) {

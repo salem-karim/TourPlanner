@@ -120,6 +120,9 @@ public abstract class BaseLogController {
     
     okCancelController.getCancelButton().setId("logCancelButton");
     okCancelController.getOkButton().setId("logOkButton");
+    startDate.setId("logStartDate");
+    endDate.setId("logEndDate");
+    totalDistance.setId("logTotalDistance");
 
     initialized = true;
   }

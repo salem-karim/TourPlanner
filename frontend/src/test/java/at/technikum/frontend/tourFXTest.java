@@ -157,9 +157,7 @@ class MainViewModelTest {
     Assertions.assertThat(newSize).isEqualTo(initialSize - 1);
   }
 
-  // todo:all logs test dont work
-
-
+  // todo:testCreateLog has problems with Datepicker -> cant set date manually
   @Test
   void testCreateLog(FxRobot robot) {
     // Select a tour
@@ -172,14 +170,24 @@ class MainViewModelTest {
     // Create new log
     robot.clickOn("#newLogButton");
 
+    // Set the date (assuming DatePicker)
+    robot.clickOn("#logStartDate");
+    robot.write("01.01.2024"); // Use the correct format for your DatePicker
+    robot.clickOn("#logEndDate");
+    robot.write("02.01.2024"); // Use the correct format for your DatePicker
+
+    // Fill required fields
     robot.clickOn("#logComment");
     robot.write("Test log comment");
-    
-    //TODO: Still needs to set the date to be valid
+
+    robot.clickOn("#logTotalDistance");
+    robot.write("30"); // Use the correct format for your DatePicker
+
     robot.clickOn("#logOkButton");
 
-    ListView<?> logListView = robot.lookup("#logListView").query();
-    boolean found = logListView.getItems().stream()
+    // Now check if the log was added
+    TableView<?> logTable = robot.lookup("#logTable").query();
+    boolean found = logTable.getItems().stream()
             .anyMatch(item -> item.toString().contains("Test log comment"));
     Assertions.assertThat(found).isTrue();
   }
@@ -210,6 +218,46 @@ class MainViewModelTest {
   }
 
   @Test
+  void testEditLogAndCancel(FxRobot robot) {
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+    robot.clickOn("#LogsTab");
+
+    TableView<?> logTable = robot.lookup("#logTable").query();
+    robot.interact(() -> logTable.getSelectionModel().selectFirst());
+
+    robot.clickOn("#editLogButton");
+
+    robot.clickOn("#logComment");
+    robot.eraseText(50);
+    robot.write("Edited log comment");
+    robot.clickOn("#logCancelButton");
+
+    TableColumn<?, String> commentColumn = (TableColumn<?, String>) logTable.getColumns().stream()
+            .filter(col -> "Comment".equals(col.getText()) || "comment".equals(col.getId()))
+            .findFirst()
+            .orElseThrow();
+
+    String actualComment = commentColumn.getCellData(0);
+    Assertions.assertThat(actualComment).isEqualTo("Great weather, enjoyed the hike!");
+  }
+
+  @Test
+  void testEditMultipleLogsAndFail(FxRobot robot) {
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+    robot.clickOn("#LogsTab");
+
+    TableView<?> logTable = robot.lookup("#logTable").query();
+    // Select multiple logs
+    robot.interact(() -> logTable.getSelectionModel().selectIndices(0, 1));
+
+    // Check that the edit button is disabled
+    javafx.scene.control.Button editLogButton = robot.lookup("#editLogButton").queryButton();
+    assertThat(editLogButton.isDisabled()).isTrue();
+  }
+
+  @Test
   void testDeleteLog(FxRobot robot) {
     ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
     robot.interact(() -> tourListView.getSelectionModel().selectFirst());
@@ -226,4 +274,22 @@ class MainViewModelTest {
     Assertions.assertThat(newSize).isEqualTo(initialSize - 1);
   }
 
+  @Test
+  void testDeleteMultipleLogs(FxRobot robot) {
+    ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
+
+    robot.interact(() -> tourListView.getSelectionModel().selectFirst());
+
+    robot.clickOn("#LogsTab");
+
+    TableView<?> logListView = robot.lookup("#logTable").query();
+    int initialSize = logListView.getItems().size();
+
+    robot.interact(() -> logListView.getSelectionModel().selectIndices(0, 1));
+    robot.clickOn("#deleteLogButton");
+    robot.clickOn("OK");
+
+    int newSize = logListView.getItems().size();
+    Assertions.assertThat(newSize).isEqualTo(initialSize - 2);
+  }
 }
