@@ -7,10 +7,8 @@ import at.technikum.frontend.viewmodels.LogTableViewModel;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import lombok.Builder;
@@ -29,7 +27,7 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 public abstract class BaseLogController {
   @FXML
-  protected Label mainLabel;
+  protected Label mainLabel, startDateError, endDateError, totalDistanceError, commentError;
   @FXML
   protected ButtonBar saveCancelButtonBar;
   @FXML
@@ -40,7 +38,9 @@ public abstract class BaseLogController {
   protected TimePicker startTime, endTime;
   @FXML
   protected Rating difficulty, rating;
-  
+  @FXML
+  protected AnchorPane LogPane;
+
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
   protected LogViewModel logViewModel;
@@ -61,7 +61,7 @@ public abstract class BaseLogController {
     if (logViewModel == null) {
       logViewModel = new LogViewModel();
     }
-        // Configure date picker
+    // Configure date picker
     StringConverter<LocalDate> dateConverter = new StringConverter<>() {
       private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
@@ -86,7 +86,7 @@ public abstract class BaseLogController {
         return null;
       }
     };
-    
+
     // TODO: Harden validation of date, comment and distance
     startDate.setConverter(dateConverter);
     endDate.setConverter(dateConverter);
@@ -94,8 +94,11 @@ public abstract class BaseLogController {
     endDate.setPromptText("DD.MM.YYYY");
 
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
-    totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
-    totalDistance.setText("");
+    totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter(""));
+    // only empty the Text If it not 0
+    if (logViewModel.getTotalDistance() == 0.0) {
+      totalDistance.setText("");
+    }
     startDate.valueProperty().bindBidirectional(logViewModel.startDateProperty());
     endDate.valueProperty().bindBidirectional(logViewModel.endDateProperty());
     // Bind the time pickers value to the ViewModel not the other way around
@@ -104,12 +107,19 @@ public abstract class BaseLogController {
     logViewModel.difficultyProperty().bindBidirectional(difficulty.ratingProperty());
     logViewModel.ratingProperty().bindBidirectional(rating.ratingProperty());
 
+    totalDistance.setTextFormatter(new TextFormatter<>(change -> {
+      String newText = change.getControlNewText();
+      return newText.matches("\\d*\\.?\\d{0,2}") ? change : null;
+    }));
+
 
     // Set up OK/Cancel button handlers
-    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
-            .getProperties()
-            .get("okCancelButtonBarController");
-
+    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar.getProperties().get("okCancelButtonBarController");
+    
+    // TODO: add 16 to the height of the AnchorPane per Error Label
+    //  (which gets set to visible and set the height to 16)
+    //  so AnchorPane height goes from 456 to 488, 504, 520
+    //  also set the border of the TextField/ DatePicker to red
     okCancelController.setOkButtonListener(event -> {
       if (logValidator.validateLog(logViewModel)) {
         onSaveButtonClicked();
@@ -117,7 +127,7 @@ public abstract class BaseLogController {
     });
 
     okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
-    
+
     okCancelController.getCancelButton().setId("logCancelButton");
     okCancelController.getOkButton().setId("logOkButton");
     startDate.setId("logStartDate");

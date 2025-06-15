@@ -19,7 +19,7 @@ public class LogViewModel {
   private final ObjectProperty<UUID> tourId = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
-  private final IntegerProperty totalDistance = new SimpleIntegerProperty();
+  private final DoubleProperty totalDistance = new SimpleDoubleProperty();
   private final IntegerProperty rating = new SimpleIntegerProperty();
 
   public LogViewModel(final Logs log) {
@@ -95,7 +95,7 @@ public class LogViewModel {
     return difficulty.get();
   }
 
-  public int getTotalDistance() {
+  public double getTotalDistance() {
     return totalDistance.get();
   }
 
@@ -136,7 +136,7 @@ public class LogViewModel {
     return difficulty;
   }
 
-  public IntegerProperty totalDistanceProperty() {
+  public DoubleProperty totalDistanceProperty() {
     return totalDistance;
   }
 
@@ -172,7 +172,7 @@ public class LogViewModel {
     this.difficulty.set(difficulty);
   }
 
-  public void setTotalDistance(int totalDistance) {
+  public void setTotalDistance(double totalDistance) {
     this.totalDistance.set(totalDistance);
   }
 

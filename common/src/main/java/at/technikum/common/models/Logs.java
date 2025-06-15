@@ -28,7 +28,7 @@ public class Logs {
   private LocalDateTime end_date_time;
   
   @Column(name = "distance_km")
-  private int total_distance;
+  private double total_distance;
 
   private String comment;
 
