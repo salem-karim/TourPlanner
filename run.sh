@@ -4,7 +4,7 @@
 cleanup() {
   echo "Shutting down backend and docker..."
   jobs -p | xargs -r kill
-  docker-compose down
+  docker compose down
 }
 trap cleanup EXIT
 

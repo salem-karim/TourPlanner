@@ -202,8 +202,8 @@ public class TourPlannerController implements Initializable {
       final Stage stage = new Stage();
 
       stage.setTitle(AppProperties.getInstance().getI18n().getString("editTour.new"));
-//      stage.initModality(Modality.WINDOW_MODAL);
-//      stage.initOwner(tourListView.getScene().getWindow());
+      stage.initModality(Modality.WINDOW_MODAL);
+      stage.initOwner(tourListView.getScene().getWindow());
       stage.setScene(new Scene(root));
 
       controller.initialize();
