@@ -1,6 +1,8 @@
 package at.technikum.frontend;
 
 import at.technikum.frontend.utils.AppProperties;
+import atlantafx.base.theme.PrimerDark;
+import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,6 +19,8 @@ public class TourPlannerApplication extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
+    Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+    Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
     FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"), AppProperties.getInstance().getI18n());
     Scene scene = new Scene(fxmlLoader.load(), 1040, 600);
     stage.setTitle(AppProperties.getInstance().getI18n().getString("main.title"));
