@@ -11,28 +11,35 @@
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.Rating?>
 
-<AnchorPane fx:id="LogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1">
-  <Label fx:id="mainLabel" minWidth="-Infinity" prefHeight="53.0" prefWidth="350.0" text="%logInfo.title" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0">
+<AnchorPane fx:id="LogPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+  minWidth="-Infinity" prefHeight="556.0" prefWidth="350.0"
+  xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1">
+  <Label fx:id="mainLabel" minWidth="-Infinity" prefHeight="53.0" prefWidth="350.0"
+    text="%logInfo.title" textAlignment="CENTER" AnchorPane.leftAnchor="20.0"
+    AnchorPane.rightAnchor="0.0">
     <font>
       <Font name="System Bold" size="20.0" />
     </font>
   </Label>
-  <fx:include fx:id="saveCancelButtonBar" source="ok_cancel_button_bar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="380.0" prefWidth="310.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+    prefHeight="380.0" prefWidth="310.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0"
+    AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
     <!-- Start Date -->
     <Label text="%logInfo.startDate" textFill="#7f7f7f">
       <VBox.margin>
         <Insets bottom="10.0" />
       </VBox.margin>
     </Label>
-    <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0" spacing="10.0">
+    <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
+      prefWidth="310.0" spacing="10.0">
       <DatePicker fx:id="startDate" prefHeight="24.0" prefWidth="200.0" promptText="24.12.2004" />
       <TimePicker fx:id="startTime" defaultTime="08:00" prefHeight="24.0" prefWidth="100.0" />
       <VBox.margin>
         <Insets bottom="5.0" right="100.0" />
       </VBox.margin>
     </HBox>
-    <Label fx:id="startDateError" minHeight="-Infinity" prefHeight="0.0" text="%validation.startDate.required" textFill="RED" visible="false">
+    <Label fx:id="startDateError" minHeight="-Infinity" prefHeight="0.0"
+      text="%validation.startDate.required" textFill="RED" visible="false">
       <VBox.margin>
         <Insets bottom="5.0" top="5.0" />
       </VBox.margin>
@@ -44,14 +51,16 @@
         <Insets bottom="10.0" />
       </VBox.margin>
     </Label>
-    <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0" spacing="10.0">
+    <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0"
+      prefWidth="310.0" spacing="10.0">
       <DatePicker fx:id="endDate" prefHeight="24.0" prefWidth="200.0" promptText="24.12.2004" />
       <TimePicker fx:id="endTime" defaultTime="14:30" prefHeight="24.0" prefWidth="100.0" />
       <VBox.margin>
         <Insets bottom="5.0" right="360.0" />
       </VBox.margin>
     </HBox>
-    <Label fx:id="endDateError" minHeight="-Infinity" prefHeight="0.0" text="%validation.endDate.required" textFill="RED" visible="false">
+    <Label fx:id="endDateError" minHeight="-Infinity" prefHeight="0.0"
+      text="%validation.endDate.required" textFill="RED" visible="false">
       <VBox.margin>
         <Insets bottom="5.0" top="5.0" />
       </VBox.margin>
@@ -63,12 +72,14 @@
         <Insets bottom="5.0" />
       </VBox.margin>
     </Label>
-    <TextField id="logComment" fx:id="comment" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0">
+    <TextField id="logComment" fx:id="comment" minWidth="-Infinity" prefHeight="26.0"
+      prefWidth="310.0">
       <VBox.margin>
         <Insets />
       </VBox.margin>
     </TextField>
-    <Label fx:id="commentError" minHeight="-Infinity" prefHeight="0.0" text="%validation.comment.required" textFill="RED" visible="false">
+    <Label fx:id="commentError" minHeight="-Infinity" prefHeight="0.0"
+      text="%validation.comment.required" textFill="RED" visible="false">
       <VBox.margin>
         <Insets bottom="5.0" top="5.0" />
       </VBox.margin>
@@ -80,12 +91,14 @@
         <Insets bottom="5.0" />
       </VBox.margin>
     </Label>
-    <TextField fx:id="totalDistance" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0" promptText="40 (km)">
+    <TextField fx:id="totalDistance" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0"
+      promptText="40 (km)">
       <VBox.margin>
         <Insets />
       </VBox.margin>
     </TextField>
-    <Label fx:id="totalDistanceError" minHeight="-Infinity" prefHeight="0.0" text="%validation.distance.required" textFill="RED" visible="false">
+    <Label fx:id="totalDistanceError" minHeight="-Infinity" prefHeight="0.0"
+      text="%validation.distance.required" textFill="RED" visible="false">
       <VBox.margin>
         <Insets bottom="5.0" top="5.0" />
       </VBox.margin>
@@ -97,7 +110,8 @@
         <Insets bottom="10.0" />
       </VBox.margin>
     </Label>
-    <Rating fx:id="difficulty" cache="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0">
+    <Rating fx:id="difficulty" cache="true" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0">
       <VBox.margin>
         <Insets bottom="10.0" />
       </VBox.margin>
@@ -109,7 +123,10 @@
         <Insets bottom="10.0" />
       </VBox.margin>
     </Label>
-    <Rating fx:id="rating" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" rating="4.0" />
+    <Rating fx:id="rating" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0"
+      rating="4.0" />
   </VBox>
+  <fx:include fx:id="saveCancelButtonBar" source="ok_cancel_button_bar.fxml"
+    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 
 </AnchorPane>

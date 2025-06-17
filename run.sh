@@ -4,7 +4,6 @@
 cleanup() {
   echo "Shutting down backend and docker..."
   jobs -p | xargs -r kill
-  docker compose down
 }
 trap cleanup EXIT
 
@@ -14,7 +13,7 @@ trap cleanup EXIT
 
 # Start backend (Spring Boot) in background
 ./mvnw spring-boot:run -pl backend &
-sleep 4
+sleep 7 # Wait for backend to start
 
 # Start frontend (JavaFX)
 ./mvnw javafx:run -pl frontend
