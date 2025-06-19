@@ -1,12 +1,17 @@
 package at.technikum.frontend.viewmodels;
 
+import java.util.UUID;
+
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
 import at.technikum.frontend.utils.AppProperties;
-import javafx.beans.property.*;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 // responsible for tour_info.fxml (listing of the tour info) !!
 @NoArgsConstructor
@@ -35,7 +40,7 @@ public class TourViewModel {
     this.route_info.set(tour.getRoute_info());
     this.logs.set(new LogTableViewModel(tour.getLogs()));
   }
-  
+
   public TourViewModel(final TourViewModel tourViewModel) {
     this.id.set(tourViewModel.getId());
     this.name.set(tourViewModel.getName());
@@ -51,57 +56,146 @@ public class TourViewModel {
 
   public Tour toTour() {
     return new Tour(
-            getId(),
-            getName(),
-            getDescription(),
-            getFrom(),
-            getTo(),
-            getTransportType(),
-            getDistance(),
-            getEstimatedTime(),
-            getRouteInfo(),
-            null
-    );
+        getId(),
+        getName(),
+        getDescription(),
+        getFrom(),
+        getTo(),
+        getTransportType(),
+        getDistance(),
+        getEstimatedTime(),
+        getRouteInfo(),
+        null);
   }
 
   // Property value getters
-  public UUID getId() { return id.get(); }
-  public String getName() { return name.get(); }
-  public String getDescription() { return description.get(); }
-  public String getFrom() { return from.get(); }
-  public String getTo() { return to.get(); }
-  public TransportType getTransportType() { return transport_type.get(); }
-  public int getDistance() { return distance.get(); }
-  public int getEstimatedTime() { return estimated_time.get(); }
-  public byte[] getRouteInfo() { return route_info.get(); }
-  public LogTableViewModel getLogs() { return logs.get(); }
+  public UUID getId() {
+    return id.get();
+  }
+
+  public String getName() {
+    return name.get();
+  }
+
+  public String getDescription() {
+    return description.get();
+  }
+
+  public String getFrom() {
+    return from.get();
+  }
+
+  public String getTo() {
+    return to.get();
+  }
+
+  public TransportType getTransportType() {
+    return transport_type.get();
+  }
+
+  public int getDistance() {
+    return distance.get();
+  }
+
+  public int getEstimatedTime() {
+    return estimated_time.get();
+  }
+
+  public byte[] getRouteInfo() {
+    return route_info.get();
+  }
+
+  public LogTableViewModel getLogs() {
+    return logs.get();
+  }
+
   public String getLocalizedTransportType() {
-    TransportType transportType = getTransportType();
-    return transportType == null ? "" : AppProperties.getInstance().getI18n().getString("tourInfo.transportType." + transportType.name().toLowerCase());
+    final TransportType transportType = getTransportType();
+    return transportType == null ? ""
+        : AppProperties.getInstance().getI18n()
+            .getString("tourInfo.transportType." + transportType.name().toLowerCase());
   }
 
   // Property getters
-  public ObjectProperty<UUID> idProperty() { return id; }
-  public StringProperty nameProperty() { return name; }
-  public StringProperty descriptionProperty() { return description; }
-  public StringProperty fromProperty() { return from; }
-  public StringProperty toProperty() { return to; }
-  public ObjectProperty<TransportType> transport_typeProperty() { return transport_type; }
-  public IntegerProperty distanceProperty() { return distance; }
-  public IntegerProperty estimatedTimeProperty() { return estimated_time; }
-  public ObjectProperty<byte[]> routeInfoProperty() { return route_info; }
-  public ObjectProperty<LogTableViewModel> logsProperty() { return logs; }
+  public ObjectProperty<UUID> idProperty() {
+    return id;
+  }
+
+  public StringProperty nameProperty() {
+    return name;
+  }
+
+  public StringProperty descriptionProperty() {
+    return description;
+  }
+
+  public StringProperty fromProperty() {
+    return from;
+  }
+
+  public StringProperty toProperty() {
+    return to;
+  }
+
+  public ObjectProperty<TransportType> transport_typeProperty() {
+    return transport_type;
+  }
+
+  public IntegerProperty distanceProperty() {
+    return distance;
+  }
+
+  public IntegerProperty estimatedTimeProperty() {
+    return estimated_time;
+  }
+
+  public ObjectProperty<byte[]> routeInfoProperty() {
+    return route_info;
+  }
+
+  public ObjectProperty<LogTableViewModel> logsProperty() {
+    return logs;
+  }
 
   // Setters
-  public void setId(UUID id) { this.id.set(id); }
-  public void setName(String name) { this.name.set(name); }
-  public void setDescription(String description) { this.description.set(description); }
-  public void setFrom(String from) { this.from.set(from); }
-  public void setTo(String to) { this.to.set(to); }
-  public void setTransportType(TransportType transportType) { this.transport_type.set(transportType); }
-  public void setDistance(int distance) { this.distance.set(distance); }
-  public void setEstimatedTime(int estimatedTime) { this.estimated_time.set(estimatedTime); }
-  public void setRouteInfo(byte[] routeInfo) { this.route_info.set(routeInfo); }
-  public void setLogs(LogTableViewModel logs) { this.logs.set(logs); }
+  public void setId(final UUID id) {
+    this.id.set(id);
+  }
+
+  public void setName(final String name) {
+    this.name.set(name);
+  }
+
+  public void setDescription(final String description) {
+    this.description.set(description);
+  }
+
+  public void setFrom(final String from) {
+    this.from.set(from);
+  }
+
+  public void setTo(final String to) {
+    this.to.set(to);
+  }
+
+  public void setTransportType(final TransportType transportType) {
+    this.transport_type.set(transportType);
+  }
+
+  public void setDistance(final int distance) {
+    this.distance.set(distance);
+  }
+
+  public void setEstimatedTime(final int estimatedTime) {
+    this.estimated_time.set(estimatedTime);
+  }
+
+  public void setRouteInfo(final byte[] routeInfo) {
+    this.route_info.set(routeInfo);
+  }
+
+  public void setLogs(final LogTableViewModel logs) {
+    this.logs.set(logs);
+  }
 
 }

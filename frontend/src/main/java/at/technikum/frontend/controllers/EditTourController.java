@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuperBuilder
 @Slf4j
 public class EditTourController extends BaseTourController {
-  private TourViewModel originalTourViewModel;
+  private final TourViewModel originalTourViewModel;
 
   @Override
   protected void onSaveButtonClicked() {
@@ -17,7 +17,7 @@ public class EditTourController extends BaseTourController {
       TourPlannerApplication.closeWindow(newCancelButtonBar);
       return;
     }
-    
+
     // Copy values back to the original model
     tourTableViewModel.updateTour(tourViewModel, originalTourViewModel);
     TourPlannerApplication.closeWindow(newCancelButtonBar);

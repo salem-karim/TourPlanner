@@ -1,5 +1,11 @@
 package at.technikum.frontend.viewmodels;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
@@ -10,14 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 /**
- * ViewModel for the TourTableView. This class is responsible for managing the data and logic of the TourTableView. It
+ * ViewModel for the TourTableView. This class is responsible for managing the
+ * data and logic of the TourTableView. It
  * handles the creation, updating, and deletion of tours.
  */
 @Getter
@@ -33,41 +34,40 @@ public class TourTableViewModel {
       return;
     }
     data.add(new TourViewModel(new Tour(
-            UUID.randomUUID(),
-            "Kahlsberg Wanderung",
-            "Schöne Wanderung aufm Kahlsberg",
-            "Nußdorf",
-            "Kahlsberg",
-            TransportType.CAR,
-            100,
-            120,
-            new byte[0],
-            new ArrayList<>())));
-
+        UUID.randomUUID(),
+        "Kahlsberg Wanderung",
+        "Schöne Wanderung aufm Kahlsberg",
+        "Nußdorf",
+        "Kahlsberg",
+        TransportType.CAR,
+        100,
+        120,
+        new byte[0],
+        new ArrayList<>())));
 
     data.add(new TourViewModel(new Tour(
-            UUID.randomUUID(),
-            "Schneeberg Wanderung",
-            "Schöne Wanderung aufm Schneeberg",
-            "Schneeberg Startpunkt",
-            "Schneeberg Spitze",
-            TransportType.BIKE,
-            100,
-            120,
-            new byte[0],
-            new ArrayList<>())));
-    
+        UUID.randomUUID(),
+        "Schneeberg Wanderung",
+        "Schöne Wanderung aufm Schneeberg",
+        "Schneeberg Startpunkt",
+        "Schneeberg Spitze",
+        TransportType.BIKE,
+        100,
+        120,
+        new byte[0],
+        new ArrayList<>())));
+
     // Add sample logs to each tour
-    for (TourViewModel tour : data) {
+    for (final TourViewModel tour : data) {
       addSampleLogsToTour(tour);
     }
   }
 
-  public void newTour(TourViewModel tvm) {
+  public void newTour(final TourViewModel tvm) {
     data.add(tvm); // local list
 
     // Convert to Tour (model from common)
-    Tour tour = tvm.toTour();
+    final Tour tour = tvm.toTour();
 
     RequestHandler.getInstance().postTour(tour);
   }
@@ -79,35 +79,33 @@ public class TourTableViewModel {
     tourViewModel.setFrom(otherViewModel.getFrom());
     tourViewModel.setTo(otherViewModel.getTo());
     tourViewModel.setTransportType(otherViewModel.getTransportType());
-//    tourViewModel.setDistance(otherViewModel.getDistance());
-//    tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
-//    tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
+    // tourViewModel.setDistance(otherViewModel.getDistance());
+    // tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
+    // tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
 
     RequestHandler.getInstance().putTour(tourViewModel);
   }
 
-
-  public void deleteTour(TourViewModel tourViewModel) {
+  public void deleteTour(final TourViewModel tourViewModel) {
     data.remove(tourViewModel);
 
     RequestHandler.getInstance().deleteTour(tourViewModel.getId());
   }
 
-  public void deleteTour(int index) {
-    TourViewModel removed = data.remove(index);
+  public void deleteTour(final int index) {
+    final TourViewModel removed = data.remove(index);
     if (removed != null) {
       RequestHandler.getInstance().deleteTour(removed.getId());
     }
   }
 
-  public void setSelectedTour(TourViewModel tour) {
+  public void setSelectedTour(final TourViewModel tour) {
     selectedTour.set(tour);
   }
 
-
-  private void addSampleLogsToTour(TourViewModel tour) {
+  private void addSampleLogsToTour(final TourViewModel tour) {
     // Create first sample log
-    LogViewModel log1 = new LogViewModel();
+    final LogViewModel log1 = new LogViewModel();
     log1.idProperty().set(UUID.randomUUID());
     log1.startDateProperty().set(LocalDate.now());
     log1.endDateProperty().set(LocalDate.now().plusDays(1));
@@ -119,7 +117,7 @@ public class TourTableViewModel {
     log1.ratingProperty().set(4);
 
     // Create second sample log
-    LogViewModel log2 = new LogViewModel();
+    final LogViewModel log2 = new LogViewModel();
     log2.idProperty().set(UUID.randomUUID());
     log2.startDateProperty().set(LocalDate.now());
     log2.endDateProperty().set(LocalDate.now().plusDays(4));
@@ -138,24 +136,24 @@ public class TourTableViewModel {
   public void loadTours() {
     // sets callback for the request handler to load tours
     RequestHandler.getInstance().loadTours(tourList -> {
-      for (Tour tour : tourList) {
-        TourViewModel tvm = new TourViewModel(tour);
+      for (final Tour tour : tourList) {
+        final TourViewModel tvm = new TourViewModel(tour);
         data.add(tvm);
       }
     });
 
     // Load logs for each tour and add to the TourViewModel
-    List<LogViewModel> all_logs = new ArrayList<>(List.of());
+    final List<LogViewModel> all_logs = new ArrayList<>(List.of());
     RequestHandler.getInstance().loadLogs(logs -> {
-      for (Logs log : logs) {
-        LogViewModel lvm = new LogViewModel(log);
+      for (final Logs log : logs) {
+        final LogViewModel lvm = new LogViewModel(log);
         all_logs.add(lvm);
       }
     });
 
     while (!all_logs.isEmpty()) {
-      for (TourViewModel tour : data) {
-        for (LogViewModel log : all_logs) {
+      for (final TourViewModel tour : data) {
+        for (final LogViewModel log : all_logs) {
           if (tour.getId().equals(log.getTourId())) {
             tour.getLogs().getData().add(log);
             all_logs.remove(log);

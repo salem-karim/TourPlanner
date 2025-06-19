@@ -1,12 +1,12 @@
 package at.technikum.frontend.controllers;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.viewmodels.LogTableViewModel;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 @SuperBuilder
 @Slf4j

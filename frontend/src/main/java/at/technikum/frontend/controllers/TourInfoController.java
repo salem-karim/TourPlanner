@@ -1,5 +1,8 @@
 package at.technikum.frontend.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -9,9 +12,6 @@ import javafx.scene.control.SplitPane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @NoArgsConstructor
 @Getter
@@ -35,7 +35,6 @@ public class TourInfoController implements Initializable {
   @FXML
   private SplitPane splitPane;
 
-
   private TourViewModel tourViewModel;
 
   @Override
@@ -55,9 +54,10 @@ public class TourInfoController implements Initializable {
       descriptionLabel.textProperty().bind(tourViewModel.descriptionProperty());
       fromLabel.textProperty().bind(tourViewModel.fromProperty());
       toLabel.textProperty().bind(tourViewModel.toProperty());
-      transportTypeLabel.textProperty().bind(Bindings.createStringBinding(() -> tourViewModel.getLocalizedTransportType(), tourViewModel.transport_typeProperty()));
-//      distanceLabel.textProperty().bind(Bindings.convert(tourViewModel.distanceProperty()));
-//      durationLabel.textProperty().bind(Bindings.convert(tourViewModel.estimated_timeProperty()));
+      transportTypeLabel.textProperty().bind(Bindings.createStringBinding(
+          () -> tourViewModel.getLocalizedTransportType(), tourViewModel.transport_typeProperty()));
+      // distanceLabel.textProperty().bind(Bindings.convert(tourViewModel.distanceProperty()));
+      // durationLabel.textProperty().bind(Bindings.convert(tourViewModel.estimated_timeProperty()));
     }
   }
 }

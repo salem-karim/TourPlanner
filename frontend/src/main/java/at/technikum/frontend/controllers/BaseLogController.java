@@ -1,5 +1,10 @@
 package at.technikum.frontend.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import org.controlsfx.control.Rating;
+
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.services.LogValidator;
 import at.technikum.frontend.utils.TimePicker;
@@ -7,7 +12,11 @@ import at.technikum.frontend.viewmodels.LogTableViewModel;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -16,10 +25,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.controlsfx.control.Rating;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @SuperBuilder
@@ -62,11 +67,11 @@ public abstract class BaseLogController {
       logViewModel = new LogViewModel();
     }
     // Configure date picker
-    StringConverter<LocalDate> dateConverter = new StringConverter<>() {
+    final StringConverter<LocalDate> dateConverter = new StringConverter<>() {
       private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
       @Override
-      public String toString(LocalDate date) {
+      public String toString(final LocalDate date) {
         if (date != null) {
           return dateFormatter.format(date);
         }
@@ -74,11 +79,11 @@ public abstract class BaseLogController {
       }
 
       @Override
-      public LocalDate fromString(String string) {
+      public LocalDate fromString(final String string) {
         if (string != null && !string.isEmpty()) {
           try {
             return LocalDate.parse(string, dateFormatter);
-          } catch (Exception e) {
+          } catch (final Exception e) {
             log.error("Error in parsing Date: {}", string);
             throw new RuntimeException(e);
           }
@@ -108,18 +113,18 @@ public abstract class BaseLogController {
     logViewModel.ratingProperty().bindBidirectional(rating.ratingProperty());
 
     totalDistance.setTextFormatter(new TextFormatter<>(change -> {
-      String newText = change.getControlNewText();
+      final String newText = change.getControlNewText();
       return newText.matches("\\d*\\.?\\d{0,2}") ? change : null;
     }));
 
-
     // Set up OK/Cancel button handlers
-    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar.getProperties().get("okCancelButtonBarController");
-    
+    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar.getProperties()
+        .get("okCancelButtonBarController");
+
     // TODO: add 16 to the height of the AnchorPane per Error Label
-    //  (which gets set to visible and set the height to 16)
-    //  so AnchorPane height goes from 456 to 488, 504, 520
-    //  also set the border of the TextField/ DatePicker to red
+    // (which gets set to visible and set the height to 16)
+    // so AnchorPane height goes from 456 to 488, 504, 520
+    // also set the border of the TextField/ DatePicker to red
     okCancelController.setOkButtonListener(event -> {
       if (logValidator.validateLog(logViewModel)) {
         onSaveButtonClicked();

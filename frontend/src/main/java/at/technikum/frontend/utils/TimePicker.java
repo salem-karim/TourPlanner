@@ -1,5 +1,8 @@
 package at.technikum.frontend.utils;
 
+import java.time.LocalTime;
+
+import javafx.beans.NamedArg;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Spinner;
@@ -9,14 +12,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
-import javafx.beans.NamedArg;
-
-import java.time.LocalTime;
 
 /**
  * A custom JavaFX Spinner for selecting time in HH:mm format.
  * <p>
- * This control allows direct text editing and supports incrementing/decrementing
+ * This control allows direct text editing and supports
+ * incrementing/decrementing
  * either hours or minutes depending on the caret position or mode.
  */
 public class TimePicker extends Spinner<LocalTime> {
@@ -36,7 +37,7 @@ public class TimePicker extends Spinner<LocalTime> {
    *
    * @param defaultTime the time to initialize the picker with
    */
-  public TimePicker(@NamedArg("defaultTime") LocalTime defaultTime) {
+  public TimePicker(@NamedArg("defaultTime") final LocalTime defaultTime) {
     super();
     initialize(defaultTime);
   }
@@ -46,31 +47,31 @@ public class TimePicker extends Spinner<LocalTime> {
    *
    * @param timeString a time string, e.g., "12:30"
    */
-  public TimePicker(@NamedArg("defaultTime") String timeString) {
+  public TimePicker(@NamedArg("defaultTime") final String timeString) {
     this(LocalTime.parse(timeString));
   }
 
-  private void initialize(LocalTime defaultTime) {
+  private void initialize(final LocalTime defaultTime) {
     setEditable(true);
 
-    StringConverter<LocalTime> converter = TimePickerHelper.createConverter(defaultTime);
+    final StringConverter<LocalTime> converter = TimePickerHelper.createConverter(defaultTime);
 
-    SpinnerValueFactory<LocalTime> valueFactory = new SpinnerValueFactory<>() {
+    final SpinnerValueFactory<LocalTime> valueFactory = new SpinnerValueFactory<>() {
       {
         setConverter(converter);
         setValue(defaultTime);
       }
 
       @Override
-      public void decrement(int steps) {
-        TimePickerMode m = mode.get();
+      public void decrement(final int steps) {
+        final TimePickerMode m = mode.get();
         setValue(m.decrement(getValue(), steps));
         m.select(TimePicker.this);
       }
 
       @Override
-      public void increment(int steps) {
-        TimePickerMode m = mode.get();
+      public void increment(final int steps) {
+        final TimePickerMode m = mode.get();
         setValue(m.increment(getValue(), steps));
         m.select(TimePicker.this);
       }
@@ -84,13 +85,13 @@ public class TimePicker extends Spinner<LocalTime> {
 
     getEditor().addEventFilter(KeyEvent.KEY_PRESSED, e -> {
       if (e.getCode() == KeyCode.TAB) {
-        boolean isHoursMode = mode.get() == TimePickerMode.HOURS;
-        boolean isShiftDown = e.isShiftDown();
+        final boolean isHoursMode = mode.get() == TimePickerMode.HOURS;
+        final boolean isShiftDown = e.isShiftDown();
 
         // Consume event and switch mode only when:
         // - Tab press in hours mode (switch to minutes)
         // - Shift+Tab press in minutes mode (switch to hours)
-        boolean shouldConsumeEvent = isShiftDown != isHoursMode;
+        final boolean shouldConsumeEvent = isShiftDown != isHoursMode;
 
         if (shouldConsumeEvent) {
           mode.set(isHoursMode ? TimePickerMode.MINUTES : TimePickerMode.HOURS);
@@ -100,7 +101,8 @@ public class TimePicker extends Spinner<LocalTime> {
       }
     });
 
-    getEditor().addEventFilter(MouseEvent.MOUSE_CLICKED, e -> setMode(TimePickerMode.fromCaret(getEditor().getCaretPosition())));
+    getEditor().addEventFilter(MouseEvent.MOUSE_CLICKED,
+        e -> setMode(TimePickerMode.fromCaret(getEditor().getCaretPosition())));
 
     mode.addListener((obs, oldMode, newMode) -> newMode.select(this));
     TimePickerHelper.bindModeToCaret(this);
@@ -124,7 +126,7 @@ public class TimePicker extends Spinner<LocalTime> {
   /**
    * Sets the selected LocalTime.
    */
-  public void setLocalTime(LocalTime time) {
+  public void setLocalTime(final LocalTime time) {
     this.localTime.set(time);
   }
 
@@ -138,7 +140,7 @@ public class TimePicker extends Spinner<LocalTime> {
   /**
    * Sets the current editing mode.
    */
-  public void setMode(TimePickerMode newMode) {
+  public void setMode(final TimePickerMode newMode) {
     mode.set(newMode);
   }
 

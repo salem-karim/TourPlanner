@@ -1,19 +1,19 @@
 package at.technikum.frontend.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @NoArgsConstructor
 public class TourValidator extends Validator {
 
-  public boolean validateTour(TourViewModel tourViewModel) {
-    List<String> errors = new ArrayList<>();
+  public boolean validateTour(final TourViewModel tourViewModel) {
+    final List<String> errors = new ArrayList<>();
 
     // Check for empty required fields
     if (isEmpty(tourViewModel.getName())) {
@@ -41,7 +41,7 @@ public class TourValidator extends Validator {
     return true;
   }
 
-  private boolean isEmpty(String value) {
+  private boolean isEmpty(final String value) {
     return value == null || value.trim().isEmpty();
   }
 }

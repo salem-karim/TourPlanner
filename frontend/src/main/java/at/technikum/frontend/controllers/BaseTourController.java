@@ -1,14 +1,18 @@
 package at.technikum.frontend.controllers;
 
+import at.technikum.common.models.TransportType;
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.services.TourValidator;
-import at.technikum.common.models.TransportType;
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourTableViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,13 +59,14 @@ public abstract class BaseTourController {
     transportType.setItems(FXCollections.observableArrayList(TransportType.values()));
     transportType.setConverter(new StringConverter<>() {
       @Override
-      public String toString(TransportType type) {
-        if (type == null) return "";
+      public String toString(final TransportType type) {
+        if (type == null)
+          return "";
         return AppProperties.getInstance().getI18n().getString("tourInfo.transportType." + type.name().toLowerCase());
       }
 
       @Override
-      public TransportType fromString(String string) {
+      public TransportType fromString(final String string) {
         return null; // Not needed for now
       }
     });
@@ -74,8 +79,8 @@ public abstract class BaseTourController {
     transportType.valueProperty().bindBidirectional(tourViewModel.transport_typeProperty());
 
     // Fix the way okCancelController is obtained
-    okCancelController = (OKCancelButtonBarController)
-            newCancelButtonBar.getProperties().get("okCancelButtonBarController");
+    okCancelController = (OKCancelButtonBarController) newCancelButtonBar.getProperties()
+        .get("okCancelButtonBarController");
 
     okCancelController.setOkButtonListener(event -> {
       if (tourValidator.validateTour(tourViewModel)) {
@@ -83,8 +88,7 @@ public abstract class BaseTourController {
       }
     });
 
-    okCancelController.setCancelButtonListener(event ->
-            TourPlannerApplication.closeWindow(newCancelButtonBar));
+    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(newCancelButtonBar));
 
     initialized = true;
   }

@@ -6,10 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
 public class LogButtonsMediator implements Mediator {
-  public LogButtonsMediator(Button deleteButton, TableView<LogViewModel> logTableView, boolean[] booleans) {
+  public LogButtonsMediator(final Button deleteButton, final TableView<LogViewModel> logTableView,
+      final boolean[] booleans) {
     logTableView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<LogViewModel>) change -> {
-      int selectedCount = logTableView.getSelectionModel().getSelectedItems().size();
-      deleteButton.setDisable(((selectedCount == 0) && (booleans[0])) || ((selectedCount == 1) && (booleans[1])) || ((selectedCount > 1) && (booleans[2])));
+      final int selectedCount = logTableView.getSelectionModel().getSelectedItems().size();
+      deleteButton.setDisable(((selectedCount == 0) && (booleans[0])) || ((selectedCount == 1) && (booleans[1]))
+          || ((selectedCount > 1) && (booleans[2])));
     });
   }
 }

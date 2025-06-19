@@ -1,5 +1,9 @@
 package at.technikum.frontend.controllers;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
 import at.technikum.frontend.mediators.LogButtonsMediator;
 import at.technikum.frontend.mediators.Mediator;
 import at.technikum.frontend.mediators.TourButtonsMediator;
@@ -13,13 +17,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Getter;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 @Setter
 @Getter
@@ -41,20 +41,19 @@ public class NewEditDeleteButtonBarController implements Initializable {
 
   private ArrayList<Mediator> mediators = new ArrayList<>();
 
-
   public void setTourListView(ListView<TourViewModel> tourListView) {
 
     if (tourListView != null) {
-      mediators.add(new TourButtonsMediator(editButton, tourListView, new boolean[]{true, false, true}));
-      mediators.add(new TourButtonsMediator(deleteButton, tourListView, new boolean[]{true, false, false}));
+      mediators.add(new TourButtonsMediator(editButton, tourListView, new boolean[] { true, false, true }));
+      mediators.add(new TourButtonsMediator(deleteButton, tourListView, new boolean[] { true, false, false }));
     }
   }
 
   public void setLogTableView(TableView<LogViewModel> logTableView) {
 
     if (logTableView != null) {
-      mediators.add(new LogButtonsMediator(editButton, logTableView, new boolean[]{true, false, true}));
-      mediators.add(new LogButtonsMediator(deleteButton, logTableView, new boolean[]{true, false, false}));
+      mediators.add(new LogButtonsMediator(editButton, logTableView, new boolean[] { true, false, true }));
+      mediators.add(new LogButtonsMediator(deleteButton, logTableView, new boolean[] { true, false, false }));
     }
   }
 

@@ -1,19 +1,19 @@
 package at.technikum.frontend.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @NoArgsConstructor
 public class LogValidator extends Validator {
 
-  public boolean validateLog(LogViewModel logViewModel) {
-    List<String> errors = new ArrayList<>();
+  public boolean validateLog(final LogViewModel logViewModel) {
+    final List<String> errors = new ArrayList<>();
 
     // Check date
     if (logViewModel.getStartDate() == null) {
@@ -38,13 +38,13 @@ public class LogValidator extends Validator {
     }
 
     // Check difficulty (1-5)
-    int difficulty = logViewModel.getDifficulty();
+    final int difficulty = logViewModel.getDifficulty();
     if (difficulty < 1 || difficulty > 5) {
       errors.add(AppProperties.getInstance().getI18n().getString("validation.difficulty.range"));
     }
 
     // Check rating (1-5)
-    int rating = logViewModel.getRating();
+    final int rating = logViewModel.getRating();
     if (rating < 1 || rating > 5) {
       errors.add(AppProperties.getInstance().getI18n().getString("validation.rating.range"));
     }
@@ -58,7 +58,7 @@ public class LogValidator extends Validator {
     return true;
   }
 
-  private boolean isEmpty(String value) {
+  private boolean isEmpty(final String value) {
     return value == null || value.trim().isEmpty();
   }
 }

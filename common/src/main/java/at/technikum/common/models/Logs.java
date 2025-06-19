@@ -1,10 +1,16 @@
 package at.technikum.common.models;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tour_logs")
@@ -17,7 +23,7 @@ public class Logs {
   @Id
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
-  
+
   @Column(name = "tour_id")
   private UUID tour_id;
 
@@ -26,7 +32,7 @@ public class Logs {
 
   @Column(name = "end_date_time")
   private LocalDateTime end_date_time;
-  
+
   @Column(name = "distance_km")
   private double total_distance;
 
