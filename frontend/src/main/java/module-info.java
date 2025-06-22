@@ -15,8 +15,9 @@ module at.technikum.frontend {
   requires jakarta.persistence;
   requires org.hibernate.orm.core;
   requires atlantafx.base;
+    requires jdk.compiler;
 
-  opens at.technikum.frontend to javafx.fxml;
+    opens at.technikum.frontend to javafx.fxml;
 
   exports at.technikum.frontend;
   exports at.technikum.frontend.controllers;

@@ -25,6 +25,8 @@ public class TourPlannerController implements Initializable {
 
   private final TourTableViewModel tourTableViewModel = new TourTableViewModel();
 
+  private NavbarController navbarController = new NavbarController();
+
   @FXML
   public SplitPane tourInfo;
   public AnchorPane tourLogs;
@@ -45,6 +47,9 @@ public class TourPlannerController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     initializeListView();
     initializeTourInfo();
+
+    //todo: bin mir nicht sicher, wie wir TourPlannerController mit NavbarController verbinden
+    //navbarController.initialize();
 
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
             .getProperties().get("newEditDeleteButtonBarController");
