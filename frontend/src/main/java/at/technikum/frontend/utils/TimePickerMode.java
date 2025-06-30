@@ -11,23 +11,23 @@ import java.time.LocalTime;
 public enum TimePickerMode {
   HOURS {
     @Override
-    public LocalTime increment(LocalTime time, int steps) {
+    public LocalTime increment(final LocalTime time, final int steps) {
       return time.plusHours(steps);
     }
 
     @Override
-    public void select(TimePicker picker) {
+    public void select(final TimePicker picker) {
       picker.getEditor().selectRange(0, 2);
     }
   },
   MINUTES {
     @Override
-    public LocalTime increment(LocalTime time, int steps) {
+    public LocalTime increment(final LocalTime time, final int steps) {
       return time.plusMinutes(steps);
     }
 
     @Override
-    public void select(TimePicker picker) {
+    public void select(final TimePicker picker) {
       picker.getEditor().selectRange(3, 5);
     }
   };
@@ -48,7 +48,7 @@ public enum TimePickerMode {
    * @param steps number of units to decrement
    * @return the decremented LocalTime
    */
-  public LocalTime decrement(LocalTime time, int steps) {
+  public LocalTime decrement(final LocalTime time, final int steps) {
     return increment(time, -steps);
   }
 
@@ -63,7 +63,7 @@ public enum TimePickerMode {
    * @param caretPosition current caret position
    * @return HOURS if <= 2, MINUTES otherwise
    */
-  public static TimePickerMode fromCaret(int caretPosition) {
+  public static TimePickerMode fromCaret(final int caretPosition) {
     return caretPosition <= 2 ? HOURS : MINUTES;
   }
 }

@@ -23,7 +23,7 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
       </rowConstraints>
-      <Label fx:id="nameLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+      <Label fx:id="nameLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT">
         <GridPane.margin>
           <Insets/>
         </GridPane.margin>
@@ -57,24 +57,24 @@
           <Insets left="10.0"/>
         </padding>
       </Label>
-      <Label fx:id="descriptionLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+      <Label fx:id="descriptionLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
              GridPane.rowIndex="1">
         <GridPane.margin>
           <Insets/>
         </GridPane.margin>
       </Label>
-      <Label fx:id="transportTypeLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT"
+      <Label fx:id="transportTypeLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
              GridPane.rowIndex="4">
         <GridPane.margin>
           <Insets/>
         </GridPane.margin>
       </Label>
-      <Label fx:id="toLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <Label fx:id="toLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
         <GridPane.margin>
           <Insets/>
         </GridPane.margin>
       </Label>
-      <Label fx:id="fromLabel" text="Label" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+      <Label fx:id="fromLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
         <GridPane.margin>
           <Insets/>
         </GridPane.margin>

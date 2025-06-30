@@ -1,11 +1,23 @@
 package at.technikum.common.models;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tours")
@@ -16,10 +28,10 @@ import java.util.UUID;
 public class Tour {
 
   @Id
-//  @GeneratedValue
-//  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  // @GeneratedValue
+  // @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
-//  @id
+  // @id
   private UUID id;
 
   private String name;
@@ -46,7 +58,8 @@ public class Tour {
   @Column(name = "route_image")
   private byte[] route_info;
 
-//  @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+  // @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval =
+  // true)
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "tour_id")
   private List<Logs> logs = new ArrayList<>();

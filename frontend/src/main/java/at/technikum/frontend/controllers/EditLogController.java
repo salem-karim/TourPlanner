@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuperBuilder
 @Slf4j
 public class EditLogController extends BaseLogController {
-  private LogViewModel originalLogViewModel;
+  private final LogViewModel originalLogViewModel;
 
   @Override
   protected void onSaveButtonClicked() {
@@ -17,7 +17,7 @@ public class EditLogController extends BaseLogController {
       TourPlannerApplication.closeWindow(saveCancelButtonBar);
       return;
     }
-   
+
     // Set the values back to the original model
     logTableViewModel.updateLog(logViewModel, originalLogViewModel);
     TourPlannerApplication.closeWindow(saveCancelButtonBar);

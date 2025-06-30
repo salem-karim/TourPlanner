@@ -5,11 +5,29 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
+import java.util.Map;
+
 public class LogButtonsMediator implements Mediator {
-  public LogButtonsMediator(Button deleteButton, TableView<LogViewModel> logTableView, boolean[] booleans) {
-    logTableView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<LogViewModel>) change -> {
-      int selectedCount = logTableView.getSelectionModel().getSelectedItems().size();
-      deleteButton.setDisable(((selectedCount == 0) && (booleans[0])) || ((selectedCount == 1) && (booleans[1])) || ((selectedCount > 1) && (booleans[2])));
-    });
+  private final Map<SelectionState, Boolean> buttonStates;
+
+  public LogButtonsMediator(Button button, TableView<LogViewModel> logTableView,
+                            Map<SelectionState, Boolean> buttonStates) {
+    validateButtonStates(buttonStates);
+    this.buttonStates = buttonStates;
+
+    updateButtonState(button, logTableView.getSelectionModel().getSelectedItems().size());
+
+    logTableView.getSelectionModel().getSelectedItems().addListener(
+            (ListChangeListener<LogViewModel>) change ->
+                    updateButtonState(button, logTableView.getSelectionModel().getSelectedItems().size()));
+
+    logTableView.getItems().addListener(
+            (ListChangeListener<LogViewModel>) change ->
+                    updateButtonState(button, logTableView.getSelectionModel().getSelectedItems().size()));
+  }
+
+  private void updateButtonState(Button button, int selectedCount) {
+    SelectionState state = SelectionState.fromCount(selectedCount);
+    button.setDisable(!buttonStates.get(state));
   }
 }

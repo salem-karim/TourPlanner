@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 # Kill background processes on script exit
-trap 'kill $(jobs -p); docker-compose down' EXIT
+cleanup() {
+  echo "Shutting down backend and docker..."
+  jobs -p | xargs -r kill
+}
+trap cleanup EXIT
 
 # Build only the parent POM and common module
 ./mvnw clean install -N
@@ -9,7 +13,7 @@ trap 'kill $(jobs -p); docker-compose down' EXIT
 
 # Start backend (Spring Boot) in background
 ./mvnw spring-boot:run -pl backend &
-sleep 4
+sleep 7 # Wait for backend to start
 
 # Start frontend (JavaFX)
 ./mvnw javafx:run -pl frontend

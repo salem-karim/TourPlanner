@@ -1,5 +1,7 @@
 package at.technikum.frontend.viewmodels;
 
+import java.util.List;
+
 import at.technikum.common.models.Logs;
 import at.technikum.frontend.utils.RequestHandler;
 import javafx.beans.property.ObjectProperty;
@@ -8,16 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 public class LogTableViewModel {
   private final ObjectProperty<LogViewModel> selectedLog = new SimpleObjectProperty<>();
   private final ObservableList<LogViewModel> data = FXCollections.observableArrayList();
 
-  public LogTableViewModel(List<Logs> logs) {
-    for (Logs log : logs) {
-      LogViewModel logViewModel = new LogViewModel(log);
+  public LogTableViewModel(final List<Logs> logs) {
+    for (final Logs log : logs) {
+      final LogViewModel logViewModel = new LogViewModel(log);
       data.add(logViewModel);
     }
   }
@@ -26,9 +26,9 @@ public class LogTableViewModel {
     return FXCollections.observableArrayList(data.stream().map(LogViewModel::getComment).toList());
   }
 
-  public void newLog(LogViewModel log) {
+  public void newLog(final LogViewModel log) {
     data.add(log);
-    RequestHandler.postLog(log);
+    RequestHandler.getInstance().postLog(log);
   }
 
   public void updateLog(final LogViewModel otherViewModel, final LogViewModel logViewModel) {
@@ -41,24 +41,22 @@ public class LogTableViewModel {
     logViewModel.setStartTime(otherViewModel.getStartTime());
     logViewModel.setEndTime(otherViewModel.getEndTime());
 
-    RequestHandler.putLog(logViewModel);
+    RequestHandler.getInstance().putLog(logViewModel);
   }
 
-
-  public void deleteLog(LogViewModel logViewModel) {
+  public void deleteLog(final LogViewModel logViewModel) {
     data.remove(logViewModel);
-    RequestHandler.deleteLog(logViewModel.getId());
+    RequestHandler.getInstance().deleteLog(logViewModel.getId());
   }
 
-  public void deleteLog(int index) {
-    LogViewModel removed = data.remove(index);
+  public void deleteLog(final int index) {
+    final LogViewModel removed = data.remove(index);
     if (removed != null) {
-      RequestHandler.deleteLog(removed.getId());
+      RequestHandler.getInstance().deleteLog(removed.getId());
     }
   }
 
-
-  public void setSelectedLog(LogViewModel log) {
+  public void setSelectedLog(final LogViewModel log) {
     selectedLog.set(log);
   }
 }

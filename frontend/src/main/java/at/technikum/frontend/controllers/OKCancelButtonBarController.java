@@ -1,5 +1,8 @@
 package at.technikum.frontend.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,9 +12,6 @@ import javafx.scene.control.ButtonBar;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Getter
 @Setter
@@ -28,8 +28,7 @@ public class OKCancelButtonBarController implements Initializable {
   private EventHandler<ActionEvent> okButtonListener;
   private EventHandler<ActionEvent> cancelButtonListener;
 
-//  Mediators View Elements go here later
-
+  // Mediators View Elements go here later
 
   public void onOK(ActionEvent event) {
     if (okButtonListener != null) {

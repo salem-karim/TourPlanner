@@ -1,5 +1,10 @@
 package at.technikum.frontend.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import org.controlsfx.control.Rating;
+
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.services.LogValidator;
 import at.technikum.frontend.utils.TimePicker;
@@ -11,18 +16,15 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.controlsfx.control.Rating;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import static at.technikum.frontend.utils.Localization.i18n;
 
 @Slf4j
 @SuperBuilder
@@ -30,7 +32,7 @@ import static at.technikum.frontend.utils.Localization.i18n;
 @NoArgsConstructor
 public abstract class BaseLogController {
   @FXML
-  protected Label mainLabel;
+  protected Label mainLabel, startDateError, endDateError, totalDistanceError, commentError;
   @FXML
   protected ButtonBar saveCancelButtonBar;
   @FXML
@@ -41,7 +43,9 @@ public abstract class BaseLogController {
   protected TimePicker startTime, endTime;
   @FXML
   protected Rating difficulty, rating;
-  
+  @FXML
+  protected AnchorPane LogPane;
+
   protected OKCancelButtonBarController okCancelController;
   protected LogTableViewModel logTableViewModel;
   protected LogViewModel logViewModel;
@@ -49,6 +53,7 @@ public abstract class BaseLogController {
 
   protected LogValidator logValidator;
 
+  @Builder.Default
   private boolean initialized = false;
 
   public void initialize() {
@@ -56,17 +61,17 @@ public abstract class BaseLogController {
       return;
     }
 
-    logValidator = new LogValidator(i18n);
+    logValidator = new LogValidator();
 
     if (logViewModel == null) {
       logViewModel = new LogViewModel();
     }
-        // Configure date picker
-    StringConverter<LocalDate> dateConverter = new StringConverter<>() {
+    // Configure date picker
+    final StringConverter<LocalDate> dateConverter = new StringConverter<>() {
       private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
       @Override
-      public String toString(LocalDate date) {
+      public String toString(final LocalDate date) {
         if (date != null) {
           return dateFormatter.format(date);
         }
@@ -74,11 +79,11 @@ public abstract class BaseLogController {
       }
 
       @Override
-      public LocalDate fromString(String string) {
+      public LocalDate fromString(final String string) {
         if (string != null && !string.isEmpty()) {
           try {
             return LocalDate.parse(string, dateFormatter);
-          } catch (Exception e) {
+          } catch (final Exception e) {
             log.error("Error in parsing Date: {}", string);
             throw new RuntimeException(e);
           }
@@ -86,7 +91,7 @@ public abstract class BaseLogController {
         return null;
       }
     };
-    
+
     // TODO: Harden validation of date, comment and distance
     startDate.setConverter(dateConverter);
     endDate.setConverter(dateConverter);
@@ -94,8 +99,11 @@ public abstract class BaseLogController {
     endDate.setPromptText("DD.MM.YYYY");
 
     comment.textProperty().bindBidirectional(logViewModel.commentProperty());
-    totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter());
-    totalDistance.setText("");
+    totalDistance.textProperty().bindBidirectional(logViewModel.totalDistanceProperty(), new NumberStringConverter(""));
+    // only empty the Text If it not 0
+    if (logViewModel.getTotalDistance() == 0.0) {
+      totalDistance.setText("");
+    }
     startDate.valueProperty().bindBidirectional(logViewModel.startDateProperty());
     endDate.valueProperty().bindBidirectional(logViewModel.endDateProperty());
     // Bind the time pickers value to the ViewModel not the other way around
@@ -104,12 +112,19 @@ public abstract class BaseLogController {
     logViewModel.difficultyProperty().bindBidirectional(difficulty.ratingProperty());
     logViewModel.ratingProperty().bindBidirectional(rating.ratingProperty());
 
+    totalDistance.setTextFormatter(new TextFormatter<>(change -> {
+      final String newText = change.getControlNewText();
+      return newText.matches("\\d*\\.?\\d{0,2}") ? change : null;
+    }));
 
     // Set up OK/Cancel button handlers
-    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar
-            .getProperties()
-            .get("okCancelButtonBarController");
+    okCancelController = (OKCancelButtonBarController) saveCancelButtonBar.getProperties()
+        .get("okCancelButtonBarController");
 
+    // TODO: add 16 to the height of the AnchorPane per Error Label
+    // (which gets set to visible and set the height to 16)
+    // so AnchorPane height goes from 456 to 488, 504, 520
+    // also set the border of the TextField/ DatePicker to red
     okCancelController.setOkButtonListener(event -> {
       if (logValidator.validateLog(logViewModel)) {
         onSaveButtonClicked();
@@ -117,6 +132,12 @@ public abstract class BaseLogController {
     });
 
     okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(saveCancelButtonBar));
+
+    okCancelController.getCancelButton().setId("logCancelButton");
+    okCancelController.getOkButton().setId("logOkButton");
+    startDate.setId("logStartDate");
+    endDate.setId("logEndDate");
+    totalDistance.setId("logTotalDistance");
 
     initialized = true;
   }

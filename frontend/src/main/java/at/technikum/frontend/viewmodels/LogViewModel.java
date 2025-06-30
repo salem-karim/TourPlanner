@@ -1,13 +1,20 @@
 package at.technikum.frontend.viewmodels;
 
-import at.technikum.common.models.Logs;
-import javafx.beans.property.*;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
+
+import at.technikum.common.models.Logs;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class LogViewModel {
@@ -19,7 +26,7 @@ public class LogViewModel {
   private final ObjectProperty<UUID> tourId = new SimpleObjectProperty<>();
   private final StringProperty comment = new SimpleStringProperty();
   private final IntegerProperty difficulty = new SimpleIntegerProperty();
-  private final IntegerProperty totalDistance = new SimpleIntegerProperty();
+  private final DoubleProperty totalDistance = new SimpleDoubleProperty();
   private final IntegerProperty rating = new SimpleIntegerProperty();
 
   public LogViewModel(final Logs log) {
@@ -49,7 +56,7 @@ public class LogViewModel {
   }
 
   public Logs toLog() {
-    Logs log = new Logs();
+    final Logs log = new Logs();
     log.setId(this.getId());
     log.setStart_date_time(LocalDateTime.of(getStartDate(), getStartTime()));
     log.setEnd_date_time(LocalDateTime.of(getEndDate(), getEndTime()));
@@ -60,7 +67,6 @@ public class LogViewModel {
     log.setTour_id(this.getTourId());
     return log;
   }
-
 
   // Value getters
   public UUID getId() {
@@ -95,7 +101,7 @@ public class LogViewModel {
     return difficulty.get();
   }
 
-  public int getTotalDistance() {
+  public double getTotalDistance() {
     return totalDistance.get();
   }
 
@@ -136,7 +142,7 @@ public class LogViewModel {
     return difficulty;
   }
 
-  public IntegerProperty totalDistanceProperty() {
+  public DoubleProperty totalDistanceProperty() {
     return totalDistance;
   }
 
@@ -144,39 +150,39 @@ public class LogViewModel {
     return rating;
   }
 
-  public void setStartDate(LocalDate date) {
+  public void setStartDate(final LocalDate date) {
     this.startDate.set(date);
   }
 
-  public void setStartTime(LocalTime time) {
+  public void setStartTime(final LocalTime time) {
     this.startTime.set(time);
   }
 
-  public void setEndDate(LocalDate date) {
+  public void setEndDate(final LocalDate date) {
     this.endDate.set(date);
   }
 
-  public void setEndTime(LocalTime time) {
+  public void setEndTime(final LocalTime time) {
     this.endTime.set(time);
   }
 
-  public void setTour(UUID tourId) {
+  public void setTour(final UUID tourId) {
     this.tourId.set(tourId);
   }
 
-  public void setComment(String comment) {
+  public void setComment(final String comment) {
     this.comment.set(comment);
   }
 
-  public void setDifficulty(int difficulty) {
+  public void setDifficulty(final int difficulty) {
     this.difficulty.set(difficulty);
   }
 
-  public void setTotalDistance(int totalDistance) {
+  public void setTotalDistance(final double totalDistance) {
     this.totalDistance.set(totalDistance);
   }
 
-  public void setRating(int rating) {
+  public void setRating(final int rating) {
     this.rating.set(rating);
   }
 }
