@@ -1,6 +1,8 @@
 package at.technikum.frontend.controllers;
 
 import at.technikum.frontend.TourPlannerApplication;
+import at.technikum.frontend.mediators.SelectionState;
+import at.technikum.frontend.mediators.TabPaneMediator;
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourTableViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -37,6 +40,8 @@ public class TourPlannerController implements Initializable {
   private MenuItem quitButton;
   @FXML
   private ListView<TourViewModel> tourListView;
+  @FXML
+  private TabPane tabPane;
 
   private TourInfoController tourInfoController;
 
@@ -95,6 +100,13 @@ public class TourPlannerController implements Initializable {
       }
     });
 
+    if (tourLogsController != null) {
+      new TabPaneMediator(tabPane, tourListView, Map.of(
+              SelectionState.NO_SELECTION, false,
+              SelectionState.ONE_SELECTED, true,
+              SelectionState.MANY_SELECTED, false
+      ));
+    }
   }
 
   private void initializeTourInfo() {

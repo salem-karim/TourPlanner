@@ -1,11 +1,8 @@
 package at.technikum.frontend.controllers;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import at.technikum.frontend.mediators.LogButtonsMediator;
 import at.technikum.frontend.mediators.Mediator;
+import at.technikum.frontend.mediators.SelectionState;
 import at.technikum.frontend.mediators.TourButtonsMediator;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
@@ -20,6 +17,11 @@ import javafx.scene.control.TableView;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 @Setter
 @Getter
@@ -44,16 +46,35 @@ public class NewEditDeleteButtonBarController implements Initializable {
   public void setTourListView(ListView<TourViewModel> tourListView) {
 
     if (tourListView != null) {
-      mediators.add(new TourButtonsMediator(editButton, tourListView, new boolean[] { true, false, true }));
-      mediators.add(new TourButtonsMediator(deleteButton, tourListView, new boolean[] { true, false, false }));
+      new TourButtonsMediator(editButton, tourListView, Map.of(
+              SelectionState.NO_SELECTION, false,
+              SelectionState.ONE_SELECTED, true,
+              SelectionState.MANY_SELECTED, false
+      ));
+
+      // For delete button
+      new TourButtonsMediator(deleteButton, tourListView, Map.of(
+              SelectionState.NO_SELECTION, false,
+              SelectionState.ONE_SELECTED, true,
+              SelectionState.MANY_SELECTED, true
+      ));
     }
   }
 
   public void setLogTableView(TableView<LogViewModel> logTableView) {
 
     if (logTableView != null) {
-      mediators.add(new LogButtonsMediator(editButton, logTableView, new boolean[] { true, false, true }));
-      mediators.add(new LogButtonsMediator(deleteButton, logTableView, new boolean[] { true, false, false }));
+      mediators.add(new LogButtonsMediator(editButton, logTableView, Map.of(
+              SelectionState.NO_SELECTION, false,
+              SelectionState.ONE_SELECTED, true,
+              SelectionState.MANY_SELECTED, false
+      )));
+
+      mediators.add(new LogButtonsMediator(deleteButton, logTableView, Map.of(
+              SelectionState.NO_SELECTION, false,
+              SelectionState.ONE_SELECTED, true,
+              SelectionState.MANY_SELECTED, true
+      )));
     }
   }
 

@@ -5,13 +5,29 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
-public class TourButtonsMediator implements Mediator {
+import java.util.Map;
 
-  public TourButtonsMediator(final Button button, final ListView<TourViewModel> tourListView, final boolean[] disable) {
-    tourListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<TourViewModel>) change -> {
-      final int selectedCount = tourListView.getSelectionModel().getSelectedItems().size();
-      button.setDisable(((selectedCount == 0) && (disable[0])) || ((selectedCount == 1) && (disable[1]))
-          || ((selectedCount > 1) && (disable[2])));
-    });
+public class TourButtonsMediator implements Mediator {
+  private final Map<SelectionState, Boolean> buttonStates;
+
+  public TourButtonsMediator(Button button, ListView<TourViewModel> tourListView,
+                             Map<SelectionState, Boolean> buttonStates) {
+    validateButtonStates(buttonStates);
+    this.buttonStates = buttonStates;
+
+    updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size());
+
+    tourListView.getSelectionModel().getSelectedItems().addListener(
+            (ListChangeListener<TourViewModel>) change ->
+                    updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
+
+    tourListView.getItems().addListener(
+            (ListChangeListener<TourViewModel>) change ->
+                    updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
+  }
+
+  private void updateButtonState(Button button, int selectedCount) {
+    SelectionState state = SelectionState.fromCount(selectedCount);
+    button.setDisable(!buttonStates.get(state));
   }
 }
