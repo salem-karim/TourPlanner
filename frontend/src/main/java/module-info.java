@@ -16,6 +16,7 @@ module at.technikum.frontend {
   requires org.hibernate.orm.core;
   requires atlantafx.base;
     requires jdk.compiler;
+    requires com.github.librepdf.openpdf;
 
     opens at.technikum.frontend to javafx.fxml;
 

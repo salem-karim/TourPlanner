@@ -22,13 +22,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 @Slf4j
 public class TourPlannerController implements Initializable {
 
   private final TourTableViewModel tourTableViewModel = new TourTableViewModel();
 
-  private NavbarController navbarController = new NavbarController();
 
   @FXML
   public SplitPane tourInfo;
@@ -48,13 +48,18 @@ public class TourPlannerController implements Initializable {
   @FXML
   private TourLogController tourLogsController;
 
+  private final NavbarController navbarController = new NavbarController(this);
+
+  @FXML private MenuItem importMenuItem;
+  @FXML private MenuItem exportMenuItem;
+  @FXML private MenuItem tourpdfMenuItem;
+  @FXML private MenuItem summarizepdfMenuItem;
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeListView();
     initializeTourInfo();
 
-    //todo: bin mir nicht sicher, wie wir TourPlannerController mit NavbarController verbinden
-    //navbarController.initialize();
 
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
             .getProperties().get("newEditDeleteButtonBarController");
@@ -70,6 +75,34 @@ public class TourPlannerController implements Initializable {
     englishButton.setOnAction(event -> changeLanguage("en"));
     germanButton.setOnAction(event -> changeLanguage("de"));
     polishButton.setOnAction(event -> changeLanguage("pl"));
+
+    // Setup menu logic handlers
+
+    tourListView.sceneProperty().addListener((obsScene, oldScene, newScene) -> {
+      if (newScene != null) {
+        Stage stage = (Stage) newScene.getWindow();
+        if (stage != null) {
+          navbarController.setImportMenuItem(importMenuItem, stage);
+        }
+      }
+    });
+
+    navbarController.setExportMenuItem(exportMenuItem);
+    navbarController.setTourPDFMenuItem(tourpdfMenuItem);
+    navbarController.setSummarizePDFMenuItem(summarizepdfMenuItem);
+  }
+
+  public void addTourThroughImport(TourViewModel tvm){
+    tourTableViewModel.newTour(tvm);
+  }
+
+  public TourViewModel getTourById(UUID id) {
+    for (TourViewModel tour : tourListView.getSelectionModel().getSelectedItems()) {
+      if (tour.getId().equals(id)) {
+        return tour;
+      }
+    }
+    return null; // Not found
   }
 
   private void initializeListView() {
@@ -232,6 +265,8 @@ public class TourPlannerController implements Initializable {
       log.error(e.getMessage());
     }
   }
+
+
 
   private void changeLanguage(String newLang) {
     if (newLang.equals(AppProperties.getInstance().getLocale().getLanguage())) return;
