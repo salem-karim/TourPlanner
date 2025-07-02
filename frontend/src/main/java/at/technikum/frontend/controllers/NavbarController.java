@@ -2,15 +2,19 @@ package at.technikum.frontend.controllers;
 
 // navbar: export und import as json(one tour), report(generate pdf from 1 tour+logs, searchbar (all infos)
 
+import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.common.models.TransportType;
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.utils.AppProperties;
+import at.technikum.frontend.viewmodels.LogTableViewModel;
+import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import com.sun.tools.javac.Main;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,6 +41,12 @@ import java.io.File;
 
 import java.io.FileOutputStream;
 import java.util.UUID;
+
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
 //todo: add logging ???
 
@@ -142,11 +152,47 @@ public class NavbarController{
     }
 
     public void onTourPDF() throws IOException {
+        TourViewModel tvm = tourPlannerController.getSelectedTour();
+        Tour tour = tvm.toTour();
+
+        LogTableViewModel ltvm = tvm.getLogs();
+        ObservableList<LogViewModel> logs = ltvm.getData();
+
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("pdf_files/tourname_report.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("pdf_files/"+tour.getName()+"_report.pdf"));
         document.open();
 
-        document.add(new Paragraph("Sample PDF"));
+        // Add tour details
+        document.add(new Paragraph("Tour: " + tour.getName()));
+        document.add(new Paragraph("Description: " + tour.getDescription()));
+        document.add(new Paragraph("From: " + tour.getFrom()));
+        document.add(new Paragraph("To: " + tour.getTo()));
+        document.add(new Paragraph("Transport Type: " + tour.getTransport_type()));
+        document.add(new Paragraph("Total Distance: " + tour.getTotal_distance() + " km"));
+        document.add(new Paragraph("Estimated Time: " + tour.getEstimated_time() + " minutes"));
+        document.add(new Paragraph(" ")); // empty line
+
+        // Create table for logs
+        PdfPTable table = new PdfPTable(6); // 6 columns for your Logs fields
+        table.addCell("Start DateTime");
+        table.addCell("End DateTime");
+        table.addCell("Distance (km)");
+        table.addCell("Comment");
+        table.addCell("Difficulty");
+        table.addCell("Rating");
+
+        for ( LogViewModel log : logs) {
+            table.addCell(log.getStartDate().toString());
+            table.addCell(log.getEndDate().toString());
+            table.addCell(String.valueOf(log.getTotalDistance()));
+            table.addCell(log.getComment());
+            table.addCell(String.valueOf(log.getDifficulty()));
+            table.addCell(String.valueOf(log.getRating()));
+        }
+
+        document.add(table);
+
+        //todo image is still missing
 
         document.close();
     }

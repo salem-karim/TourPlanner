@@ -19,10 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 public class TourPlannerController implements Initializable {
@@ -96,6 +93,10 @@ public class TourPlannerController implements Initializable {
 
   public TourViewModel getSelectedTour() {
     return tourListView.getSelectionModel().getSelectedItem();
+  }
+
+  public List<TourViewModel> getAllTours() {
+    return new ArrayList<>(tourTableViewModel.getData());
   }
 
   private void initializeListView() {
