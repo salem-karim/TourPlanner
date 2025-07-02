@@ -4,54 +4,60 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox prefHeight="600.0" prefWidth="1025.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.controllers.TourPlannerController">
-  <!--TODO: Put this in its own fxml file and set controller there may include searchbar-->
+<VBox prefHeight="600.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/21.0.3-internal"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="at.technikum.frontend.controllers.TourPlannerController">
+  <!--TODO:
+  Put this in its own fxml file and set controller there may include searchbar-->
   <MenuBar prefWidth="904.0" VBox.vgrow="NEVER">
     <Menu mnemonicParsing="false" text="%menu.file">
-      <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%button.import_tour"/>
-      <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="%button.export_tour"/>
-      <MenuItem fx:id="tourpdfMenuItem" mnemonicParsing="false" text="%button.create_pdf"/>
-      <MenuItem fx:id="summarizepdfMenuItem" mnemonicParsing="false" text="%button.create_summary"/>
+      <MenuItem fx:id="importMenuItem" mnemonicParsing="false" text="%button.import_tour" />
+      <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="%button.export_tour" />
+      <MenuItem fx:id="tourpdfMenuItem" mnemonicParsing="false" text="%button.create_pdf" />
+      <MenuItem fx:id="summarizepdfMenuItem" mnemonicParsing="false" text="%button.create_summary" />
       <Menu mnemonicParsing="false" text="%button.preferences">
-        <MenuItem fx:id="englishButton" mnemonicParsing="false" text="English"/>
-        <MenuItem fx:id="germanButton" mnemonicParsing="false" text="Deutsch"/>
-        <MenuItem fx:id="polishButton" mnemonicParsing="false" text="Polski"/>
+        <MenuItem fx:id="englishButton" mnemonicParsing="false" text="English" />
+        <MenuItem fx:id="germanButton" mnemonicParsing="false" text="Deutsch" />
+        <MenuItem fx:id="polishButton" mnemonicParsing="false" text="Polski" />
       </Menu>
-      <SeparatorMenuItem mnemonicParsing="false"/>
-      <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit"/>
+      <SeparatorMenuItem mnemonicParsing="false" />
+      <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit" />
     </Menu>
   </MenuBar>
 
   <SplitPane dividerPositions="0.35" focusTraversable="true" VBox.vgrow="ALWAYS">
     <AnchorPane>
-      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" style="&#10;" text="%main.tour"
-             textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
+      <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" minWidth="60.0" style="&#10;"
+        text="%main.tour"
+        textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0">
         <font>
-          <Font name="System Bold" size="18.0"/>
+          <Font name="System Bold" size="18.0" />
         </font>
         <padding>
-          <Insets left="20.0"/>
+          <Insets left="20.0" />
         </padding>
       </Label>
-      <ListView fx:id="tourListView" layoutX="7.0" layoutY="32.0" prefHeight="480.0" prefWidth="300.0"
-                AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
-                AnchorPane.topAnchor="30.0"/>
-      <fx:include fx:id="newEditDeleteButtonBar" source="new_edit_delete_button_bar.fxml" AnchorPane.bottomAnchor="0.0"
-                  AnchorPane.leftAnchor="0.0"/>
+      <ListView fx:id="tourListView" layoutX="7.0" layoutY="32.0" prefHeight="480.0"
+        prefWidth="300.0"
+        AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0"
+        AnchorPane.topAnchor="30.0" />
+      <fx:include fx:id="newEditDeleteButtonBar" source="new_edit_delete_button_bar.fxml"
+        AnchorPane.bottomAnchor="0.0"
+        AnchorPane.leftAnchor="0.0" />
     </AnchorPane>
     <AnchorPane prefHeight="575.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
       <TabPane fx:id="tabPane" prefHeight="600.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE"
-               AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        AnchorPane.bottomAnchor="0.0"
+        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <Tab text="%menu.general">
           <fx:include fx:id="tourInfo"
-                      source="tour_info.fxml" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            source="tour_info.fxml" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </Tab>
         <Tab text="%menu.logs" id="LogsTab">
-          <fx:include fx:id="tourLogs" source="tour_logs.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+          <fx:include fx:id="tourLogs" source="tour_logs.fxml" AnchorPane.bottomAnchor="0.0"
+            AnchorPane.leftAnchor="0.0"
+            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         </Tab>
       </TabPane>
     </AnchorPane>

@@ -61,7 +61,7 @@ public abstract class BaseLogController {
       return;
     }
 
-    logValidator = new LogValidator();
+    logValidator = new LogValidator(this);
 
     if (logViewModel == null) {
       logViewModel = new LogViewModel();
@@ -121,10 +121,6 @@ public abstract class BaseLogController {
     okCancelController = (OKCancelButtonBarController) saveCancelButtonBar.getProperties()
         .get("okCancelButtonBarController");
 
-    // TODO: add 16 to the height of the AnchorPane per Error Label
-    // (which gets set to visible and set the height to 16)
-    // so AnchorPane height goes from 456 to 488, 504, 520
-    // also set the border of the TextField/ DatePicker to red
     okCancelController.setOkButtonListener(event -> {
       if (logValidator.validateLog(logViewModel)) {
         onSaveButtonClicked();

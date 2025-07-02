@@ -1,9 +1,6 @@
 package at.technikum.frontend.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import at.technikum.frontend.utils.AppProperties;
+import at.technikum.frontend.controllers.BaseTourController;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,37 +8,97 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @NoArgsConstructor
 public class TourValidator extends Validator {
+  private BaseTourController controller;
 
+  /**
+   * @param controller The controller that manages the tour view.
+   */
+  public TourValidator(BaseTourController controller) {
+    this.controller = controller;
+  }
+
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the tour is valid, false otherwise.
+   */
   public boolean validateTour(final TourViewModel tourViewModel) {
-    final List<String> errors = new ArrayList<>();
+    errorCount = 0;
+    boolean isValid = true;
 
-    // Check for empty required fields
-    if (isEmpty(tourViewModel.getName())) {
-      errors.add(AppProperties.getInstance().getI18n().getString("validation.name.required"));
-    }
+    // Validate each field
+    isValid &= validateName(tourViewModel);
+    isValid &= validateDescription(tourViewModel);
+    isValid &= validateFrom(tourViewModel);
+    isValid &= validateTo(tourViewModel);
+    isValid &= validateTransportType(tourViewModel);
 
-    if (isEmpty(tourViewModel.getFrom())) {
-      errors.add(AppProperties.getInstance().getI18n().getString("validation.from.required"));
-    }
+    return isValid;
+  }
 
-    if (isEmpty(tourViewModel.getTo())) {
-      errors.add(AppProperties.getInstance().getI18n().getString("validation.to.required"));
-    }
-
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the transport type is valid, false otherwise.
+   */
+  private boolean validateTransportType(TourViewModel tourViewModel) {
     if (tourViewModel.getTransportType() == null) {
-      errors.add(AppProperties.getInstance().getI18n().getString("validation.transportType.required"));
-    }
-
-    // If validation failed, show error message
-    if (!errors.isEmpty()) {
-      showValidationError(errors);
+      showError(controller.getTransportType(), controller.getTransportTypeError());
       return false;
     }
-
+    hideError(controller.getTransportType(), controller.getTransportTypeError());
     return true;
   }
 
-  private boolean isEmpty(final String value) {
-    return value == null || value.trim().isEmpty();
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the 'to' field is valid, false otherwise.
+   */
+  private boolean validateTo(TourViewModel tourViewModel) {
+    // TODO: Use the API to actually check Location
+    if (isEmpty(tourViewModel.getTo())) {
+      showError(controller.getTo(), controller.getToError());
+      return false;
+    }
+    hideError(controller.getTo(), controller.getToError());
+    return true;
+  }
+
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the 'from' field is valid, false otherwise.
+   */
+  private boolean validateFrom(TourViewModel tourViewModel) {
+    // TODO: Use the API to actually check Location
+    if (isEmpty(tourViewModel.getFrom())) {
+      showError(controller.getFrom(), controller.getFromError());
+      return false;
+    }
+    hideError(controller.getFrom(), controller.getFromError());
+    return true;
+  }
+
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the description is valid, false otherwise.
+   */
+  private boolean validateDescription(TourViewModel tourViewModel) {
+    if (isEmpty(tourViewModel.getDescription())) {
+      showError(controller.getDescription(), controller.getDescriptionError());
+      return false;
+    }
+    hideError(controller.getDescription(), controller.getDescriptionError());
+    return true;
+  }
+
+  /**
+   * @param tourViewModel The view model containing the tour data to validate.
+   * @return true if the name is valid, false otherwise.
+   */
+  private boolean validateName(TourViewModel tourViewModel) {
+    if (isEmpty(tourViewModel.getName())) {
+      showError(controller.getName(), controller.getNameError());
+      return false;
+    }
+    hideError(controller.getName(), controller.getNameError());
+    return true;
   }
 }

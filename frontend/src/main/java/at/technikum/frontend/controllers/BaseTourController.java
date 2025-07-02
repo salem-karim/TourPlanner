@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseTourController {
   @FXML
-  protected Label mainLabel;
+  protected Label mainLabel, nameError, descriptionError, fromError, toError, transportTypeError;
   @FXML
   protected ButtonBar newCancelButtonBar;
   @FXML
@@ -50,7 +50,7 @@ public abstract class BaseTourController {
       return;
     }
 
-    tourValidator = new TourValidator();
+    tourValidator = new TourValidator(this);
 
     if (tourViewModel == null) {
       tourViewModel = new TourViewModel();
