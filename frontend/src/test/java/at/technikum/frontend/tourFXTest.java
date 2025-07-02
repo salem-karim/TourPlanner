@@ -75,7 +75,7 @@ class MainViewModelTest {
     final boolean editTourWindowOpen = robot.listWindows().stream()
         .filter(window -> window instanceof Stage)
         .map(window -> ((Stage) window).getTitle())
-        .anyMatch(title -> "Edit Tour".equals(title));
+        .anyMatch("Edit Tour"::equals);
     Assertions.assertThat(editTourWindowOpen).isFalse();
   }
 

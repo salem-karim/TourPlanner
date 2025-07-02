@@ -2,6 +2,7 @@ package at.technikum.frontend.services;
 
 import at.technikum.frontend.controllers.BaseTourController;
 import at.technikum.frontend.viewmodels.TourViewModel;
+import javafx.beans.binding.Bindings;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +16,8 @@ public class TourValidator extends Validator {
    */
   public TourValidator(BaseTourController controller) {
     this.controller = controller;
+    setupFocusListeners();
+    setupButtonValidation();
   }
 
   /**
@@ -23,6 +26,7 @@ public class TourValidator extends Validator {
    */
   public boolean validateTour(final TourViewModel tourViewModel) {
     errorCount = 0;
+    errorCountProperty.set(0);
     boolean isValid = true;
 
     // Validate each field
@@ -100,5 +104,56 @@ public class TourValidator extends Validator {
     }
     hideError(controller.getName(), controller.getNameError());
     return true;
+  }
+
+  /**
+   * Sets up focus listeners for all input fields to validate on focus lost
+   */
+  private void setupFocusListeners() {
+    // Name field validation
+    controller.getName().focusedProperty().addListener((obs, oldValue, newValue) -> {
+      if (!newValue) { // Focus lost
+        validateName(controller.getTourViewModel());
+      }
+    });
+
+    // Description field validation
+    controller.getDescription().focusedProperty().addListener((obs, oldValue, newValue) -> {
+      if (!newValue) { // Focus lost
+        validateDescription(controller.getTourViewModel());
+      }
+    });
+
+    // From field validation
+    controller.getFrom().focusedProperty().addListener((obs, oldValue, newValue) -> {
+      if (!newValue) { // Focus lost
+        validateFrom(controller.getTourViewModel());
+      }
+    });
+
+    // To field validation
+    controller.getTo().focusedProperty().addListener((obs, oldValue, newValue) -> {
+      if (!newValue) { // Focus lost
+        validateTo(controller.getTourViewModel());
+      }
+    });
+
+    // Transport type validation
+    controller.getTransportType().focusedProperty().addListener((obs, oldValue, newValue) -> {
+      if (!newValue) { // Focus lost
+        validateTransportType(controller.getTourViewModel());
+      }
+    });
+  }
+
+  /**
+   * Setup the OK Button disable Property binding
+   */
+  private void setupButtonValidation() {
+    // Create a binding that disables the button when errorCount > 0
+    controller.getOkCancelController().getOkButton().disableProperty().bind(
+        Bindings.createBooleanBinding(
+            () -> errorCount > 0,
+            errorCountProperty));
   }
 }

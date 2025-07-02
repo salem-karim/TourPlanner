@@ -50,8 +50,6 @@ public abstract class BaseTourController {
       return;
     }
 
-    tourValidator = new TourValidator(this);
-
     if (tourViewModel == null) {
       tourViewModel = new TourViewModel();
     }
@@ -81,6 +79,8 @@ public abstract class BaseTourController {
     // Fix the way okCancelController is obtained
     okCancelController = (OKCancelButtonBarController) newCancelButtonBar.getProperties()
         .get("okCancelButtonBarController");
+
+    tourValidator = new TourValidator(this);
 
     okCancelController.setOkButtonListener(event -> {
       if (tourValidator.validateTour(tourViewModel)) {
