@@ -72,9 +72,6 @@ public class TourPlannerController implements Initializable {
       tourLogsController.getLogTable().getSelectionModel().selectFirst();
     }
     quitButton.setOnAction(event -> TourPlannerApplication.closeWindow(newEditDeleteButtonBar));
-    englishButton.setOnAction(event -> changeLanguage("en"));
-    germanButton.setOnAction(event -> changeLanguage("de"));
-    polishButton.setOnAction(event -> changeLanguage("pl"));
 
     // Setup menu logic handlers
 
@@ -83,6 +80,7 @@ public class TourPlannerController implements Initializable {
         Stage stage = (Stage) newScene.getWindow();
         if (stage != null) {
           navbarController.setImportMenuItem(importMenuItem, stage);
+          navbarController.setLanguageMenuItems(englishButton, germanButton, polishButton, stage);
         }
       }
     });
@@ -96,13 +94,8 @@ public class TourPlannerController implements Initializable {
     tourTableViewModel.newTour(tvm);
   }
 
-  public TourViewModel getTourById(UUID id) {
-    for (TourViewModel tour : tourListView.getSelectionModel().getSelectedItems()) {
-      if (tour.getId().equals(id)) {
-        return tour;
-      }
-    }
-    return null; // Not found
+  public TourViewModel getSelectedTour() {
+    return tourListView.getSelectionModel().getSelectedItem();
   }
 
   private void initializeListView() {
@@ -263,31 +256,6 @@ public class TourPlannerController implements Initializable {
       stage.showAndWait();
     } catch (Exception e) {
       log.error(e.getMessage());
-    }
-  }
-
-
-
-  private void changeLanguage(String newLang) {
-    if (newLang.equals(AppProperties.getInstance().getLocale().getLanguage())) return;
-
-    // Update the language
-    AppProperties.getInstance().setLanguage(newLang);
-
-    try {
-      // Reload the entire scene with the new language
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/main_window.fxml"),
-              AppProperties.getInstance().getI18n());
-      Parent root = loader.load();
-
-      // Get the current stage
-      Stage stage = (Stage) tourListView.getScene().getWindow();
-
-      // Replace the scene content
-      Scene scene = new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight());
-      stage.setScene(scene);
-    } catch (IOException e) {
-      log.error("Failed to reload view after language change", e);
     }
   }
 }

@@ -38,11 +38,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.UUID;
 
+//todo: add logging ???
 
 public class NavbarController{
     private MenuItem importMenuItem;
     private MenuItem exportMenuItem;
     private MenuItem pdfMenuItem;
+
+    private MenuItem language_englishMenuItem;
+    private MenuItem language_germanMenuItem;
+    private MenuItem language_polishMenuItem;
 
     TourPlannerController tourPlannerController;
 
@@ -81,6 +86,16 @@ public class NavbarController{
         });
     }
 
+    public void setLanguageMenuItems(MenuItem englishItem, MenuItem germanItem, MenuItem polishItem, Stage stage) {
+        this.language_englishMenuItem = englishItem;
+        this.language_germanMenuItem = germanItem;
+        this.language_polishMenuItem = polishItem;
+
+        this.language_englishMenuItem.setOnAction(event -> onChangeLanguage("en", stage));
+        this.language_germanMenuItem.setOnAction(event -> onChangeLanguage("de", stage));
+        this.language_polishMenuItem.setOnAction(event -> onChangeLanguage("pl", stage));
+    }
+
 
     // ---- Logic for Navbar Items ----
 
@@ -112,23 +127,14 @@ public class NavbarController{
     public void onExport() {
         System.out.println("Export clicked");
 
-        Tour tour = new Tour(
-                UUID.randomUUID(),
-                "Kahlsberg Wanderung",
-                "Schöne Wanderung aufm Kahlsberg",
-                "Nußdorf",
-                "Kahlsberg",
-                TransportType.CAR,
-                100,
-                120,
-                new byte[0],
-                new ArrayList<>());
+        TourViewModel tvm = tourPlannerController.getSelectedTour();
+        Tour tour = tvm.toTour();
 
         ObjectMapper mapper = new ObjectMapper();
 
         try {
             // Write to file
-            mapper.writeValue(new File("json_files/"+tour.getId()+".json"), tour);
+            mapper.writeValue(new File("json_files/"+ tour.getName() + "_"+tour.getId()+".json"), tour);
             System.out.println("Tour exported to JSON.");
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,6 +152,9 @@ public class NavbarController{
     }
 
     public void onSummarizePDF() throws FileNotFoundException {
+
+
+
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("pdf_files/tour_summary.pdf"));
         document.open();
@@ -153,5 +162,25 @@ public class NavbarController{
         document.add(new Paragraph("Sample PDF"));
 
         document.close();
+    }
+
+    private void onChangeLanguage(String newLang, Stage stage) {
+        if (newLang.equals(AppProperties.getInstance().getLocale().getLanguage())) return;
+
+        // Update the language
+        AppProperties.getInstance().setLanguage(newLang);
+
+        try {
+            // Reload the entire scene with the new language
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/main_window.fxml"),
+                    AppProperties.getInstance().getI18n());
+            Parent root = loader.load();
+
+            // Replace the scene content
+            Scene scene = new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            //log.error("Failed to reload view after language change", e);
+        }
     }
 }
