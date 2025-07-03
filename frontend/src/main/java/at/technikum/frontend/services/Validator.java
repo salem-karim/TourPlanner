@@ -8,26 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class Validator {
-  protected int errorCount = 0;
   protected IntegerProperty errorCountProperty = new SimpleIntegerProperty(0);
   protected static final String ERROR_STYLE = "-fx-border-color: red;";
   protected static final double ERROR_HEIGHT = 16.0;
-
-  /**
-   * Increments the Error Count as well as the Property
-   */
-  protected void incrementErrorCount() {
-    errorCount++;
-    errorCountProperty.set(errorCount);
-  }
-
-  /**
-   * Decrements the Error Count as well as the Property
-   */
-  protected void decrementErrorCount() {
-    errorCount--;
-    errorCountProperty.set(errorCount);
-  }
 
   /**
    * @param field      the field to validate
@@ -38,7 +21,7 @@ public abstract class Validator {
       field.setStyle(ERROR_STYLE);
       errorLabel.setVisible(true);
       errorLabel.setPrefHeight(ERROR_HEIGHT);
-      incrementErrorCount();
+      errorCountProperty.set(errorCountProperty.get() + 1);
     }
   }
 
@@ -51,7 +34,7 @@ public abstract class Validator {
       field.setStyle("");
       errorLabel.setVisible(false);
       errorLabel.setPrefHeight(0);
-      decrementErrorCount();
+      errorCountProperty.set(errorCountProperty.get() - 1);
     }
   }
 
