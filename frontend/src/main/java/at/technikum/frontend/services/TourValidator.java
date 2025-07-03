@@ -26,10 +26,10 @@ public class TourValidator extends Validator {
    */
   public boolean validateTour(final TourViewModel tourViewModel) {
     errorCountProperty.set(0);
-    boolean isValid = true;
+    boolean isValid = false;
 
     // Validate each field
-    isValid &= validateName(tourViewModel);
+    isValid |= validateName(tourViewModel);
     isValid &= validateDescription(tourViewModel);
     isValid &= validateFrom(tourViewModel);
     isValid &= validateTo(tourViewModel);

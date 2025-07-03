@@ -29,10 +29,10 @@ public class LogValidator extends Validator {
    */
   public boolean validateLog(final LogViewModel logViewModel) {
     errorCountProperty.set(0);
-    boolean isValid = true;
+    boolean isValid = false;
 
     // Validate each field
-    isValid &= validateStartDate(logViewModel);
+    isValid |= validateStartDate(logViewModel);
     isValid &= validateEndDate(logViewModel);
     isValid &= validateStartTime(logViewModel);
     isValid &= validateEndTime(logViewModel);
