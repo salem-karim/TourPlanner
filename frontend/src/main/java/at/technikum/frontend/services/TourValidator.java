@@ -150,6 +150,8 @@ public class TourValidator extends Validator {
    * Setup the OK Button disable Property binding
    */
   private void setupButtonValidation() {
+    // TODO: Does currently not work due to the errorCount not updating correctly
+    // should rather just check if all Error Labels are non visible
     // Create a binding that disables the button when errorCount > 0
     controller.getOkCancelController().getOkButton().disableProperty().bind(
         Bindings.createBooleanBinding(
