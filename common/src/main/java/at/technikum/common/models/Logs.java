@@ -24,21 +24,24 @@ public class Logs {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
-  @Column(name = "tour_id")
+  @Column(name = "tour_id", nullable = false)
   private UUID tour_id;
 
-  @Column(name = "start_date_time")
+  @Column(name = "start_date_time", nullable = false)
   private LocalDateTime start_date_time;
 
-  @Column(name = "end_date_time")
+  @Column(name = "end_date_time", nullable = false)
   private LocalDateTime end_date_time;
 
   @Column(name = "distance_km")
   private double total_distance;
 
+  @Column(name = "comment", nullable = false)
   private String comment;
 
+  @Column(name = "difficulty", nullable = false)
   private int difficulty;
 
+  @Column(name = "rating", nullable = false)
   private int rating;
 }

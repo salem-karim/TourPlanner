@@ -38,6 +38,9 @@ public class RequestHandler {
     return INSTANCE;
   }
 
+  /**
+   * @param tour The Tour to send to the API Endpoint
+   */
   public void postTour(final Tour tour) {
     if (System.getProperty("app.test") != null)
       return;
@@ -62,6 +65,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param tvm The Tour View Model to send to the API Endpoint
+   */
   public void putTour(final TourViewModel tvm) {
     if (System.getProperty("app.test") != null)
       return;
@@ -88,6 +94,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param tourId The ID of the Tour to send to the API Endpoint
+   */
   public void deleteTour(final UUID tourId) {
     if (System.getProperty("app.test") != null)
       return;
@@ -111,6 +120,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param callback Method to run after the Response returns
+   */
   public void loadTours(final Consumer<List<Tour>> callback) {
     if (System.getProperty("app.test") != null)
       return;
@@ -134,6 +146,9 @@ public class RequestHandler {
 
   // ----------------------LOGS--------------------------------
 
+  /**
+   * @param lvm The Log View Model to send to the API Endpoint
+   */
   public void postLog(final LogViewModel lvm) {
     if (System.getProperty("app.test") != null)
       return;
@@ -159,6 +174,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param lvm The Log View Model to send to the API Endpoint
+   */
   public void putLog(final LogViewModel lvm) {
     if (System.getProperty("app.test") != null)
       return;
@@ -184,6 +202,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param logId The ID of the Log to send to the API Endpoint
+   */
   public void deleteLog(final UUID logId) {
     if (System.getProperty("app.test") != null)
       return;
@@ -207,6 +228,9 @@ public class RequestHandler {
     }
   }
 
+  /**
+   * @param callback Method to run after the Response returns
+   */
   public void loadLogs(final Consumer<List<Logs>> callback) {
     if (System.getProperty("app.test") != null)
       return;

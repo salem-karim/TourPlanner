@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 
+import at.technikum.common.models.TransportType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,7 +35,7 @@ class TourControllerIntegrationTest {
 
   @Test
   void testCreateAndGetTour() throws Exception {
-    final Tour tour = new Tour(UUID.randomUUID(), "Test", "Desc", "From", "To", null, 10, 20, new byte[0], null);
+    final Tour tour = new Tour(UUID.randomUUID(), "Test", "Desc", "From", "To", TransportType.FOOT, 10, 20, new byte[0], null);
 
     // Create tour
     mockMvc.perform(post("/api/tours")
@@ -57,7 +58,7 @@ class TourControllerIntegrationTest {
 
   @Test
   void testGetTourById() throws Exception {
-    final Tour tour = new Tour(UUID.randomUUID(), "ById", "Desc", "From", "To", null, 10, 20, new byte[0], null);
+    final Tour tour = new Tour(UUID.randomUUID(), "ById", "Desc", "From", "To", TransportType.BIKE, 10, 20, new byte[0], null);
     final String response = mockMvc.perform(post("/api/tours")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(tour)))
@@ -75,7 +76,7 @@ class TourControllerIntegrationTest {
 
   @Test
   void testUpdateTourSuccess() throws Exception {
-    final Tour tour = new Tour(UUID.randomUUID(), "Update", "Desc", "From", "To", null, 10, 20, new byte[0], null);
+    final Tour tour = new Tour(UUID.randomUUID(), "Update", "Desc", "From", "To", TransportType.BIKE, 10, 20, new byte[0], null);
     final String response = mockMvc.perform(post("/api/tours")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(tour)))
@@ -105,7 +106,7 @@ class TourControllerIntegrationTest {
 
   @Test
   void testDeleteTourSuccess() throws Exception {
-    final Tour tour = new Tour(UUID.randomUUID(), "Delete", "Desc", "From", "To", null, 10, 20, new byte[0], null);
+    final Tour tour = new Tour(UUID.randomUUID(), "Delete", "Desc", "From", "To", TransportType.TRAIN, 10, 20, new byte[0], null);
     final String response = mockMvc.perform(post("/api/tours")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(tour)))
@@ -126,8 +127,6 @@ class TourControllerIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // todo: does not work now, because not all fiedls are required to have a value
-  // (maybe change that???)
   @Test
   void testCreateTourWithMissingFields() throws Exception {
     // Missing required fields (e.g., name)

@@ -2,31 +2,31 @@ package at.technikum.frontend.mediators;
 
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.collections.ListChangeListener;
-import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 
 import java.util.Map;
 
-public class TourButtonsMediator implements Mediator {
+public class NavBarButtonsMediator implements Mediator {
   private final Map<SelectionState, Boolean> buttonStates;
 
-  public TourButtonsMediator(Control button, ListView<TourViewModel> tourListView,
-                             Map<SelectionState, Boolean> buttonStates) {
+  public NavBarButtonsMediator(MenuItem button, ListView<TourViewModel> tourListView,
+                               Map<SelectionState, Boolean> buttonStates) {
     validateButtonStates(buttonStates);
     this.buttonStates = buttonStates;
 
     updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size());
 
     tourListView.getSelectionModel().getSelectedItems().addListener(
-            (ListChangeListener<TourViewModel>) change ->
-                    updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
-
+            (ListChangeListener<TourViewModel>)
+                    change -> updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
     tourListView.getItems().addListener(
-            (ListChangeListener<TourViewModel>) change ->
-                    updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
+            (ListChangeListener<TourViewModel>)
+                    change -> updateButtonState(button, tourListView.getSelectionModel().getSelectedItems().size()));
+   
   }
 
-  private void updateButtonState(Control button, int selectedCount) {
+  private void updateButtonState(MenuItem button, int selectedCount) {
     SelectionState state = SelectionState.fromCount(selectedCount);
     button.setDisable(!buttonStates.get(state));
   }

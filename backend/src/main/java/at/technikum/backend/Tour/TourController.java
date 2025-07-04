@@ -31,8 +31,12 @@ public class TourController {
 
   @PostMapping
   public ResponseEntity<Tour> createTour(@RequestBody final Tour tour) {
-    final Tour saved = tourService.saveTour(tour);
-    return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    try {
+      final Tour saved = tourService.saveTour(tour);
+      return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    } catch (final Exception e) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PutMapping("/{id}")

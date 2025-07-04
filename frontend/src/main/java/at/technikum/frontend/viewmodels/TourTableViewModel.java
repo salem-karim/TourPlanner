@@ -27,6 +27,9 @@ public class TourTableViewModel {
   private final ObjectProperty<TourViewModel> selectedTour = new SimpleObjectProperty<>();
   private final ObservableList<TourViewModel> data = FXCollections.observableArrayList();
 
+  /**
+   * Loads all Tours (with Logs) or create Sample Data for Tests
+   */
   public TourTableViewModel() {
     // Touren direkt beim Initialisieren laden
     if (System.getProperty("app.test") == null) {
@@ -63,15 +66,19 @@ public class TourTableViewModel {
     }
   }
 
+  /**
+   * @param tvm The View Model to add the List View and post to the API
+   */
   public void newTour(final TourViewModel tvm) {
-    data.add(tvm); // local list
-
-    // Convert to Tour (model from common)
+    data.add(tvm);
     final Tour tour = tvm.toTour();
-
     RequestHandler.getInstance().postTour(tour);
   }
 
+  /**
+   * @param otherViewModel of which Members gets copied over
+   * @param tourViewModel  of which Members gets written over by the other
+   */
   public void updateTour(final TourViewModel otherViewModel, final TourViewModel tourViewModel) {
     // Update local data (UI)
     tourViewModel.setName(otherViewModel.getName());
@@ -86,6 +93,9 @@ public class TourTableViewModel {
     RequestHandler.getInstance().putTour(tourViewModel);
   }
 
+  /**
+   * @param tourViewModel to delete
+   */
   public void deleteTour(final TourViewModel tourViewModel) {
     data.remove(tourViewModel);
 
@@ -99,10 +109,17 @@ public class TourTableViewModel {
     }
   }
 
+  /**
+   * @param tour to be selected from the List
+   */
   public void setSelectedTour(final TourViewModel tour) {
     selectedTour.set(tour);
   }
 
+  /**
+   * @param tour The tour which gets Logs inserted into its List of Logs
+   *             generates Sample Logs for a tour
+   */
   private void addSampleLogsToTour(final TourViewModel tour) {
     // Create first sample log
     final LogViewModel log1 = new LogViewModel();
@@ -133,6 +150,9 @@ public class TourTableViewModel {
     tour.getLogs().newLog(log2);
   }
 
+  /**
+   * Fetches Tours with all Logs from Backend API
+   */
   public void loadTours() {
     // sets callback for the request handler to load tours
     RequestHandler.getInstance().loadTours(tourList -> {

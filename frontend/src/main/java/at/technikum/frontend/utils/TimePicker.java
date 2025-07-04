@@ -51,7 +51,7 @@ public class TimePicker extends Spinner<LocalTime> {
     this(LocalTime.parse(timeString));
   }
 
-  private void initialize(final LocalTime defaultTime) {
+  public void initialize(final LocalTime defaultTime) {
     setEditable(true);
 
     final StringConverter<LocalTime> converter = TimePickerHelper.createConverter(defaultTime);

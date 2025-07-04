@@ -3,6 +3,8 @@ package at.technikum.frontend;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testfx.assertions.api.Assertions.assertThat;
 
+import at.technikum.frontend.viewmodels.LogViewModel;
+import javafx.scene.input.KeyCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,6 @@ import org.testfx.framework.junit5.Start;
 
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
@@ -75,7 +76,7 @@ class MainViewModelTest {
     final boolean editTourWindowOpen = robot.listWindows().stream()
         .filter(window -> window instanceof Stage)
         .map(window -> ((Stage) window).getTitle())
-        .anyMatch(title -> "Edit Tour".equals(title));
+        .anyMatch("Edit Tour"::equals);
     Assertions.assertThat(editTourWindowOpen).isFalse();
   }
 
@@ -132,16 +133,16 @@ class MainViewModelTest {
 
   @Test
   void testEditFirstTour(final FxRobot robot) {
+    final ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
+    robot.interact(() -> listView.getSelectionModel().selectFirst());
 
     robot.clickOn("#editButton");
 
     robot.clickOn("#name");
-    robot.eraseText(50);
+    robot.push(KeyCode.CONTROL, KeyCode.A);
     robot.write("Andere Wanderung");
-
     robot.clickOn("#okButton");
 
-    final ListView<TourViewModel> listView = robot.lookup("#tourListView").query();
     final TourViewModel firstItem = listView.getItems().getFirst();
     final String firstItemName = firstItem.getName();
 
@@ -160,7 +161,6 @@ class MainViewModelTest {
     Assertions.assertThat(newSize).isEqualTo(initialSize - 1);
   }
 
-  // todo:testCreateLog has problems with Datepicker -> cant set date manually
   @Test
   void testCreateLog(final FxRobot robot) {
     // Select a tour
@@ -187,12 +187,12 @@ class MainViewModelTest {
     robot.write("30"); // Use the correct format for your DatePicker
 
     robot.clickOn("#logOkButton");
+    
 
     // Now check if the log was added
-    final TableView<?> logTable = robot.lookup("#logTable").query();
-    final boolean found = logTable.getItems().stream()
-        .anyMatch(item -> item.toString().contains("Test log comment"));
-    Assertions.assertThat(found).isTrue();
+    final TableView<LogViewModel> logTable = robot.lookup("#logTable").query();
+    final String comment = logTable.getItems().getLast().getComment();
+    Assertions.assertThat(comment).isEqualTo("Test log comment");
   }
 
   @Test
@@ -201,23 +201,18 @@ class MainViewModelTest {
     robot.interact(() -> tourListView.getSelectionModel().selectFirst());
     robot.clickOn("#LogsTab");
 
-    final TableView<?> logTable = robot.lookup("#logTable").query();
+    final TableView<LogViewModel> logTable = robot.lookup("#logTable").query();
     robot.interact(() -> logTable.getSelectionModel().selectFirst());
 
     robot.clickOn("#editLogButton");
 
     robot.clickOn("#logComment");
-    robot.eraseText(50);
+    robot.push(KeyCode.CONTROL, KeyCode.A);
     robot.write("Edited log comment");
     robot.clickOn("#logOkButton");
 
-    final TableColumn<?, String> commentColumn = (TableColumn<?, String>) logTable.getColumns().stream()
-        .filter(col -> "Comment".equals(col.getText()) || "comment".equals(col.getId()))
-        .findFirst()
-        .orElseThrow();
-
-    final String actualComment = commentColumn.getCellData(0);
-    Assertions.assertThat(actualComment).isEqualTo("Edited log comment");
+    String comment = logTable.getItems().getFirst().getComment();
+    Assertions.assertThat(comment).isEqualTo("Edited log comment");
   }
 
   @Test
@@ -226,23 +221,19 @@ class MainViewModelTest {
     robot.interact(() -> tourListView.getSelectionModel().selectFirst());
     robot.clickOn("#LogsTab");
 
-    final TableView<?> logTable = robot.lookup("#logTable").query();
+    final TableView<LogViewModel> logTable = robot.lookup("#logTable").query();
     robot.interact(() -> logTable.getSelectionModel().selectFirst());
 
     robot.clickOn("#editLogButton");
 
     robot.clickOn("#logComment");
-    robot.eraseText(50);
+    robot.push(KeyCode.CONTROL, KeyCode.A);
     robot.write("Edited log comment");
     robot.clickOn("#logCancelButton");
 
-    final TableColumn<?, String> commentColumn = (TableColumn<?, String>) logTable.getColumns().stream()
-        .filter(col -> "Comment".equals(col.getText()) || "comment".equals(col.getId()))
-        .findFirst()
-        .orElseThrow();
-
-    final String actualComment = commentColumn.getCellData(0);
-    Assertions.assertThat(actualComment).isEqualTo("Great weather, enjoyed the hike!");
+    
+    String comment = logTable.getItems().getFirst().getComment();
+    Assertions.assertThat(comment).isEqualTo("Great weather, enjoyed the hike!");
   }
 
   @Test
