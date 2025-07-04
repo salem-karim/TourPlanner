@@ -118,7 +118,6 @@ public class NavbarController{
         }
     }
 
-
     public void onExport() {
         System.out.println("Export clicked");
 
