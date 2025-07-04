@@ -28,24 +28,23 @@ import lombok.Setter;
 public class Tour {
 
   @Id
-  // @GeneratedValue
-  // @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(name = "id", updatable = false, nullable = false)
-  // @id
   private UUID id;
 
+  @Column(name ="name", nullable = false)
   private String name;
 
+  @Column(name ="description")
   private String description;
 
-  @Column(name = "origin")
+  @Column(name = "origin", nullable = false)
   private String from;
 
-  @Column(name = "destination")
+  @Column(name = "destination", nullable = false)
   private String to;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "transport_type")
+  @Column(name = "transport_type", nullable = false)
   private TransportType transport_type;
 
   @Column(name = "distance_km")
