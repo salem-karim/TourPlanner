@@ -1,3 +1,4 @@
+@SuppressWarnings("JavaModuleDefinition")
 module at.technikum.frontend {
   requires transitive javafx.controls;
   requires javafx.fxml;

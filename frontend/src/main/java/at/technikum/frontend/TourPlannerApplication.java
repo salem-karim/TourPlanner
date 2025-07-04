@@ -23,11 +23,12 @@ public class TourPlannerApplication extends Application {
 
   @Override
   public void start(final Stage stage) throws IOException {
+    // TODO: add Menu Button to select Style
     Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
     final FXMLLoader fxmlLoader = new FXMLLoader(TourPlannerApplication.class.getResource("main_window.fxml"),
         AppProperties.getInstance().getI18n());
-    final Scene scene = new Scene(fxmlLoader.load(), 1040, 600);
+    final Scene scene = new Scene(fxmlLoader.load(), 1050, 600);
     stage.setTitle(AppProperties.getInstance().getI18n().getString("main.title"));
     stage.setScene(scene);
     stage.show();

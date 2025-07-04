@@ -8,11 +8,13 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -54,6 +56,13 @@ public class TourLogController implements Initializable {
   @Setter
   private TourViewModel selectedTour;
 
+  private record DateTimeAccessors(
+      Function<LogViewModel, ObservableValue<LocalDate>> dateProperty,
+      Function<LogViewModel, ObservableValue<LocalTime>> timeProperty,
+      Function<LogViewModel, LocalDate> dateGetter,
+      Function<LogViewModel, LocalTime> timeGetter) {
+  }
+
   @Override
   public void initialize(final URL location, final ResourceBundle resources) {
     setupTableColumns();
@@ -62,11 +71,18 @@ public class TourLogController implements Initializable {
   }
 
   private void setupTableColumns() {
-    // Set up date columns using the reusable method
-    setupDateTimeColumn(startDate, true);
-    setupDateTimeColumn(endDate, false);
+    setupDateTimeColumn(startDate, new DateTimeAccessors(
+        LogViewModel::startDateProperty,
+        LogViewModel::startTimeProperty,
+        LogViewModel::getStartDate,
+        LogViewModel::getStartTime));
 
-    // Other column setup remains the same
+    setupDateTimeColumn(endDate, new DateTimeAccessors(
+        LogViewModel::endDateProperty,
+        LogViewModel::endTimeProperty,
+        LogViewModel::getEndDate,
+        LogViewModel::getEndTime));
+
     comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
@@ -76,29 +92,25 @@ public class TourLogController implements Initializable {
     logTable.getSelectionModel().selectFirst();
   }
 
-  private void setupDateTimeColumn(final TableColumn<LogViewModel, LocalDateTime> column,
-      final boolean isStart) {
+  private void setupDateTimeColumn(
+      final TableColumn<LogViewModel, LocalDateTime> column,
+      final DateTimeAccessors accessors) {
     column.setCellValueFactory(cellData -> {
       final LogViewModel log = cellData.getValue();
       return new SimpleObjectProperty<>() {
         {
-          // Create listeners for both date and time properties
-          if (isStart) {
-            log.startDateProperty()
-                .addListener((obs, oldVal, newVal) -> refreshValue(log.getStartDate(), log.getStartTime()));
-            log.startTimeProperty()
-                .addListener((obs, oldVal, newVal) -> refreshValue(log.getStartDate(), log.getStartTime()));
-          } else {
-            log.endDateProperty()
-                .addListener((obs, oldVal, newVal) -> refreshValue(log.getEndDate(), log.getEndTime()));
-            log.endTimeProperty()
-                .addListener((obs, oldVal, newVal) -> refreshValue(log.getEndDate(), log.getEndTime()));
-          }
+          accessors.dateProperty().apply(log)
+              .addListener((obs, oldVal, newVal) -> refreshValue(
+                  accessors.dateGetter().apply(log),
+                  accessors.timeGetter().apply(log)));
+          accessors.timeProperty().apply(log)
+              .addListener((obs, oldVal, newVal) -> refreshValue(
+                  accessors.dateGetter().apply(log),
+                  accessors.timeGetter().apply(log)));
 
-          // Set initial value
-          final LocalDate date = isStart ? log.getStartDate() : log.getEndDate();
-          final LocalTime time = isStart ? log.getStartTime() : log.getEndTime();
-          refreshValue(date, time);
+          refreshValue(
+              accessors.dateGetter().apply(log),
+              accessors.timeGetter().apply(log));
         }
 
         private void refreshValue(final LocalDate date, final LocalTime time) {

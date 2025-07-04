@@ -126,7 +126,7 @@ class TourControllerIntegrationTest {
         .andExpect(status().isNotFound());
   }
 
-  // todo: does not work now, because not all fiedls are required to have a value
+  // todo: does not work now, because not all fields are required to have a value
   // (maybe change that???)
   @Test
   void testCreateTourWithMissingFields() throws Exception {

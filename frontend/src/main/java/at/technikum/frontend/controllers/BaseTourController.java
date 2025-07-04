@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseTourController {
   @FXML
-  protected Label mainLabel;
+  protected Label mainLabel, nameError, descriptionError, fromError, toError, transportTypeError;
   @FXML
   protected ButtonBar newCancelButtonBar;
   @FXML
@@ -49,8 +49,6 @@ public abstract class BaseTourController {
     if (initialized) {
       return;
     }
-
-    tourValidator = new TourValidator();
 
     if (tourViewModel == null) {
       tourViewModel = new TourViewModel();
@@ -81,6 +79,8 @@ public abstract class BaseTourController {
     // Fix the way okCancelController is obtained
     okCancelController = (OKCancelButtonBarController) newCancelButtonBar.getProperties()
         .get("okCancelButtonBarController");
+
+    tourValidator = new TourValidator(this);
 
     okCancelController.setOkButtonListener(event -> {
       if (tourValidator.validateTour(tourViewModel)) {
