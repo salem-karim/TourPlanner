@@ -34,6 +34,14 @@
                     <RadioMenuItem fx:id="germanButton" mnemonicParsing="false" text="Deutsch" toggleGroup="$languageGroup" />
                     <RadioMenuItem fx:id="polishButton" mnemonicParsing="false" text="Polski" toggleGroup="$languageGroup" />
                   </Menu>
+                  <Menu mnemonicParsing="false" text="%button.style">
+                    <RadioMenuItem fx:id="lightButton" mnemonicParsing="false" text="Light">
+                      <toggleGroup>
+                        <ToggleGroup fx:id="StyleGroup" />
+                      </toggleGroup>
+                    </RadioMenuItem>
+                    <RadioMenuItem fx:id="darkButton" mnemonicParsing="false" text="Dark" toggleGroup="$StyleGroup" />
+                  </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="quitButton" mnemonicParsing="false" text="%button.quit" />
                 </Menu>

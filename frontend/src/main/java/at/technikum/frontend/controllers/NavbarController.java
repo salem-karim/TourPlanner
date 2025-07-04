@@ -4,11 +4,13 @@ package at.technikum.frontend.controllers;
 
 import at.technikum.common.models.Tour;
 import at.technikum.frontend.utils.AppProperties;
-import at.technikum.frontend.viewmodels.LogTableViewModel;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
+import atlantafx.base.theme.PrimerDark;
+import atlantafx.base.theme.PrimerLight;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
+import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,9 +37,9 @@ import java.io.FileOutputStream;
 
 import com.lowagie.text.pdf.PdfPTable;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-//todo: add logging ???
-
+@Slf4j
 @Getter
 public class NavbarController {
   private MenuItem importMenuItem;
@@ -66,7 +68,7 @@ public class NavbarController {
       try {
         onTourPDF();
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error(e.getMessage());
       }
     });
   }
@@ -113,6 +115,31 @@ public class NavbarController {
   }
 
 
+  public void setStyleMenuItems(RadioMenuItem lightButton, RadioMenuItem darkButton, Stage stage) {
+    // Reset all selections first
+    lightButton.setSelected(false);
+    darkButton.setSelected(false);
+    
+    // Set current style as selected
+    if (Application.getUserAgentStylesheet().contains("light")) {
+      lightButton.setSelected(true);
+    } else {
+      darkButton.setSelected(true);
+    }
+
+    lightButton.setOnAction(e -> {
+      Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+      stage.getScene().getStylesheets().clear();
+      stage.getScene().getStylesheets().add(Application.getUserAgentStylesheet());
+    });
+
+    darkButton.setOnAction(e -> {
+      Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+      stage.getScene().getStylesheets().clear();
+      stage.getScene().getStylesheets().add(Application.getUserAgentStylesheet());
+    });
+  }
+
   // ---- Logic for Navbar Items ----
 
   public void onImport(Stage stage) {
@@ -134,7 +161,7 @@ public class NavbarController {
         tourPlannerController.getTourTableViewModel().newTour(new TourViewModel(importedTour));
 
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error(e.getMessage());
       }
     }
   }
@@ -153,7 +180,7 @@ public class NavbarController {
               tour);
       System.out.println("Tour exported to JSON.");
     } catch (IOException e) {
-      e.printStackTrace();
+      log.error(e.getMessage());
     }
   }
 
@@ -161,8 +188,8 @@ public class NavbarController {
     TourViewModel tvm = tourPlannerController.getSelectedTour();
     Tour tour = tvm.toTour();
 
-    LogTableViewModel ltvm = tvm.getLogs();
-    ObservableList<LogViewModel> logs = ltvm.getData();
+    var logTableVM = tvm.getLogs();
+    ObservableList<LogViewModel> logs = logTableVM.getData();
 
     Document document = new Document();
     PdfWriter.getInstance(document, new FileOutputStream("pdf_files/" + tour.getName() + "_report.pdf"));
@@ -286,7 +313,7 @@ public class NavbarController {
       Scene scene = new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight());
       stage.setScene(scene);
     } catch (IOException e) {
-      // log.error("Failed to reload view after language change", e);
+       log.error("Failed to reload view after language change", e);
     }
   }
   
@@ -303,5 +330,5 @@ public class NavbarController {
         case "de" -> germanButton.setSelected(true);
         case "pl" -> polishButton.setSelected(true);
     }
-}
+  }
 }
