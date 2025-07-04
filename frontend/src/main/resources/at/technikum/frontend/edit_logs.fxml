@@ -91,7 +91,7 @@
         <Insets bottom="5.0" />
       </VBox.margin>
     </Label>
-    <TextField fx:id="totalDistance" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0"
+    <TextField id="logTotalDistance" fx:id="totalDistance" minWidth="-Infinity" prefHeight="26.0" prefWidth="310.0"
       promptText="40 (km)">
       <VBox.margin>
         <Insets />
