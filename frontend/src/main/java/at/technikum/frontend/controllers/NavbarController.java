@@ -4,21 +4,14 @@ package at.technikum.frontend.controllers;
 
 import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
-import at.technikum.common.models.TransportType;
-import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.LogTableViewModel;
 import at.technikum.frontend.viewmodels.LogViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
-import com.sun.tools.javac.Main;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
@@ -27,9 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 //pdf import
 import com.lowagie.text.pdf.PdfWriter;
@@ -40,13 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 
 import java.io.FileOutputStream;
-import java.util.UUID;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
 //todo: add logging ???
 
@@ -163,6 +148,7 @@ public class NavbarController{
         document.open();
 
         // Add tour details
+        document.add(new Paragraph("Tour Report"));
         document.add(new Paragraph("Tour: " + tour.getName()));
         document.add(new Paragraph("Description: " + tour.getDescription()));
         document.add(new Paragraph("From: " + tour.getFrom()));
@@ -199,14 +185,60 @@ public class NavbarController{
 
     public void onSummarizePDF() throws FileNotFoundException {
 
-
+        List<TourViewModel> tours = tourPlannerController.getAllTours();
 
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("pdf_files/tour_summary.pdf"));
+        PdfWriter.getInstance(document, new FileOutputStream("pdf_files/tours_summary.pdf"));
         document.open();
 
-        document.add(new Paragraph("Sample PDF"));
+        document.add(new Paragraph("Summarization of all Tours"));
+        document.add(new Paragraph("\n\n"));
 
+        PdfPTable table = new PdfPTable(4);
+        table.addCell("Tour name");
+        table.addCell("Average time");
+        table.addCell("Average distance (km)");
+        table.addCell("Average Rating");
+
+        Tour currentTour = null;
+        ObservableList<LogViewModel> currentLogs = null;
+
+        int avgTimeMinutes = 0;
+        int avgTimehours = 0;
+        double avgDistance = 0;
+        int avgRating = 0;
+
+        for (TourViewModel tourVM : tours) {
+            currentTour = tourVM.toTour();
+            table.addCell(currentTour.getName());
+
+            currentLogs = tourVM.getLogs().getData();
+
+            if (currentLogs == null || currentLogs.isEmpty()) {
+                table.addCell("N/A");
+                table.addCell("N/A");
+                table.addCell("N/A");
+            } else {
+                avgTimeMinutes = 0;
+                avgDistance = 0;
+                avgRating = 0;
+
+                for (LogViewModel log : currentLogs) {
+                    avgTimeMinutes += ((log.toLog().getEnd_date_time().getHour() - log.toLog().getStart_date_time().getHour()) * 60 + (log.toLog().getEnd_date_time().getMinute() - log.toLog().getStart_date_time().getMinute()));
+                    avgDistance += log.toLog().getTotal_distance();
+                    avgRating += log.getRating();
+                }
+
+                avgTimeMinutes = avgTimeMinutes / currentLogs.size();
+                avgTimehours = avgTimeMinutes / 60;
+                avgTimeMinutes = (avgTimeMinutes % 60);
+                table.addCell(String.valueOf(avgTimehours) + "h " + String.valueOf(avgTimeMinutes) + "min");
+
+                table.addCell(String.valueOf(avgDistance / currentLogs.size()));
+                table.addCell(String.valueOf(avgRating / currentLogs.size()));
+            }
+        }
+        document.add(table);
         document.close();
     }
 
