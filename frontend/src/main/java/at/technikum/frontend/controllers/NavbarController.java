@@ -1,7 +1,5 @@
 package at.technikum.frontend.controllers;
 
-// navbar: export und import as json(one tour), report(generate pdf from 1 tour+logs, searchbar (all infos)
-
 import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.frontend.utils.AppProperties;

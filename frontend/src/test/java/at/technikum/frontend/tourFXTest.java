@@ -207,7 +207,7 @@ class MainViewModelTest {
     robot.clickOn("#editLogButton");
 
     robot.clickOn("#logComment");
-    robot.eraseText(50);
+    robot.eraseText(30);
     robot.write("Edited log comment");
     robot.clickOn("#logOkButton");
 
@@ -217,7 +217,7 @@ class MainViewModelTest {
         .orElseThrow();
 
     final String actualComment = commentColumn.getCellData(0);
-    Assertions.assertThat(actualComment).isEqualTo("Edited log comment");
+    Assertions.assertThat(actualComment).isEqualTo("Edited log comment the hike!");
   }
 
   @Test
