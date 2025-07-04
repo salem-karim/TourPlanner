@@ -2,7 +2,6 @@ package at.technikum.frontend.controllers;
 
 // navbar: export und import as json(one tour), report(generate pdf from 1 tour+logs, searchbar (all infos)
 
-import at.technikum.common.models.Logs;
 import at.technikum.common.models.Tour;
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.LogTableViewModel;
@@ -15,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -23,26 +23,26 @@ import java.io.IOException;
 
 //pdf import
 import com.lowagie.text.pdf.PdfWriter;
+
 import java.util.List;
 
 //json import
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 
 import java.io.FileOutputStream;
 
 import com.lowagie.text.pdf.PdfPTable;
+import lombok.Getter;
 
 //todo: add logging ???
 
+@Getter
 public class NavbarController {
   private MenuItem importMenuItem;
   private MenuItem exportMenuItem;
   private MenuItem pdfMenuItem;
-
-  private MenuItem language_englishMenuItem;
-  private MenuItem language_germanMenuItem;
-  private MenuItem language_polishMenuItem;
 
   TourPlannerController tourPlannerController;
 
@@ -82,15 +82,36 @@ public class NavbarController {
     });
   }
 
-  public void setLanguageMenuItems(MenuItem englishItem, MenuItem germanItem, MenuItem polishItem, Stage stage) {
-    this.language_englishMenuItem = englishItem;
-    this.language_germanMenuItem = germanItem;
-    this.language_polishMenuItem = polishItem;
+  public void setLanguageMenuItems(RadioMenuItem englishButton, RadioMenuItem germanButton, RadioMenuItem polishButton, Stage stage) {
+    // Reset all selections first
+    englishButton.setSelected(false);
+    germanButton.setSelected(false);
+    polishButton.setSelected(false);
 
-    this.language_englishMenuItem.setOnAction(event -> onChangeLanguage("en", stage));
-    this.language_germanMenuItem.setOnAction(event -> onChangeLanguage("de", stage));
-    this.language_polishMenuItem.setOnAction(event -> onChangeLanguage("pl", stage));
+    // Set current language as selected
+    String currentLang = AppProperties.getInstance().getLocale().getLanguage();
+    switch (currentLang) {
+      case "en" -> englishButton.setSelected(true);
+      case "de" -> germanButton.setSelected(true);
+      case "pl" -> polishButton.setSelected(true);
+    }
+
+    englishButton.setOnAction(e -> {
+      onChangeLanguage("en", stage);
+      updateLanguageSelection(englishButton, germanButton, polishButton, "en");
+    });
+
+    germanButton.setOnAction(e -> {
+      onChangeLanguage("de", stage);
+      updateLanguageSelection(englishButton, germanButton, polishButton, "de");
+    });
+
+    polishButton.setOnAction(e -> {
+      onChangeLanguage("pl", stage);
+      updateLanguageSelection(englishButton, germanButton, polishButton, "pl");
+    });
   }
+
 
   // ---- Logic for Navbar Items ----
 
@@ -110,7 +131,7 @@ public class NavbarController {
 
         System.out.println(importedTour.getName()); // Print the imported tour name
 
-        tourPlannerController.addTourThroughImport(new TourViewModel(importedTour));
+        tourPlannerController.getTourTableViewModel().newTour(new TourViewModel(importedTour));
 
       } catch (IOException e) {
         e.printStackTrace();
@@ -129,7 +150,7 @@ public class NavbarController {
     try {
       // Write to file
       mapper.writeValue(new File("json_files/" + tour.getName().replaceAll("\\s+", "-") + "-" + tour.getId() + ".json"),
-          tour);
+              tour);
       System.out.println("Tour exported to JSON.");
     } catch (IOException e) {
       e.printStackTrace();
@@ -159,6 +180,16 @@ public class NavbarController {
     document.add(new Paragraph(" ")); // empty line
 
     // Create table for logs
+    PdfPTable table = getPdfPTable(logs);
+
+    document.add(table);
+
+    // todo image is still missing
+
+    document.close();
+  }
+
+  private static PdfPTable getPdfPTable(ObservableList<LogViewModel> logs) {
     PdfPTable table = new PdfPTable(6); // 6 columns for your Logs fields
     table.addCell("Start DateTime");
     table.addCell("End DateTime");
@@ -175,12 +206,7 @@ public class NavbarController {
       table.addCell(String.valueOf(log.getDifficulty()));
       table.addCell(String.valueOf(log.getRating()));
     }
-
-    document.add(table);
-
-    // todo image is still missing
-
-    document.close();
+    return table;
   }
 
   public void onSummarizePDF() throws FileNotFoundException {
@@ -225,7 +251,7 @@ public class NavbarController {
 
         for (LogViewModel log : currentLogs) {
           avgTimeMinutes += ((log.toLog().getEnd_date_time().getHour() - log.toLog().getStart_date_time().getHour())
-              * 60 + (log.toLog().getEnd_date_time().getMinute() - log.toLog().getStart_date_time().getMinute()));
+                  * 60 + (log.toLog().getEnd_date_time().getMinute() - log.toLog().getStart_date_time().getMinute()));
           avgDistance += log.toLog().getTotal_distance();
           avgRating += log.getRating();
         }
@@ -233,7 +259,7 @@ public class NavbarController {
         avgTimeMinutes = avgTimeMinutes / currentLogs.size();
         avgTimehours = avgTimeMinutes / 60;
         avgTimeMinutes = (avgTimeMinutes % 60);
-        table.addCell(String.valueOf(avgTimehours) + "h " + String.valueOf(avgTimeMinutes) + "min");
+        table.addCell(avgTimehours + "h " + avgTimeMinutes + "min");
 
         table.addCell(String.valueOf(avgDistance / currentLogs.size()));
         table.addCell(String.valueOf(avgRating / currentLogs.size()));
@@ -253,7 +279,7 @@ public class NavbarController {
     try {
       // Reload the entire scene with the new language
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/main_window.fxml"),
-          AppProperties.getInstance().getI18n());
+              AppProperties.getInstance().getI18n());
       Parent root = loader.load();
 
       // Replace the scene content
@@ -263,4 +289,19 @@ public class NavbarController {
       // log.error("Failed to reload view after language change", e);
     }
   }
+  
+  private void updateLanguageSelection(RadioMenuItem englishButton, RadioMenuItem germanButton, 
+                                    RadioMenuItem polishButton, String language) {
+    // Reset all selections first
+    englishButton.setSelected(false);
+    germanButton.setSelected(false);
+    polishButton.setSelected(false);
+    
+    // Set only the selected language
+    switch (language) {
+        case "en" -> englishButton.setSelected(true);
+        case "de" -> germanButton.setSelected(true);
+        case "pl" -> polishButton.setSelected(true);
+    }
+}
 }

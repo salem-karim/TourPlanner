@@ -1,8 +1,9 @@
 package at.technikum.frontend.controllers;
 
 import at.technikum.frontend.TourPlannerApplication;
+import at.technikum.frontend.mediators.NavBarButtonsMediator;
 import at.technikum.frontend.mediators.SelectionState;
-import at.technikum.frontend.mediators.TabPaneMediator;
+import at.technikum.frontend.mediators.TourButtonsMediator;
 import at.technikum.frontend.utils.AppProperties;
 import at.technikum.frontend.viewmodels.TourTableViewModel;
 import at.technikum.frontend.viewmodels.TourViewModel;
@@ -12,9 +13,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -23,14 +26,15 @@ import java.util.*;
 
 @Slf4j
 public class TourPlannerController implements Initializable {
-
+  @Getter
   private final TourTableViewModel tourTableViewModel = new TourTableViewModel();
-
 
   @FXML
   public SplitPane tourInfo;
   public AnchorPane tourLogs;
-  public MenuItem englishButton, germanButton, polishButton;
+  public RadioMenuItem englishButton, germanButton, polishButton;
+  @FXML
+  public ToggleGroup languageGroup;
   @FXML
   private ButtonBar newEditDeleteButtonBar;
   @FXML
@@ -39,6 +43,9 @@ public class TourPlannerController implements Initializable {
   private ListView<TourViewModel> tourListView;
   @FXML
   private TabPane tabPane;
+  @FXML
+  private Label noneSelected;
+  private final GaussianBlur blur = new GaussianBlur();
 
   private TourInfoController tourInfoController;
 
@@ -47,19 +54,22 @@ public class TourPlannerController implements Initializable {
 
   private final NavbarController navbarController = new NavbarController(this);
 
-  @FXML private MenuItem importMenuItem;
-  @FXML private MenuItem exportMenuItem;
-  @FXML private MenuItem tourpdfMenuItem;
-  @FXML private MenuItem summarizepdfMenuItem;
+  @FXML
+  private MenuItem importMenuItem;
+  @FXML
+  private MenuItem exportMenuItem;
+  @FXML
+  private MenuItem tourpdfMenuItem;
+  @FXML
+  private MenuItem summarizepdfMenuItem;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     initializeListView();
     initializeTourInfo();
 
-
     NewEditDeleteButtonBarController newEditDeleteButtonBarController = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
-            .getProperties().get("newEditDeleteButtonBarController");
+        .getProperties().get("newEditDeleteButtonBarController");
     newEditDeleteButtonBarController.setTourListView(tourListView);
     newEditDeleteButtonBarController.setNewButtonListener(event -> onNewButtonClicked());
     newEditDeleteButtonBarController.setEditButtonListener(event -> onEditButtonClicked());
@@ -82,13 +92,27 @@ public class TourPlannerController implements Initializable {
       }
     });
 
+    tabPane.disableProperty().addListener((obs, wasDisabled, isNowDisabled) -> tabPane.setEffect(isNowDisabled ? blur : null));
+    noneSelected.visibleProperty().bind(tabPane.disabledProperty());
+    if (tourTableViewModel.getData().isEmpty()) {
+      tabPane.setDisable(false);
+      tabPane.setDisable(true);
+    } else {
+      tourListView.getSelectionModel().select(0);
+    }
+
     navbarController.setExportMenuItem(exportMenuItem);
     navbarController.setTourPDFMenuItem(tourpdfMenuItem);
     navbarController.setSummarizePDFMenuItem(summarizepdfMenuItem);
-  }
+    new NavBarButtonsMediator(exportMenuItem, tourListView, Map.of(
+            SelectionState.NO_SELECTION, false,
+            SelectionState.ONE_SELECTED, true,
+            SelectionState.MANY_SELECTED, false));
 
-  public void addTourThroughImport(TourViewModel tvm){
-    tourTableViewModel.newTour(tvm);
+    new NavBarButtonsMediator(tourpdfMenuItem, tourListView, Map.of(
+            SelectionState.NO_SELECTION, false,
+            SelectionState.ONE_SELECTED, true,
+            SelectionState.MANY_SELECTED, false));
   }
 
   public TourViewModel getSelectedTour() {
@@ -128,11 +152,10 @@ public class TourPlannerController implements Initializable {
     });
 
     if (tourLogsController != null) {
-      new TabPaneMediator(tabPane, tourListView, Map.of(
-              SelectionState.NO_SELECTION, false,
-              SelectionState.ONE_SELECTED, true,
-              SelectionState.MANY_SELECTED, false
-      ));
+      new TourButtonsMediator(tabPane, tourListView, Map.of(
+          SelectionState.NO_SELECTION, false,
+          SelectionState.ONE_SELECTED, true,
+          SelectionState.MANY_SELECTED, false));
     }
   }
 
@@ -205,13 +228,13 @@ public class TourPlannerController implements Initializable {
 
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_tours.fxml"),
-              AppProperties.getInstance().getI18n());
+          AppProperties.getInstance().getI18n());
       EditTourController controller = EditTourController.builder()
-              .tourTableViewModel(tourTableViewModel)
-              .tourViewModel(new TourViewModel(selectedTour))
-              .originalTourViewModel(selectedTour)
-              .toursListView(tourListView)
-              .build();
+          .tourTableViewModel(tourTableViewModel)
+          .tourViewModel(new TourViewModel(selectedTour))
+          .originalTourViewModel(selectedTour)
+          .toursListView(tourListView)
+          .build();
       loader.setController(controller);
 
       final Parent root = loader.load();
@@ -222,7 +245,8 @@ public class TourPlannerController implements Initializable {
       stage.initOwner(tourListView.getScene().getWindow());
       stage.setScene(new Scene(root));
 
-      controller.okCancelController.getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.save"));
+      controller.okCancelController.getOkButton()
+          .setText(AppProperties.getInstance().getI18n().getString("button.save"));
       controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editTour.edit"));
 
       stage.showAndWait();
@@ -234,12 +258,12 @@ public class TourPlannerController implements Initializable {
   private void onNewButtonClicked() {
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_tours.fxml"),
-              AppProperties.getInstance().getI18n());
+          AppProperties.getInstance().getI18n());
       NewTourController controller = NewTourController.builder()
-              .tourTableViewModel(tourTableViewModel)
-              .tourViewModel(new TourViewModel())
-              .toursListView(tourListView)
-              .build();
+          .tourTableViewModel(tourTableViewModel)
+          .tourViewModel(new TourViewModel())
+          .toursListView(tourListView)
+          .build();
       loader.setController(controller);
 
       final Parent root = loader.load();
@@ -251,7 +275,8 @@ public class TourPlannerController implements Initializable {
       stage.setScene(new Scene(root));
 
       controller.initialize();
-      controller.getOkCancelController().getOkButton().setText(AppProperties.getInstance().getI18n().getString("button.create"));
+      controller.getOkCancelController().getOkButton()
+          .setText(AppProperties.getInstance().getI18n().getString("button.create"));
       controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editTour.new"));
 
       stage.showAndWait();
