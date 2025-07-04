@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.text.Font?>
 
-<ButtonBar fx:id="buttonBar" buttonMinWidth="110.0" prefHeight="60.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.controllers.NewEditDeleteButtonBarController">
+<ButtonBar fx:id="buttonBar" buttonMinWidth="110.0" prefHeight="70.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.controllers.NewEditDeleteButtonBarController">
 
   <buttons>
     <Button fx:id="newButton" mnemonicParsing="false" text="%button.new">
@@ -27,7 +27,7 @@
   <opaqueInsets>
     <Insets />
   </opaqueInsets>
-   <padding>
-      <Insets right="20.0" />
-   </padding>
+  <padding>
+    <Insets right="20.0" />
+  </padding>
 </ButtonBar>

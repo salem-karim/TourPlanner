@@ -88,6 +88,9 @@ public class TourLogController implements Initializable {
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
     rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
+    //noinspection deprecation
+    logTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
     logTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     logTable.getSelectionModel().selectFirst();
   }
