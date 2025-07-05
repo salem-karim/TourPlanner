@@ -1,5 +1,4 @@
-@SuppressWarnings("JavaModuleDefinition")
-module at.technikum.frontend {
+@SuppressWarnings("JavaModuleDefinition") module at.technikum.frontend {
   requires transitive javafx.controls;
   requires javafx.fxml;
   requires javafx.graphics;
@@ -18,6 +17,7 @@ module at.technikum.frontend {
   requires atlantafx.base;
   requires jdk.compiler;
   requires com.github.librepdf.openpdf;
+  requires javafx.base;
 
   opens at.technikum.frontend to javafx.fxml;
 

@@ -57,10 +57,10 @@ public class TourLogController implements Initializable {
   private TourViewModel selectedTour;
 
   private record DateTimeAccessors(
-          Function<LogViewModel, ObservableValue<LocalDate>> dateProperty,
-          Function<LogViewModel, ObservableValue<LocalTime>> timeProperty,
-          Function<LogViewModel, LocalDate> dateGetter,
-          Function<LogViewModel, LocalTime> timeGetter) {
+      Function<LogViewModel, ObservableValue<LocalDate>> dateProperty,
+      Function<LogViewModel, ObservableValue<LocalTime>> timeProperty,
+      Function<LogViewModel, LocalDate> dateGetter,
+      Function<LogViewModel, LocalTime> timeGetter) {
   }
 
   @Override
@@ -72,23 +72,23 @@ public class TourLogController implements Initializable {
 
   private void setupTableColumns() {
     setupDateTimeColumn(startDate, new DateTimeAccessors(
-            LogViewModel::startDateProperty,
-            LogViewModel::startTimeProperty,
-            LogViewModel::getStartDate,
-            LogViewModel::getStartTime));
+        LogViewModel::startDateProperty,
+        LogViewModel::startTimeProperty,
+        LogViewModel::getStartDate,
+        LogViewModel::getStartTime));
 
     setupDateTimeColumn(endDate, new DateTimeAccessors(
-            LogViewModel::endDateProperty,
-            LogViewModel::endTimeProperty,
-            LogViewModel::getEndDate,
-            LogViewModel::getEndTime));
+        LogViewModel::endDateProperty,
+        LogViewModel::endTimeProperty,
+        LogViewModel::getEndDate,
+        LogViewModel::getEndTime));
 
     comment.setCellValueFactory(new PropertyValueFactory<>("comment"));
     difficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
     totalDistance.setCellValueFactory(new PropertyValueFactory<>("totalDistance"));
     rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
 
-    //noinspection deprecation
+    // noinspection deprecation
     logTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     logTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -96,24 +96,24 @@ public class TourLogController implements Initializable {
   }
 
   private void setupDateTimeColumn(
-          final TableColumn<LogViewModel, LocalDateTime> column,
-          final DateTimeAccessors accessors) {
+      final TableColumn<LogViewModel, LocalDateTime> column,
+      final DateTimeAccessors accessors) {
     column.setCellValueFactory(cellData -> {
       final LogViewModel log = cellData.getValue();
       return new SimpleObjectProperty<>() {
         {
           accessors.dateProperty().apply(log)
-                  .addListener((obs, oldVal, newVal) -> refreshValue(
-                          accessors.dateGetter().apply(log),
-                          accessors.timeGetter().apply(log)));
+              .addListener((obs, oldVal, newVal) -> refreshValue(
+                  accessors.dateGetter().apply(log),
+                  accessors.timeGetter().apply(log)));
           accessors.timeProperty().apply(log)
-                  .addListener((obs, oldVal, newVal) -> refreshValue(
-                          accessors.dateGetter().apply(log),
-                          accessors.timeGetter().apply(log)));
+              .addListener((obs, oldVal, newVal) -> refreshValue(
+                  accessors.dateGetter().apply(log),
+                  accessors.timeGetter().apply(log)));
 
           refreshValue(
-                  accessors.dateGetter().apply(log),
-                  accessors.timeGetter().apply(log));
+              accessors.dateGetter().apply(log),
+              accessors.timeGetter().apply(log));
         }
 
         private void refreshValue(final LocalDate date, final LocalTime time) {
@@ -139,7 +139,7 @@ public class TourLogController implements Initializable {
 
   private void setupButtonBar() {
     final NewEditDeleteButtonBarController controller = (NewEditDeleteButtonBarController) newEditDeleteButtonBar
-            .getProperties().get("newEditDeleteButtonBarController");
+        .getProperties().get("newEditDeleteButtonBarController");
 
     controller.setLogTableView(logTable);
     controller.setNewButtonListener(event -> onNewButtonClicked());
@@ -169,13 +169,13 @@ public class TourLogController implements Initializable {
 
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"),
-              AppProperties.getInstance().getI18n());
+          AppProperties.getInstance().getI18n());
       final NewLogController controller = NewLogController.builder()
-              .logTableViewModel(selectedTour.getLogs())
-              .selectedTour(selectedTour)
-              .mainLabel(new Label(AppProperties.getInstance().getI18n().getString("editLog.new")))
-              .logViewModel(new LogViewModel())
-              .build();
+          .logTableViewModel(selectedTour.getLogs())
+          .selectedTour(selectedTour)
+          .mainLabel(new Label(AppProperties.getInstance().getI18n().getString("editLog.new")))
+          .logViewModel(new LogViewModel())
+          .build();
       loader.setController(controller);
 
       final Parent root = loader.load();
@@ -187,7 +187,7 @@ public class TourLogController implements Initializable {
 
       controller.initialize();
       controller.okCancelController.getOkButton()
-              .setText(AppProperties.getInstance().getI18n().getString("button.create"));
+          .setText(AppProperties.getInstance().getI18n().getString("button.create"));
       controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editLog.new"));
 
       stage.showAndWait();
@@ -210,13 +210,13 @@ public class TourLogController implements Initializable {
 
     try {
       final FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/edit_logs.fxml"),
-              AppProperties.getInstance().getI18n());
+          AppProperties.getInstance().getI18n());
       final EditLogController controller = EditLogController.builder()
-              .logTableViewModel(selectedTour.getLogs())
-              .selectedTour(selectedTour)
-              .originalLogViewModel(selectedLog)
-              .logViewModel(new LogViewModel(selectedLog))
-              .build();
+          .logTableViewModel(selectedTour.getLogs())
+          .selectedTour(selectedTour)
+          .originalLogViewModel(selectedLog)
+          .logViewModel(new LogViewModel(selectedLog))
+          .build();
       loader.setController(controller);
 
       final Parent root = loader.load();
@@ -229,7 +229,7 @@ public class TourLogController implements Initializable {
 
       controller.initialize();
       controller.okCancelController.getOkButton()
-              .setText(AppProperties.getInstance().getI18n().getString("button.save"));
+          .setText(AppProperties.getInstance().getI18n().getString("button.save"));
       controller.getMainLabel().setText(AppProperties.getInstance().getI18n().getString("editLog.edit"));
 
       stage.showAndWait();

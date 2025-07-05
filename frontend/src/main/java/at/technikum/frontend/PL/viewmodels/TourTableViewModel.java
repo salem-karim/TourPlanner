@@ -1,15 +1,9 @@
 package at.technikum.frontend.PL.viewmodels;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import at.technikum.common.DAL.models.Logs;
 import at.technikum.common.DAL.models.Tour;
 import at.technikum.common.DAL.models.TransportType;
 import at.technikum.frontend.BL.utils.RequestHandler;
+import at.technikum.frontend.BL.utils.TourUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -36,34 +30,13 @@ public class TourTableViewModel {
       loadTours();
       return;
     }
-    data.add(new TourViewModel(new Tour(
-        UUID.randomUUID(),
-        "Kahlsberg Wanderung",
-        "Schöne Wanderung aufm Kahlsberg",
-        "Nußdorf",
-        "Kahlsberg",
-        TransportType.CAR,
-        100,
-        120,
-        new byte[0],
-        new ArrayList<>())));
 
-    data.add(new TourViewModel(new Tour(
-        UUID.randomUUID(),
-        "Schneeberg Wanderung",
-        "Schöne Wanderung aufm Schneeberg",
-        "Schneeberg Startpunkt",
-        "Schneeberg Spitze",
-        TransportType.BIKE,
-        100,
-        120,
-        new byte[0],
-        new ArrayList<>())));
+    data.add(new TourViewModel(TourUtils.createSampleTour("Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg",
+        "Nußdorf", "Kahlsberg", TransportType.CAR)));
+    data.add(new TourViewModel(TourUtils.createSampleTour("Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg",
+        "Schneeberg Startpunkt", "Schneeberg Spitze", TransportType.BIKE)));
 
-    // Add sample logs to each tour
-    for (final TourViewModel tour : data) {
-      addSampleLogsToTour(tour);
-    }
+    data.forEach(TourUtils::addSampleLogs);
   }
 
   /**
@@ -117,71 +90,10 @@ public class TourTableViewModel {
   }
 
   /**
-   * @param tour The tour which gets Logs inserted into its List of Logs
-   *             generates Sample Logs for a tour
-   */
-  private void addSampleLogsToTour(final TourViewModel tour) {
-    // Create first sample log
-    final LogViewModel log1 = new LogViewModel();
-    log1.idProperty().set(UUID.randomUUID());
-    log1.startDateProperty().set(LocalDate.now());
-    log1.endDateProperty().set(LocalDate.now().plusDays(1));
-    log1.startTimeProperty().set(LocalTime.now());
-    log1.endTimeProperty().set(LocalTime.now().plusHours(2));
-    log1.commentProperty().set("Great weather, enjoyed the hike!");
-    log1.difficultyProperty().set(3);
-    log1.totalDistanceProperty().set(8);
-    log1.ratingProperty().set(4);
-
-    // Create second sample log
-    final LogViewModel log2 = new LogViewModel();
-    log2.idProperty().set(UUID.randomUUID());
-    log2.startDateProperty().set(LocalDate.now());
-    log2.endDateProperty().set(LocalDate.now().plusDays(4));
-    log2.startTimeProperty().set(LocalTime.now());
-    log2.endTimeProperty().set(LocalTime.now().plusHours(7));
-    log2.commentProperty().set("Rainy day but still fun");
-    log2.difficultyProperty().set(4);
-    log2.totalDistanceProperty().set(8);
-    log2.ratingProperty().set(3);
-
-    // Add logs to the tour
-    tour.getLogs().newLog(log1);
-    tour.getLogs().newLog(log2);
-  }
-
-  /**
    * Fetches Tours with all Logs from Backend API
    */
   public void loadTours() {
-    // sets callback for the request handler to load tours
-    RequestHandler.getInstance().loadTours(tourList -> {
-      for (final Tour tour : tourList) {
-        final TourViewModel tvm = new TourViewModel(tour);
-        data.add(tvm);
-      }
-    });
-
-    // Load logs for each tour and add to the TourViewModel
-    final List<LogViewModel> all_logs = new ArrayList<>(List.of());
-    RequestHandler.getInstance().loadLogs(logs -> {
-      for (final Logs log : logs) {
-        final LogViewModel lvm = new LogViewModel(log);
-        all_logs.add(lvm);
-      }
-    });
-
-    while (!all_logs.isEmpty()) {
-      for (final TourViewModel tour : data) {
-        for (final LogViewModel log : all_logs) {
-          if (tour.getId().equals(log.getTourId())) {
-            tour.getLogs().getData().add(log);
-            all_logs.remove(log);
-            break;
-          }
-        }
-      }
-    }
+    TourUtils.loadAllTours(data);
   }
 
 }

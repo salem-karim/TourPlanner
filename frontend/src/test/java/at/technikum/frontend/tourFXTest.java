@@ -198,7 +198,6 @@ class MainViewModelTest {
     Assertions.assertThat(comment).isEqualTo("Test log comment");
   }
 
-
   @Test
   void testEditLog(final FxRobot robot) {
     final ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
@@ -235,7 +234,6 @@ class MainViewModelTest {
     robot.write("Edited log comment");
     robot.clickOn("#logCancelButton");
 
-    
     String comment = logTable.getItems().getFirst().getComment();
     Assertions.assertThat(comment).isEqualTo("Great weather, enjoyed the hike!");
   }
