@@ -1,6 +1,6 @@
 package at.technikum.frontend;
 
-import at.technikum.frontend.utils.AppProperties;
+import at.technikum.frontend.BL.utils.AppProperties;
 import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.PrimerLight;
 import javafx.application.Application;

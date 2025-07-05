@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <SplitPane fx:id="splitPane" dividerPositions="0.6" xmlns="http://javafx.com/javafx/17.0.12"
-           xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.controllers.TourInfoController">
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.PL.controllers.TourInfoController">
   <padding>
     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
   </padding>

@@ -3,7 +3,7 @@ package at.technikum.frontend;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testfx.assertions.api.Assertions.assertThat;
 
-import at.technikum.frontend.viewmodels.LogViewModel;
+import at.technikum.frontend.PL.viewmodels.LogViewModel;
 import javafx.collections.ObservableList;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
@@ -15,7 +15,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import at.technikum.frontend.viewmodels.TourViewModel;
+import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
