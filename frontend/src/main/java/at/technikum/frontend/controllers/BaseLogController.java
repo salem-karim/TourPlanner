@@ -92,7 +92,6 @@ public abstract class BaseLogController {
    * Sets Converters and PromptText for the DatePickers, and the TextFormatter for the Distance Textfield
    */
   private void initializeComponents() {
-    // TODO: make a TextFormatter for Dates as well
     startDate.setConverter(configureDatePicker(startDate, startDateError, "startDate", logViewModel.getStartDate()));
     endDate.setConverter(configureDatePicker(endDate, endDateError, "endDate", logViewModel.getEndDate()));
     startDate.setPromptText("DD.MM.YYYY");
