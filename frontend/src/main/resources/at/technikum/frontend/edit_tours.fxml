@@ -11,15 +11,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane fx:id="TourPane" prefHeight="560.0" prefWidth="800.0"
-  xmlns="http://javafx.com/javafx/23.0.2+1" xmlns:fx="http://javafx.com/fxml/1">
-  <HBox AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
-    AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="TourPane" prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.2+1" xmlns:fx="http://javafx.com/fxml/1">
+  <HBox AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
     <children>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-        prefHeight="500.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
-        <Label fx:id="mainLabel" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0"
-          text="%tourInfo.title" textAlignment="CENTER">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+        <Label fx:id="mainLabel" minWidth="-Infinity" prefHeight="53.0" prefWidth="600.0" text="%tourInfo.title" textAlignment="CENTER">
           <font>
             <Font name="System Bold" size="20.0" />
           </font>
@@ -30,8 +26,7 @@
           </VBox.margin>
         </Label>
         <TextField fx:id="name" prefHeight="26.0" prefWidth="310.0" />
-        <Label fx:id="nameError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0"
-          text="%validation.name.required" textFill="RED" visible="false">
+        <Label fx:id="nameError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.name.required" textFill="RED" visible="false">
           <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
           </VBox.margin>
@@ -42,8 +37,7 @@
           </VBox.margin>
         </Label>
         <TextField fx:id="description" prefHeight="26.0" prefWidth="310.0" />
-        <Label fx:id="descriptionError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0"
-          text="%validation.description.required" textFill="RED" visible="false">
+        <Label fx:id="descriptionError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.description.required" textFill="RED" visible="false">
           <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
           </VBox.margin>
@@ -54,8 +48,7 @@
           </VBox.margin>
         </Label>
         <TextField fx:id="from" prefHeight="26.0" prefWidth="150.0" />
-        <Label fx:id="fromError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0"
-          text="%validation.from.required" textFill="RED" visible="false">
+        <Label fx:id="fromError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.from.required" textFill="RED" visible="false">
           <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
           </VBox.margin>
@@ -66,8 +59,7 @@
           </VBox.margin>
         </Label>
         <TextField fx:id="to" prefHeight="26.0" prefWidth="150.0" />
-        <Label fx:id="toError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0"
-          text="%validation.to.required" textFill="RED" visible="false">
+        <Label fx:id="toError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.to.required" textFill="RED" visible="false">
           <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
           </VBox.margin>
@@ -78,8 +70,7 @@
           </VBox.margin>
         </Label>
         <ChoiceBox fx:id="transportType" prefWidth="150.0" />
-        <Label fx:id="transportTypeError" minHeight="-Infinity" minWidth="-Infinity"
-          prefHeight="0.0" text="%validation.transportType.required" textFill="RED" visible="false">
+        <Label fx:id="transportTypeError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.transportType.required" textFill="RED" visible="false">
           <VBox.margin>
             <Insets bottom="5.0" top="5.0" />
           </VBox.margin>
@@ -89,6 +80,11 @@
             <Insets top="10.0" />
           </VBox.margin>
         </Button>
+            <Label fx:id="loadMapError" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" text="%validation.load.map" textFill="RED" visible="false">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
         <Label text="%tourInfo.map.image">
           <VBox.margin>
             <Insets top="10.0" />
@@ -98,14 +94,12 @@
           <Insets right="10.0" />
         </padding>
       </VBox>
-      <WebView fx:id="mapWebView" minHeight="300.0" minWidth="400.0" prefHeight="470.0"
-        prefWidth="466.0" HBox.hgrow="ALWAYS">
+      <WebView fx:id="mapWebView" minHeight="300.0" minWidth="400.0" prefHeight="470.0" prefWidth="466.0" HBox.hgrow="ALWAYS">
         <HBox.margin>
           <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
         </HBox.margin>
       </WebView>
     </children>
   </HBox>
-  <fx:include fx:id="newCancelButtonBar" source="ok_cancel_button_bar.fxml"
-    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+  <fx:include fx:id="newCancelButtonBar" source="ok_cancel_button_bar.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
 </AnchorPane>

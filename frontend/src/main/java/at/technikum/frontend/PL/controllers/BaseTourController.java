@@ -17,10 +17,8 @@ import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -35,13 +33,19 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ * Base controller for managing tours in the application. Provides common functionality for tour creation and editing.
+ */
 @SuperBuilder
 @Getter
 @NoArgsConstructor
 @Slf4j
 public abstract class BaseTourController {
   @FXML
-  protected Label mainLabel, nameError, descriptionError, fromError, toError, transportTypeError;
+  protected Label mainLabel, nameError, descriptionError, fromError, toError;
+  @FXML
+  protected Label transportTypeError, loadMapError;
   @FXML
   protected ButtonBar newCancelButtonBar;
   @FXML
@@ -66,6 +70,13 @@ public abstract class BaseTourController {
   @Builder.Default
   private boolean initialized = false;
 
+  private String lastFrom;
+  private String lastTo;
+  private boolean mapLoaded = false;
+
+  /**
+   * Initializes the controller, setting up bindings and listeners.
+   */
   public void initialize() {
     if (initialized) {
       return;
@@ -75,6 +86,26 @@ public abstract class BaseTourController {
       tourViewModel = new TourViewModel();
     }
 
+    setupTransportType();
+
+    setupBinding();
+
+    okCancelController = (OKCancelButtonBarController) newCancelButtonBar.getProperties()
+            .get("okCancelButtonBarController");
+
+    tourValidator = new TourValidator(this);
+
+    okCancelController.setOkButtonListener(event -> OkButtonListener());
+
+    // Update the load map button handler
+    loadMapButton.setOnAction(e -> loadMapButtonListener());
+
+    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(newCancelButtonBar));
+
+    initialized = true;
+  }
+
+  private void setupTransportType() {
     transportType.setItems(FXCollections.observableArrayList(TransportType.values()));
     transportType.setConverter(new StringConverter<>() {
       @Override
@@ -89,80 +120,58 @@ public abstract class BaseTourController {
         return null; // Not needed for now
       }
     });
+  }
 
+  /**
+   * Sets up two-way bindings between UI elements and the TourViewModel properties.
+   */
+  private void setupBinding() {
     // Create two-way bindings between UI elements and viewModel properties
     name.textProperty().bindBidirectional(tourViewModel.nameProperty());
     description.textProperty().bindBidirectional(tourViewModel.descriptionProperty());
     from.textProperty().bindBidirectional(tourViewModel.fromProperty());
     to.textProperty().bindBidirectional(tourViewModel.toProperty());
     transportType.valueProperty().bindBidirectional(tourViewModel.transport_typeProperty());
-
-    // Fix the way okCancelController is obtained
-    okCancelController = (OKCancelButtonBarController) newCancelButtonBar.getProperties()
-        .get("okCancelButtonBarController");
-
-    tourValidator = new TourValidator(this);
-
-    okCancelController.setOkButtonListener(event -> {
-      if (tourValidator.validateTour(tourViewModel)) {
-        final var image = captureWebViewSnapshot();
-        if (image != null)
-          tourViewModel.setRouteInfo(image);
-        onSaveButtonClicked();
-      }
-    });
-
-    loadMapButton.setOnAction(e -> {
-      log.info("Loading map...");
-
-      if (!tourValidator.validateRouteOnly(tourViewModel)) {
-        log.error("Route validation failed");
-        final Alert alert = new Alert(Alert.AlertType.ERROR,
-            "Could not calculate route. Please verify the locations and try again.",
-            ButtonType.OK);
-        alert.showAndWait();
-        return;
-      }
-
-      final String htmlUrl = Objects.requireNonNull(getClass().getResource("/web/map.html")).toExternalForm();
-      mapWebView.getEngine().load(htmlUrl);
-
-      mapWebView.getEngine().getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-        if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-          log.info("Map loaded successfully, attempting to draw route");
-
-          try {
-            if (routeJson == null || !routeJson.has("routes") || routeJson.get("routes").isEmpty()) {
-              log.error("Invalid route JSON");
-              return;
-            }
-
-            String encoded = routeJson.get("routes").get(0).get("geometry").asText();
-
-            // Clean and escape the encoded string
-            encoded = encoded.replace("\\", "\\\\").replace("'", "\\'");
-
-            // Use a simpler JavaScript call
-            final String script = "loadEncodedPolyline('" + encoded + "')";
-            log.info("Executing script with encoded length: {}", encoded.length());
-
-            final Object result = mapWebView.getEngine().executeScript(script);
-            log.info("Script execution complete with result: {}", result);
-
-          } catch (final Exception ex) {
-            log.error("Failed to load route: {}", ex.getMessage(), ex);
-          }
-        }
-      });
-    });
-
-    okCancelController.setCancelButtonListener(event -> TourPlannerApplication.closeWindow(newCancelButtonBar));
-
-    initialized = true;
   }
 
-  protected abstract void onSaveButtonClicked();
+  /**
+   * Listener for the OK button click event. Validates the tour and saves it if valid.
+   */
+  private void OkButtonListener() {
+    if (tourValidator.validateTour(tourViewModel)) {
+      if (!mapLoaded || haveLocationsChanged()) {
+        if (!tourValidator.validateRouteOnly(tourViewModel)) {
+          log.error("Route validation failed");
+          return;
+        }
+        tourValidator.showError(loadMapButton, loadMapError);
+      } else {
+        // Map is loaded and locations haven't changed, save directly
+        final var image = captureWebViewSnapshot();
+        if (image != null) {
+          tourViewModel.setRouteInfo(image);
+          onSaveButtonClicked();
+        }
+      }
+    }
+  }
 
+  /**
+   * Listener for the Load Map button click event. Validates the route and loads the map if valid.
+   */
+  private void loadMapButtonListener() {
+    if (!tourValidator.validateRouteOnly(tourViewModel)) {
+      log.error("Route validation failed");
+      return;
+    }
+    loadMapAndExecute();
+  }
+
+  /**
+   * Captures a snapshot of the WebView and converts it to a byte array.
+   *
+   * @return Byte array representing the WebView snapshot, or null if capture failed.
+   */
   private byte[] captureWebViewSnapshot() {
     try {
       final WritableImage snapshot = mapWebView.snapshot(new SnapshotParameters(), null);
@@ -180,4 +189,59 @@ public abstract class BaseTourController {
       return null;
     }
   }
+
+  /**
+   * Checks if the locations have changed since the last update.
+   *
+   * @return true if locations have changed, false otherwise.
+   */
+  private boolean haveLocationsChanged() {
+    return !Objects.equals(from.getText(), lastFrom) ||
+            !Objects.equals(to.getText(), lastTo);
+  }
+
+  private void updateLastLocations() {
+    lastFrom = from.getText();
+    lastTo = to.getText();
+  }
+
+  /**
+   * Loads the map. This method is called when the Load Map button is clicked.
+   */
+  private void loadMapAndExecute() {
+    // Ensure the mapWebView is initialized
+    log.info("Loading map...");
+    String htmlUrl = Objects.requireNonNull(getClass().getResource("/web/map.html")).toExternalForm();
+    mapWebView.getEngine().load(htmlUrl);
+
+    // stateProperty listener to check when the map is loaded
+    mapWebView.getEngine().getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
+      if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
+        log.info("Map loaded successfully, attempting to draw route");
+        try {
+          if (routeJson == null || !routeJson.has("routes") || routeJson.get("routes").isEmpty()) {
+            log.error("Invalid route JSON");
+            return;
+          }
+
+          String encoded = routeJson.get("routes").get(0).get("geometry").asText();
+          encoded = encoded.replace("\\", "\\\\").replace("'", "\\'");
+          String script = "loadEncodedPolyline('" + encoded + "')";
+
+          mapWebView.getEngine().executeScript(script);
+          mapLoaded = true;
+          updateLastLocations();
+
+        } catch (Exception ex) {
+          log.error("Failed to load route: {}", ex.getMessage(), ex);
+        }
+      }
+    });
+  }
+
+  /**
+   * Abstract method to be implemented by subclasses for handling the save button click event. This method is called
+   * when the user clicks the save button after validating the tour.
+   */
+  protected abstract void onSaveButtonClicked();
 }

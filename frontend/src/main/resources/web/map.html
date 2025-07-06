@@ -6,22 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Leaflet CSS and JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Polyline decoder -->
-    <script src="https://unpkg.com/@mapbox/polyline@1.1.1/src/polyline.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
 
     <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
         }
         #map {
-            height: 100%;
-            width: 100%;
+            height: 100vh;
+            width: 100vw;
             position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .leaflet-container {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
@@ -31,20 +38,74 @@
     let map;
     let currentRoute;
 
+    // Simple polyline decoder function (avoiding external dependency issues)
+    function decodePolyline(encoded) {
+        let index = 0;
+        let lat = 0;
+        let lng = 0;
+        let coordinates = [];
+        let shift = 0;
+        let result = 0;
+        let byte = null;
+        let latitude_change;
+        let longitude_change;
+        let factor = Math.pow(10, 5);
+
+        while (index < encoded.length) {
+            byte = null;
+            shift = 0;
+            result = 0;
+
+            do {
+                byte = encoded.charCodeAt(index++) - 63;
+                result |= (byte & 0x1f) << shift;
+                shift += 5;
+            } while (byte >= 0x20);
+
+            latitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+            shift = result = 0;
+
+            do {
+                byte = encoded.charCodeAt(index++) - 63;
+                result |= (byte & 0x1f) << shift;
+                shift += 5;
+            } while (byte >= 0x20);
+
+            longitude_change = ((result & 1) ? ~(result >> 1) : (result >> 1));
+
+            lat += latitude_change;
+            lng += longitude_change;
+
+            coordinates.push([lat / factor, lng / factor]);
+        }
+
+        return coordinates;
+    }
+
     // Initialize map when page loads
     window.onload = function() {
         console.log("Initializing map...");
 
-        // Create map centered on Europe
-        map = L.map("map").setView([48.2082, 16.3738], 5);
+        try {
+            // Create map centered on Europe
+            map = L.map("map", {
+                preferCanvas: true,
+                renderer: L.canvas()
+            }).setView([48.2082, 16.3738], 5);
 
-        // Add OpenStreetMap layer
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19
-        }).addTo(map);
+            // Add OpenStreetMap layer with better error handling
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19,
+                subdomains: ['a', 'b', 'c'],
+                errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+            }).addTo(map);
 
-        console.log("Map initialized successfully");
+            console.log("Map initialized successfully");
+        } catch (error) {
+            console.error("Error initializing map:", error);
+        }
     }
 
     function loadEncodedPolyline(encoded) {
@@ -56,13 +117,13 @@
                 map.removeLayer(currentRoute);
             }
 
-            // Decode the polyline
-            const coordinates = polyline.decode(encoded);
+            // Decode the polyline using our custom decoder
+            const coordinates = decodePolyline(encoded);
             console.log("Decoded coordinates length:", coordinates.length);
 
             if (coordinates.length === 0) {
                 console.error("No coordinates decoded from polyline");
-                return;
+                return "error: No coordinates decoded";
             }
 
             // Create and add the new route
@@ -70,23 +131,42 @@
                 color: '#0066CC',
                 weight: 4,
                 opacity: 0.8,
-                lineJoin: 'round'
+                lineJoin: 'round',
+                lineCap: 'round'
             }).addTo(map);
 
             // Add start and end markers
             const startPoint = coordinates[0];
             const endPoint = coordinates[coordinates.length - 1];
 
+            // Custom marker icons
+            const startIcon = L.divIcon({
+                html: '<div style="background-color: #4CAF50; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+                className: 'custom-div-icon'
+            });
+
+            const endIcon = L.divIcon({
+                html: '<div style="background-color: #f44336; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+                className: 'custom-div-icon'
+            });
+
             L.marker(startPoint, {
+                icon: startIcon,
                 title: "Start"
             }).addTo(map);
 
             L.marker(endPoint, {
+                icon: endIcon,
                 title: "End"
             }).addTo(map);
 
-            // Fit the map to show the entire route
-            map.fitBounds(currentRoute.getBounds(), {
+            // Fit the map to show the entire route with padding
+            const bounds = currentRoute.getBounds();
+            map.fitBounds(bounds, {
                 padding: [50, 50],
                 maxZoom: 15
             });
@@ -101,10 +181,19 @@
     }
 
     // Add error handler for script loading
-    window.onerror = function(msg, url, line) {
-        console.error("JavaScript error:", msg, "at", url, ":", line);
+    window.onerror = function(msg, url, line, col, error) {
+        console.error("JavaScript error:", msg, "at", url, ":", line, ":", col, error);
         return false;
     };
+
+    // Handle tile loading errors
+    window.addEventListener('load', function() {
+        if (map) {
+            map.on('tileerror', function(e) {
+                console.warn('Tile loading error:', e);
+            });
+        }
+    });
 </script>
 </body>
 </html>
