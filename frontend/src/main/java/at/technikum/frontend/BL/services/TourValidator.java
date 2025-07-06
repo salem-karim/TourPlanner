@@ -161,41 +161,41 @@ public class TourValidator extends Validator {
       }
     });
   }
-  
+
   private boolean validateCoordinates(double[] coords) {
     return coords == null || coords.length != 2
-            || !(coords[0] >= -180) || !(coords[0] <= 180)  // longitude
-            || !(coords[1] >= -90) || !(coords[1] <= 90);   // latitude
-}
+        || !(coords[0] >= -180) || !(coords[0] <= 180) // longitude
+        || !(coords[1] >= -90) || !(coords[1] <= 90); // latitude
+  }
 
   /**
    * @param tourViewModel The Tour View Model to be validated
    * @return true when there is an Issue and false when everything went right
    */
-public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewModel) {
+  public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewModel) {
     if (fromCoordsOpt.isPresent() && toCoordsOpt.isPresent()) {
-        double[] fromCoords = fromCoordsOpt.get();
-        double[] toCoords = toCoordsOpt.get();
+      double[] fromCoords = fromCoordsOpt.get();
+      double[] toCoords = toCoordsOpt.get();
 
-        // Validate coordinate ranges
-        if (validateCoordinates(fromCoords) || validateCoordinates(toCoords)) {
-            log.error("Invalid coordinates: from {} to {}", 
-                Arrays.toString(fromCoords), 
-                Arrays.toString(toCoords));
-            showRouteValidationError();
-            return true;
-        }
+      // Validate coordinate ranges
+      if (validateCoordinates(fromCoords) || validateCoordinates(toCoords)) {
+        log.error("Invalid coordinates: from {} to {}",
+            Arrays.toString(fromCoords),
+            Arrays.toString(toCoords));
+        showRouteValidationError();
+        return true;
+      }
 
-        if (tourViewModel.getTransportType() == null)
-            return true;
+      if (tourViewModel.getTransportType() == null)
+        return true;
 
       log.info("Requesting route from {} to {} with transport type {}",
-              Arrays.toString(fromCoordsOpt.get()),
-              Arrays.toString(toCoordsOpt.get()),
-              tourViewModel.getTransportType());
+          Arrays.toString(fromCoordsOpt.get()),
+          Arrays.toString(toCoordsOpt.get()),
+          tourViewModel.getTransportType());
 
       final JsonNode route = RequestHandler.getInstance().RouteBetween(
-              fromCoordsOpt, toCoordsOpt, tourViewModel.getTransportType());
+          fromCoordsOpt, toCoordsOpt, tourViewModel.getTransportType());
 
       if (route == null) {
         log.error("Route request returned null");
@@ -203,7 +203,6 @@ public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewMode
         return true;
       }
 
-      log.info("Received route response: {}", route);
       // Geometry decoding check (used by Leaflet polyline)
       final JsonNode geometry = route.get("routes").get(0).get("geometry");
       if (geometry == null || geometry.isNull() || !geometry.isTextual()) {
@@ -225,8 +224,8 @@ public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewMode
       controller.setRouteJson(route);
       return false;
     }
-   
-  // If we reach here, either coords are missing or transport type is not set
+
+    // If we reach here, either coords are missing or transport type is not set
     showRouteValidationError();
     return true;
   }
@@ -250,7 +249,6 @@ public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewMode
     isValid &= validateTransportType(tourViewModel);
     isValid &= validateFrom(tourViewModel);
     isValid &= validateTo(tourViewModel);
-
 
     return isValid;
   }

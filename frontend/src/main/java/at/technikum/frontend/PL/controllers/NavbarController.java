@@ -237,12 +237,23 @@ public class NavbarController {
       document.add(new Paragraph("Estimated Time: " + String.format("%.2f", tour.getEstimated_time()) + " minutes"));
       document.add(new Paragraph(" ")); // empty line
 
+      // Add the route image if available
+      if (tour.getRoute_info() != null && tour.getRoute_info().length > 0) {
+        try {
+          com.lowagie.text.Image routeImage = com.lowagie.text.Image.getInstance(tour.getRoute_info());
+          // Scale image if needed (optional)
+          routeImage.scaleToFit(400, 300);
+          document.add(routeImage);
+          document.add(new Paragraph(" ")); // empty line after image
+        } catch (Exception e) {
+          log.error("Failed to add route image to PDF: {}", e.getMessage());
+        }
+      }
+
       // Create table for logs
       PdfPTable table = getPdfPTable(logs);
 
       document.add(table);
-
-      // todo: image is still missing
 
       document.close();
       log.info("Tour PDF exported to: {}", file.getAbsolutePath());

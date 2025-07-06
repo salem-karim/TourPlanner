@@ -3,17 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<SplitPane fx:id="splitPane" dividerPositions="0.6" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.PL.controllers.TourInfoController">
+<SplitPane fx:id="splitPane" dividerPositions="0.6" xmlns="http://javafx.com/javafx/23.0.2+1"
+  xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="at.technikum.frontend.PL.controllers.TourInfoController">
   <padding>
     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
   </padding>
   <AnchorPane>
-    <GridPane layoutX="21.0" layoutY="101.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <GridPane layoutX="21.0" layoutY="101.0" AnchorPane.bottomAnchor="0.0"
+      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="148.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="123.0" />
@@ -24,8 +28,8 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <Label fx:id="nameLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT">
         <GridPane.margin>
@@ -57,47 +61,61 @@
           <Insets left="10.0" />
         </padding>
       </Label>
-      <Label fx:id="descriptionLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+      <Label fx:id="descriptionLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
+        GridPane.rowIndex="1">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
       </Label>
-      <Label fx:id="transportTypeLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+      <Label fx:id="transportTypeLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
+        GridPane.rowIndex="4">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
       </Label>
-      <Label fx:id="toLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <Label fx:id="toLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
+        GridPane.rowIndex="3">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
       </Label>
-      <Label fx:id="fromLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+      <Label fx:id="fromLabel" text=" " GridPane.columnIndex="1" GridPane.halignment="LEFT"
+        GridPane.rowIndex="2">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
       </Label>
-         <Label text="%tourInfo.distance" GridPane.rowIndex="5">
-            <padding>
-               <Insets left="10.0" />
-            </padding>
-         </Label>
-         <Label text="%tourInfo.duration" GridPane.rowIndex="6">
-            <padding>
-               <Insets left="10.0" />
-            </padding>
-         </Label>
-         <Label fx:id="distanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="5">
-            <padding>
-               <Insets left="10.0" />
-            </padding>
-         </Label>
-         <Label fx:id="durationLabel" GridPane.columnIndex="1" GridPane.rowIndex="6">
-            <padding>
-               <Insets left="10.0" />
-            </padding>
-         </Label>
+      <Label text="%tourInfo.distance" GridPane.rowIndex="5">
+        <padding>
+          <Insets left="10.0" />
+        </padding>
+      </Label>
+      <Label text="%tourInfo.duration" GridPane.rowIndex="6">
+        <padding>
+          <Insets left="10.0" />
+        </padding>
+      </Label>
+      <Label fx:id="distanceLabel" GridPane.columnIndex="1" GridPane.rowIndex="5">
+        <padding>
+          <Insets left="10.0" />
+        </padding>
+      </Label>
+      <Label fx:id="durationLabel" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <padding>
+          <Insets left="10.0" />
+        </padding>
+      </Label>
     </GridPane>
   </AnchorPane>
-  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+  <AnchorPane minHeight="0.0" minWidth="0.0">
+    <children>
+      <ImageView fx:id="RouteImage"
+        AnchorPane.bottomAnchor="0.0"
+        AnchorPane.leftAnchor="0.0"
+        AnchorPane.rightAnchor="0.0"
+        AnchorPane.topAnchor="0.0">
+        <preserveRatio>true</preserveRatio>
+      </ImageView>
+    </children>
+  </AnchorPane>
 </SplitPane>

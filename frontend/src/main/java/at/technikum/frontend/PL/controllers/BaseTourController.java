@@ -1,15 +1,31 @@
 package at.technikum.frontend.PL.controllers;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Objects;
+
+import javax.imageio.ImageIO;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import at.technikum.common.DAL.models.TransportType;
 import at.technikum.frontend.TourPlannerApplication;
 import at.technikum.frontend.BL.services.TourValidator;
 import at.technikum.frontend.BL.utils.AppProperties;
 import at.technikum.frontend.PL.viewmodels.TourTableViewModel;
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
-import com.fasterxml.jackson.databind.JsonNode;
 import javafx.collections.FXCollections;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
 import javafx.scene.web.WebView;
 import javafx.util.StringConverter;
 import lombok.Builder;
@@ -18,8 +34,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Objects;
 
 @SuperBuilder
 @Getter
@@ -91,6 +105,9 @@ public abstract class BaseTourController {
 
     okCancelController.setOkButtonListener(event -> {
       if (tourValidator.validateTour(tourViewModel)) {
+        final var image = captureWebViewSnapshot();
+        if (image != null)
+          tourViewModel.setRouteInfo(image);
         onSaveButtonClicked();
       }
     });
@@ -100,14 +117,14 @@ public abstract class BaseTourController {
 
       if (!tourValidator.validateRouteOnly(tourViewModel)) {
         log.error("Route validation failed");
-        Alert alert = new Alert(Alert.AlertType.ERROR,
-                "Could not calculate route. Please verify the locations and try again.",
-                ButtonType.OK);
+        final Alert alert = new Alert(Alert.AlertType.ERROR,
+            "Could not calculate route. Please verify the locations and try again.",
+            ButtonType.OK);
         alert.showAndWait();
         return;
       }
 
-      String htmlUrl = Objects.requireNonNull(getClass().getResource("/web/map.html")).toExternalForm();
+      final String htmlUrl = Objects.requireNonNull(getClass().getResource("/web/map.html")).toExternalForm();
       mapWebView.getEngine().load(htmlUrl);
 
       mapWebView.getEngine().getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
@@ -126,13 +143,13 @@ public abstract class BaseTourController {
             encoded = encoded.replace("\\", "\\\\").replace("'", "\\'");
 
             // Use a simpler JavaScript call
-            String script = "loadEncodedPolyline('" + encoded + "')";
+            final String script = "loadEncodedPolyline('" + encoded + "')";
             log.info("Executing script with encoded length: {}", encoded.length());
 
-            Object result = mapWebView.getEngine().executeScript(script);
+            final Object result = mapWebView.getEngine().executeScript(script);
             log.info("Script execution complete with result: {}", result);
 
-          } catch (Exception ex) {
+          } catch (final Exception ex) {
             log.error("Failed to load route: {}", ex.getMessage(), ex);
           }
         }
@@ -145,4 +162,22 @@ public abstract class BaseTourController {
   }
 
   protected abstract void onSaveButtonClicked();
+
+  private byte[] captureWebViewSnapshot() {
+    try {
+      final WritableImage snapshot = mapWebView.snapshot(new SnapshotParameters(), null);
+
+      // Convert to BufferedImage
+      final var bufferedImage = SwingFXUtils.fromFXImage(snapshot, null);
+
+      // Convert to byte array
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      ImageIO.write(bufferedImage, "png", outputStream);
+
+      return outputStream.toByteArray();
+    } catch (final Exception e) {
+      log.error("Failed to capture WebView snapshot: {}", e.getMessage());
+      return null;
+    }
+  }
 }

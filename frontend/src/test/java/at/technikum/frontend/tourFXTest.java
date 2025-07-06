@@ -116,10 +116,10 @@ class MainViewModelTest {
     robot.write("Test Info");
 
     robot.clickOn("#from");
-    robot.write("Test Start");
+    robot.write("Wien");
 
     robot.clickOn("#to");
-    robot.write("Test Ende");
+    robot.write("Linz");
 
     robot.clickOn("#transportType");
     // All transport types besides Car work as Car is also displayed in the Main
