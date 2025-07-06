@@ -1,7 +1,9 @@
 package at.technikum.frontend.PL.viewmodels;
 
+import java.util.List;
 import java.util.UUID;
 
+import at.technikum.common.DAL.models.Logs;
 import at.technikum.common.DAL.models.Tour;
 import at.technikum.common.DAL.models.TransportType;
 import at.technikum.frontend.BL.utils.AppProperties;
@@ -56,16 +58,16 @@ public class TourViewModel {
 
   public Tour toTour() {
     return new Tour(
-        getId(),
-        getName(),
-        getDescription(),
-        getFrom(),
-        getTo(),
-        getTransportType(),
-        getDistance(),
-        getEstimatedTime(),
-        getRouteInfo(),
-        null);
+            getId(),
+            getName(),
+            getDescription(),
+            getFrom(),
+            getTo(),
+            getTransportType(),
+            getDistance(),
+            getEstimatedTime(),
+            getRouteInfo(),
+            getAllLogs());
   }
 
   // Property value getters
@@ -109,10 +111,16 @@ public class TourViewModel {
     return logs.get();
   }
 
+  public List<Logs> getAllLogs() {
+    return logs.get().getData().stream()
+            .map(LogViewModel::toLog)
+            .toList();
+  }
+
   public String getLocalizedTransportType() {
     final TransportType transportType = getTransportType();
     return transportType == null ? ""
-        : AppProperties.getInstance().getI18n()
+            : AppProperties.getInstance().getI18n()
             .getString("tourInfo.transportType." + transportType.name().toLowerCase());
   }
 

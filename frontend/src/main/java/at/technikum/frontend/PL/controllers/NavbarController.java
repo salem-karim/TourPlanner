@@ -6,6 +6,7 @@ import at.technikum.frontend.PL.viewmodels.LogViewModel;
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import atlantafx.base.theme.PrimerDark;
 import atlantafx.base.theme.PrimerLight;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lowagie.text.Document;
 import com.lowagie.text.Paragraph;
 import javafx.application.Application;
@@ -152,6 +153,7 @@ public class NavbarController {
     if (selectedFile != null) {
       try {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
         // Deserialize a single Tour, not a list
         Tour importedTour = objectMapper.readValue(selectedFile, Tour.class);
@@ -173,6 +175,7 @@ public class NavbarController {
     tour.setRoute_info(tour.getRoute_info() != null ? tour.getRoute_info() : "".getBytes());
     tour.setLogs(tour.getLogs() != null ? tour.getLogs() : new ArrayList<>());
     ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
     final var fileChooser = new FileChooser();
     fileChooser.setTitle("Export Tour to JSON");
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
