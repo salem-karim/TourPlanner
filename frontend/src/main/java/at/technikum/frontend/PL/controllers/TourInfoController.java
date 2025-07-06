@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,18 +65,28 @@ public class TourInfoController implements Initializable {
       fromLabel.textProperty().bind(tourViewModel.fromProperty());
       toLabel.textProperty().bind(tourViewModel.toProperty());
       transportTypeLabel.textProperty().bind(Bindings.createStringBinding(
-          () -> tourViewModel.getLocalizedTransportType(),
-          tourViewModel.transport_typeProperty()));
+              () -> tourViewModel.getLocalizedTransportType(),
+              tourViewModel.transport_typeProperty()));
       distanceLabel.textProperty().bind(Bindings.createStringBinding(
-          () -> String.format("%.2f", tourViewModel.getDistance()),
-          tourViewModel.distanceProperty()));
+              () -> String.format("%.2f", tourViewModel.getDistance()),
+              tourViewModel.distanceProperty()));
       durationLabel.textProperty().bind(Bindings.createStringBinding(
-          () -> String.format("%.2f", tourViewModel.getEstimatedTime()),
-          tourViewModel.estimatedTimeProperty()));
+              () -> String.format("%.2f", tourViewModel.getEstimatedTime()),
+              tourViewModel.estimatedTimeProperty()));
 
       // Make ImageView responsive
-      RouteImage.fitWidthProperty().bind(splitPane.widthProperty().multiply(0.4));
+      AnchorPane parentPane = (AnchorPane) RouteImage.getParent();
+
+      // Simple width and height bindings
+      RouteImage.fitWidthProperty().bind(parentPane.widthProperty());
+      RouteImage.fitHeightProperty().bind(parentPane.heightProperty());
       RouteImage.setPreserveRatio(true);
+
+      // Center the image by setting alignment
+      AnchorPane.setTopAnchor(RouteImage, 0.0);
+      AnchorPane.setBottomAnchor(RouteImage, 0.0);
+      AnchorPane.setLeftAnchor(RouteImage, 0.0);
+      AnchorPane.setRightAnchor(RouteImage, 0.0);
 
       // Image binding
       tourViewModel.routeInfoProperty().addListener((observable, oldValue, newValue) -> {
