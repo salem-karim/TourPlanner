@@ -1,5 +1,11 @@
 # Tour Planner
 Technikum Wien SWEN2 Project Tour Planner  
+
+## Dependencies
+  - Java JDK (21 at least)
+  - JavaFX with Webkit (21 at least)
+  - Or better Maven
+
 ## Running the Application
 
 ### Linux
