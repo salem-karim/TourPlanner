@@ -31,10 +31,10 @@ public class Tour {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
-  @Column(name ="name", nullable = false)
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name ="description")
+  @Column(name = "description")
   private String description;
 
   @Column(name = "origin", nullable = false)
@@ -48,10 +48,10 @@ public class Tour {
   private TransportType transport_type;
 
   @Column(name = "distance_km")
-  private int total_distance;
+  private double total_distance;
 
   @Column(name = "estimated_time_minutes")
-  private int estimated_time;
+  private double estimated_time;
 
   @Lob
   @Column(name = "route_image")

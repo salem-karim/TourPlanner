@@ -59,8 +59,8 @@ public class TourTableViewModel {
     tourViewModel.setFrom(otherViewModel.getFrom());
     tourViewModel.setTo(otherViewModel.getTo());
     tourViewModel.setTransportType(otherViewModel.getTransportType());
-    // tourViewModel.setDistance(otherViewModel.getDistance());
-    // tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
+    tourViewModel.setDistance(otherViewModel.getDistance());
+    tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
     // tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
 
     RequestHandler.getInstance().putTour(tourViewModel);

@@ -1,5 +1,12 @@
 package at.technikum.frontend.BL.services;
 
+import java.util.Optional;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import at.technikum.frontend.BL.utils.AppProperties;
+import at.technikum.frontend.BL.utils.RequestHandler;
+import at.technikum.frontend.BL.utils.RouteInfo;
 import at.technikum.frontend.PL.controllers.BaseTourController;
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import javafx.beans.binding.Bindings;
@@ -10,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 public class TourValidator extends Validator {
   private BaseTourController controller;
+
+  private Optional<double[]> fromCoordsOpt = Optional.empty();
+  private Optional<double[]> toCoordsOpt = Optional.empty();
 
   /**
    * @param controller The controller that manages the tour view.
@@ -56,12 +66,25 @@ public class TourValidator extends Validator {
    * @return true if the 'to' field is valid, false otherwise.
    */
   private boolean validateTo(TourViewModel tourViewModel) {
-    // TODO: Use the API to actually check Location
-    if (isEmpty(tourViewModel.getTo())) {
+    final String to = tourViewModel.getTo();
+    if (isEmpty(to)) {
+      controller.getToError().setText(AppProperties.getInstance().get("validation.to.required"));
+      showError(controller.getTo(), controller.getToError());
+      toCoordsOpt = Optional.empty(); // clear on error
+      return false;
+    }
+
+    toCoordsOpt = RequestHandler.getInstance().getCoordinates(to);
+    if (toCoordsOpt.isEmpty()) {
+      controller.getToError().setText(AppProperties.getInstance().get("validation.to.location"));
       showError(controller.getTo(), controller.getToError());
       return false;
     }
+
     hideError(controller.getTo(), controller.getToError());
+
+    // Check routing if 'from' is already valid
+    validateRouteIfBothCoordsPresent(tourViewModel);
     return true;
   }
 
@@ -70,12 +93,25 @@ public class TourValidator extends Validator {
    * @return true if the 'from' field is valid, false otherwise.
    */
   private boolean validateFrom(TourViewModel tourViewModel) {
-    // TODO: Use the API to actually check Location
-    if (isEmpty(tourViewModel.getFrom())) {
+    final String from = tourViewModel.getFrom();
+    if (isEmpty(from)) {
+      controller.getFromError().setText(AppProperties.getInstance().get("validation.from.required"));
+      showError(controller.getFrom(), controller.getFromError());
+      fromCoordsOpt = Optional.empty(); // clear on error
+      return false;
+    }
+
+    fromCoordsOpt = RequestHandler.getInstance().getCoordinates(from);
+    if (fromCoordsOpt.isEmpty()) {
+      controller.getFromError().setText(AppProperties.getInstance().get("validation.from.location"));
       showError(controller.getFrom(), controller.getFromError());
       return false;
     }
+
     hideError(controller.getFrom(), controller.getFromError());
+
+    // Check routing if 'to' is already valid
+    validateRouteIfBothCoordsPresent(tourViewModel);
     return true;
   }
 
@@ -154,5 +190,28 @@ public class TourValidator extends Validator {
         Bindings.createBooleanBinding(
             () -> errorCountProperty.get() > 0,
             errorCountProperty));
+  }
+
+  private void validateRouteIfBothCoordsPresent(TourViewModel tourViewModel) {
+    if (fromCoordsOpt.isPresent() && toCoordsOpt.isPresent()) {
+      if (tourViewModel.getTransportType() == null)
+        return;
+
+      JsonNode route = RequestHandler.getInstance().RouteBetween(fromCoordsOpt, toCoordsOpt,
+          tourViewModel.getTransportType());
+      Optional<RouteInfo> routeInfoOpt = RequestHandler.getInstance().parseRouteInfo(route);
+      if (routeInfoOpt.isEmpty()) {
+        controller.getToError().setText(AppProperties.getInstance().get("validation.route"));
+        showError(controller.getTo(), controller.getToError());
+        showError(controller.getFrom(), controller.getFromError());
+        return;
+      }
+
+      // Route is valid → update view model and hide route errors
+      tourViewModel.setDistance(routeInfoOpt.get().distance());
+      tourViewModel.setEstimatedTime(routeInfoOpt.get().duration());
+      hideError(controller.getTo(), controller.getToError());
+      hideError(controller.getFrom(), controller.getFromError());
+    }
   }
 }

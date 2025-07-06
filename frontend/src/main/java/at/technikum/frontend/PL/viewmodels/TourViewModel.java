@@ -5,9 +5,9 @@ import java.util.UUID;
 import at.technikum.common.DAL.models.Tour;
 import at.technikum.common.DAL.models.TransportType;
 import at.technikum.frontend.BL.utils.AppProperties;
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,8 +23,8 @@ public class TourViewModel {
   private final StringProperty from = new SimpleStringProperty();
   private final StringProperty to = new SimpleStringProperty();
   private final ObjectProperty<TransportType> transport_type = new SimpleObjectProperty<>();
-  private final IntegerProperty distance = new SimpleIntegerProperty();
-  private final IntegerProperty estimated_time = new SimpleIntegerProperty();
+  private final DoubleProperty distance = new SimpleDoubleProperty();
+  private final DoubleProperty estimated_time = new SimpleDoubleProperty();
   private final ObjectProperty<byte[]> route_info = new SimpleObjectProperty<>();
   private final ObjectProperty<LogTableViewModel> logs = new SimpleObjectProperty<>();
 
@@ -93,11 +93,11 @@ public class TourViewModel {
     return transport_type.get();
   }
 
-  public int getDistance() {
+  public double getDistance() {
     return distance.get();
   }
 
-  public int getEstimatedTime() {
+  public double getEstimatedTime() {
     return estimated_time.get();
   }
 
@@ -141,11 +141,11 @@ public class TourViewModel {
     return transport_type;
   }
 
-  public IntegerProperty distanceProperty() {
+  public DoubleProperty distanceProperty() {
     return distance;
   }
 
-  public IntegerProperty estimatedTimeProperty() {
+  public DoubleProperty estimatedTimeProperty() {
     return estimated_time;
   }
 
@@ -182,11 +182,11 @@ public class TourViewModel {
     this.transport_type.set(transportType);
   }
 
-  public void setDistance(final int distance) {
+  public void setDistance(final double distance) {
     this.distance.set(distance);
   }
 
-  public void setEstimatedTime(final int estimatedTime) {
+  public void setEstimatedTime(final double estimatedTime) {
     this.estimated_time.set(estimatedTime);
   }
 

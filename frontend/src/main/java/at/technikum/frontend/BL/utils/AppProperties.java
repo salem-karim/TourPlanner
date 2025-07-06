@@ -64,4 +64,12 @@ public class AppProperties {
   public String getLogApiUrl() {
     return getProperty("LogAPIURL");
   }
+
+  public String getORSApiUrl() {
+    return getProperty("ORSAPIURL");
+  }
+
+  public String getORSApiKey() {
+    return getProperty("ORSAPIKEY");
+  }
 }

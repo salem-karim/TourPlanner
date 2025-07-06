@@ -56,8 +56,17 @@ public class TourInfoController implements Initializable {
       toLabel.textProperty().bind(tourViewModel.toProperty());
       transportTypeLabel.textProperty().bind(Bindings.createStringBinding(
           () -> tourViewModel.getLocalizedTransportType(), tourViewModel.transport_typeProperty()));
-      // distanceLabel.textProperty().bind(Bindings.convert(tourViewModel.distanceProperty()));
-      // durationLabel.textProperty().bind(Bindings.convert(tourViewModel.estimated_timeProperty()));
+      // Format distance with 2 decimal places
+      distanceLabel.textProperty().bind(Bindings.createStringBinding(
+              () -> String.format("%.2f", tourViewModel.getDistance()),
+              tourViewModel.distanceProperty()
+      ));
+
+      // Format estimated time with 2 decimal places
+      durationLabel.textProperty().bind(Bindings.createStringBinding(
+              () -> String.format("%.2f", tourViewModel.getEstimatedTime()),
+              tourViewModel.estimatedTimeProperty()
+      ));
     }
   }
 }
