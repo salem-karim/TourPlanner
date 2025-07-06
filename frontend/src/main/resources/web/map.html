@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Route Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Polyline decoder -->
+    <script src="https://unpkg.com/@mapbox/polyline@1.1.1/src/polyline.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    let map;
+    let currentRoute;
+
+    // Initialize map when page loads
+    window.onload = function() {
+        console.log("Initializing map...");
+
+        // Create map centered on Europe
+        map = L.map("map").setView([48.2082, 16.3738], 5);
+
+        // Add OpenStreetMap layer
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        console.log("Map initialized successfully");
+    }
+
+    function loadEncodedPolyline(encoded) {
+        console.log("Received encoded polyline of length:", encoded.length);
+
+        try {
+            // Remove existing route if any
+            if (currentRoute) {
+                map.removeLayer(currentRoute);
+            }
+
+            // Decode the polyline
+            const coordinates = polyline.decode(encoded);
+            console.log("Decoded coordinates length:", coordinates.length);
+
+            if (coordinates.length === 0) {
+                console.error("No coordinates decoded from polyline");
+                return;
+            }
+
+            // Create and add the new route
+            currentRoute = L.polyline(coordinates, {
+                color: '#0066CC',
+                weight: 4,
+                opacity: 0.8,
+                lineJoin: 'round'
+            }).addTo(map);
+
+            // Add start and end markers
+            const startPoint = coordinates[0];
+            const endPoint = coordinates[coordinates.length - 1];
+
+            L.marker(startPoint, {
+                title: "Start"
+            }).addTo(map);
+
+            L.marker(endPoint, {
+                title: "End"
+            }).addTo(map);
+
+            // Fit the map to show the entire route
+            map.fitBounds(currentRoute.getBounds(), {
+                padding: [50, 50],
+                maxZoom: 15
+            });
+
+            console.log("Route displayed successfully");
+            return "success";
+
+        } catch (error) {
+            console.error("Error displaying route:", error);
+            return "error: " + error.message;
+        }
+    }
+
+    // Add error handler for script loading
+    window.onerror = function(msg, url, line) {
+        console.error("JavaScript error:", msg, "at", url, ":", line);
+        return false;
+    };
+</script>
+</body>
+</html>

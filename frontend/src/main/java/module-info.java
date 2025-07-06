@@ -2,6 +2,7 @@
   requires transitive javafx.controls;
   requires javafx.fxml;
   requires javafx.graphics;
+  requires javafx.web;
   requires org.slf4j;
   requires static lombok;
 
@@ -18,6 +19,7 @@
   requires jdk.compiler;
   requires com.github.librepdf.openpdf;
   requires javafx.base;
+  requires org.json;
 
   opens at.technikum.frontend to javafx.fxml;
 

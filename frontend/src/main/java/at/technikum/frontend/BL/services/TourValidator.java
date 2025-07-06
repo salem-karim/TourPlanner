@@ -1,5 +1,6 @@
 package at.technikum.frontend.BL.services;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,7 +24,7 @@ public class TourValidator extends Validator {
   /**
    * @param controller The controller that manages the tour view.
    */
-  public TourValidator(BaseTourController controller) {
+  public TourValidator(final BaseTourController controller) {
     this.controller = controller;
     setupFocusListeners();
   }
@@ -50,7 +51,7 @@ public class TourValidator extends Validator {
    * @param tourViewModel The view model containing the tour data to validate.
    * @return true if the transport type is valid, false otherwise.
    */
-  private boolean validateTransportType(TourViewModel tourViewModel) {
+  private boolean validateTransportType(final TourViewModel tourViewModel) {
     if (tourViewModel.getTransportType() == null) {
       showError(controller.getTransportType(), controller.getTransportTypeError());
       return false;
@@ -63,7 +64,7 @@ public class TourValidator extends Validator {
    * @param tourViewModel The view model containing the tour data to validate.
    * @return true if the 'to' field is valid, false otherwise.
    */
-  private boolean validateTo(TourViewModel tourViewModel) {
+  private boolean validateTo(final TourViewModel tourViewModel) {
     final String to = tourViewModel.getTo();
     if (isEmpty(to)) {
       controller.getToError().setText(AppProperties.getInstance().get("validation.to.required"));
@@ -78,7 +79,7 @@ public class TourValidator extends Validator {
       showError(controller.getTo(), controller.getToError());
       return false;
     }
-    if (validateRouteIfBothCoordsPresent(tourViewModel)) 
+    if (validateRouteIfBothCoordsPresent(tourViewModel))
       return false;
     hideError(controller.getTo(), controller.getToError());
     return true;
@@ -88,7 +89,7 @@ public class TourValidator extends Validator {
    * @param tourViewModel The view model containing the tour data to validate.
    * @return true if the 'from' field is valid, false otherwise.
    */
-  private boolean validateFrom(TourViewModel tourViewModel) {
+  private boolean validateFrom(final TourViewModel tourViewModel) {
     final String from = tourViewModel.getFrom();
     if (isEmpty(from)) {
       controller.getFromError().setText(AppProperties.getInstance().get("validation.from.required"));
@@ -105,7 +106,7 @@ public class TourValidator extends Validator {
     }
 
     hideError(controller.getFrom(), controller.getFromError());
-    
+
     return true;
   }
 
@@ -113,7 +114,7 @@ public class TourValidator extends Validator {
    * @param tourViewModel The view model containing the tour data to validate.
    * @return true if the description is valid, false otherwise.
    */
-  private boolean validateDescription(TourViewModel tourViewModel) {
+  private boolean validateDescription(final TourViewModel tourViewModel) {
     if (isEmpty(tourViewModel.getDescription())) {
       showError(controller.getDescription(), controller.getDescriptionError());
       return false;
@@ -126,7 +127,7 @@ public class TourValidator extends Validator {
    * @param tourViewModel The view model containing the tour data to validate.
    * @return true if the name is valid, false otherwise.
    */
-  private boolean validateName(TourViewModel tourViewModel) {
+  private boolean validateName(final TourViewModel tourViewModel) {
     if (isEmpty(tourViewModel.getName())) {
       showError(controller.getName(), controller.getNameError());
       return false;
@@ -160,32 +161,97 @@ public class TourValidator extends Validator {
       }
     });
   }
+  
+  private boolean validateCoordinates(double[] coords) {
+    return coords == null || coords.length != 2
+            || !(coords[0] >= -180) || !(coords[0] <= 180)  // longitude
+            || !(coords[1] >= -90) || !(coords[1] <= 90);   // latitude
+}
 
-  private boolean validateRouteIfBothCoordsPresent(TourViewModel tourViewModel) {
-    if (tourViewModel.getDistance() > 0 && tourViewModel.getEstimatedTime() > 0) {
-      return false; // Assume route is already valid
-    }
+  /**
+   * @param tourViewModel The Tour View Model to be validated
+   * @return true when there is an Issue and false when everything went right
+   */
+public boolean validateRouteIfBothCoordsPresent(final TourViewModel tourViewModel) {
     if (fromCoordsOpt.isPresent() && toCoordsOpt.isPresent()) {
-      if (tourViewModel.getTransportType() == null)
-        return true;
+        double[] fromCoords = fromCoordsOpt.get();
+        double[] toCoords = toCoordsOpt.get();
 
-      JsonNode route = RequestHandler.getInstance().RouteBetween(fromCoordsOpt, toCoordsOpt,
-          tourViewModel.getTransportType());
-      Optional<RouteInfo> routeInfoOpt = RequestHandler.getInstance().parseRouteInfo(route);
-      if (routeInfoOpt.isEmpty() || route == null) {
-        controller.getToError().setText(AppProperties.getInstance().get("validation.route"));
-        showError(controller.getTo(), controller.getToError());
-        showError(controller.getFrom(), controller.getFromError());
+        // Validate coordinate ranges
+        if (validateCoordinates(fromCoords) || validateCoordinates(toCoords)) {
+            log.error("Invalid coordinates: from {} to {}", 
+                Arrays.toString(fromCoords), 
+                Arrays.toString(toCoords));
+            showRouteValidationError();
+            return true;
+        }
+
+        if (tourViewModel.getTransportType() == null)
+            return true;
+
+      log.info("Requesting route from {} to {} with transport type {}",
+              Arrays.toString(fromCoordsOpt.get()),
+              Arrays.toString(toCoordsOpt.get()),
+              tourViewModel.getTransportType());
+
+      final JsonNode route = RequestHandler.getInstance().RouteBetween(
+              fromCoordsOpt, toCoordsOpt, tourViewModel.getTransportType());
+
+      if (route == null) {
+        log.error("Route request returned null");
+        showRouteValidationError();
         return true;
       }
 
-      // Route is valid → update view model and hide route errors
+      log.info("Received route response: {}", route);
+      // Geometry decoding check (used by Leaflet polyline)
+      final JsonNode geometry = route.get("routes").get(0).get("geometry");
+      if (geometry == null || geometry.isNull() || !geometry.isTextual()) {
+        showRouteValidationError();
+        return true;
+      }
+
+      final Optional<RouteInfo> routeInfoOpt = RequestHandler.getInstance().parseRouteInfo(route);
+      if (routeInfoOpt.isEmpty()) {
+        showRouteValidationError();
+        return true;
+      }
+
+      // ✅ Route is valid
       tourViewModel.setDistance(routeInfoOpt.get().distance());
       tourViewModel.setEstimatedTime(routeInfoOpt.get().duration());
       hideError(controller.getTo(), controller.getToError());
       hideError(controller.getFrom(), controller.getFromError());
+      controller.setRouteJson(route);
       return false;
     }
+   
+  // If we reach here, either coords are missing or transport type is not set
+    showRouteValidationError();
     return true;
+  }
+
+  /**
+   * Sets the ErrorLabels to the correct Text and shows them
+   */
+  private void showRouteValidationError() {
+    final String msg = AppProperties.getInstance().get("validation.route");
+    controller.getToError().setText(msg);
+    controller.getFromError().setText(msg);
+    showError(controller.getTo(), controller.getToError());
+    showError(controller.getFrom(), controller.getFromError());
+  }
+
+  public boolean validateRouteOnly(final TourViewModel tourViewModel) {
+    errorCountProperty.set(0);
+
+    boolean isValid = true;
+
+    isValid &= validateTransportType(tourViewModel);
+    isValid &= validateFrom(tourViewModel);
+    isValid &= validateTo(tourViewModel);
+
+
+    return isValid;
   }
 }
