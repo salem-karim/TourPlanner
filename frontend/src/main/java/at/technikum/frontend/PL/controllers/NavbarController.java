@@ -211,7 +211,7 @@ public class NavbarController {
     final FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Tour PDF Report");
     fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-    fileChooser.setInitialFileName(tour.getName() + "_report.pdf");
+    fileChooser.setInitialFileName(tour.getName().replaceAll("\\s+", "-") + "_report.pdf");
 
     // Show save dialog
     File file = fileChooser.showSaveDialog(pdfMenuItem.getParentPopup().getOwnerWindow());
@@ -233,8 +233,8 @@ public class NavbarController {
       document.add(new Paragraph("From: " + tour.getFrom()));
       document.add(new Paragraph("To: " + tour.getTo()));
       document.add(new Paragraph("Transport Type: " + tour.getTransport_type()));
-      document.add(new Paragraph("Total Distance: " + tour.getTotal_distance() + " km"));
-      document.add(new Paragraph("Estimated Time: " + tour.getEstimated_time() + " minutes"));
+      document.add(new Paragraph("Total Distance: " + String.format("%.2f", tour.getTotal_distance()) + " km"));
+      document.add(new Paragraph("Estimated Time: " + String.format("%.2f", tour.getEstimated_time()) + " minutes"));
       document.add(new Paragraph(" ")); // empty line
 
       // Create table for logs
@@ -245,7 +245,7 @@ public class NavbarController {
       // todo: image is still missing
 
       document.close();
-      log.info("Tour PDF exported to: " + file.getAbsolutePath());
+      log.info("Tour PDF exported to: {}", file.getAbsolutePath());
     }
   }
 
@@ -341,7 +341,7 @@ public class NavbarController {
       }
       document.add(table);
       document.close();
-      log.info("Summary PDF exported to: " + file.getAbsolutePath());
+      log.info("Summary PDF exported to: {}", file.getAbsolutePath());
     }
   }
 

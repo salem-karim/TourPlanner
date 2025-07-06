@@ -9,7 +9,6 @@ import at.technikum.frontend.BL.utils.RequestHandler;
 import at.technikum.frontend.BL.utils.RouteInfo;
 import at.technikum.frontend.PL.controllers.BaseTourController;
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
-import javafx.beans.binding.Bindings;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +26,6 @@ public class TourValidator extends Validator {
   public TourValidator(BaseTourController controller) {
     this.controller = controller;
     setupFocusListeners();
-    setupButtonValidation();
   }
 
   /**
@@ -80,11 +78,9 @@ public class TourValidator extends Validator {
       showError(controller.getTo(), controller.getToError());
       return false;
     }
-
+    if (validateRouteIfBothCoordsPresent(tourViewModel)) 
+      return false;
     hideError(controller.getTo(), controller.getToError());
-
-    // Check routing if 'from' is already valid
-    validateRouteIfBothCoordsPresent(tourViewModel);
     return true;
   }
 
@@ -109,9 +105,7 @@ public class TourValidator extends Validator {
     }
 
     hideError(controller.getFrom(), controller.getFromError());
-
-    // Check routing if 'to' is already valid
-    validateRouteIfBothCoordsPresent(tourViewModel);
+    
     return true;
   }
 
@@ -159,20 +153,6 @@ public class TourValidator extends Validator {
       }
     });
 
-    // From field validation
-    controller.getFrom().focusedProperty().addListener((obs, oldValue, newValue) -> {
-      if (!newValue) { // Focus lost
-        validateFrom(controller.getTourViewModel());
-      }
-    });
-
-    // To field validation
-    controller.getTo().focusedProperty().addListener((obs, oldValue, newValue) -> {
-      if (!newValue) { // Focus lost
-        validateTo(controller.getTourViewModel());
-      }
-    });
-
     // Transport type validation
     controller.getTransportType().focusedProperty().addListener((obs, oldValue, newValue) -> {
       if (!newValue) { // Focus lost
@@ -181,30 +161,22 @@ public class TourValidator extends Validator {
     });
   }
 
-  /**
-   * Setup the OK Button disable Property binding
-   */
-  private void setupButtonValidation() {
-    // Create a binding that disables the button when errorCount > 0
-    controller.getOkCancelController().getOkButton().disableProperty().bind(
-        Bindings.createBooleanBinding(
-            () -> errorCountProperty.get() > 0,
-            errorCountProperty));
-  }
-
-  private void validateRouteIfBothCoordsPresent(TourViewModel tourViewModel) {
+  private boolean validateRouteIfBothCoordsPresent(TourViewModel tourViewModel) {
+    if (tourViewModel.getDistance() > 0 && tourViewModel.getEstimatedTime() > 0) {
+      return false; // Assume route is already valid
+    }
     if (fromCoordsOpt.isPresent() && toCoordsOpt.isPresent()) {
       if (tourViewModel.getTransportType() == null)
-        return;
+        return true;
 
       JsonNode route = RequestHandler.getInstance().RouteBetween(fromCoordsOpt, toCoordsOpt,
           tourViewModel.getTransportType());
       Optional<RouteInfo> routeInfoOpt = RequestHandler.getInstance().parseRouteInfo(route);
-      if (routeInfoOpt.isEmpty()) {
+      if (routeInfoOpt.isEmpty() || route == null) {
         controller.getToError().setText(AppProperties.getInstance().get("validation.route"));
         showError(controller.getTo(), controller.getToError());
         showError(controller.getFrom(), controller.getFromError());
-        return;
+        return true;
       }
 
       // Route is valid → update view model and hide route errors
@@ -212,6 +184,8 @@ public class TourValidator extends Validator {
       tourViewModel.setEstimatedTime(routeInfoOpt.get().duration());
       hideError(controller.getTo(), controller.getToError());
       hideError(controller.getFrom(), controller.getFromError());
+      return false;
     }
+    return true;
   }
 }
