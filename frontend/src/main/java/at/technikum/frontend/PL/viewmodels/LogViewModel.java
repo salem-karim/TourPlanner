@@ -35,7 +35,7 @@ public class LogViewModel {
     this.startTime.set(log.getStart_date_time().toLocalTime());
     this.endDate.set(log.getEnd_date_time().toLocalDate());
     this.endTime.set(log.getEnd_date_time().toLocalTime());
-    this.tourId.set(log.getTour_id());
+    this.tourId.set(log.getTourId());
     this.comment.set(log.getComment());
     this.difficulty.set(log.getDifficulty());
     this.totalDistance.set(log.getTotal_distance());
@@ -64,7 +64,7 @@ public class LogViewModel {
     log.setDifficulty(this.difficultyProperty().get());
     log.setTotal_distance(this.totalDistanceProperty().get());
     log.setRating(this.ratingProperty().get());
-    log.setTour_id(this.getTourId());
+    log.setTourId(this.getTourId());
     return log;
   }
 

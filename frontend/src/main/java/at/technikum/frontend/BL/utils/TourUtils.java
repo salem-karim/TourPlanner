@@ -1,6 +1,5 @@
 package at.technikum.frontend.BL.utils;
 
-import at.technikum.common.DAL.models.Logs;
 import at.technikum.common.DAL.models.Tour;
 import at.technikum.common.DAL.models.TransportType;
 import at.technikum.frontend.PL.viewmodels.LogViewModel;
@@ -82,33 +81,26 @@ public final class TourUtils {
    * @param data The ObservableList the Tours should be loaded to
    */
   public static void loadAllTours(final ObservableList<TourViewModel> data) {
-    // sets callback for the request handler to load tours
+    // Load tours first
     RequestHandler.getInstance().loadTours(tourList -> {
-      for (final Tour tour : tourList) {
-        final TourViewModel tvm = new TourViewModel(tour);
-        data.add(tvm);
-      }
-    });
+      data.clear();
+      final List<TourViewModel> tourVMs = tourList.stream()
+              .map(TourViewModel::new)
+              .toList();
+      data.addAll(tourVMs);
 
-    // Load logs for each tour and add to the TourViewModel
-    final List<LogViewModel> all_logs = new ArrayList<>(List.of());
-    RequestHandler.getInstance().loadLogs(logs -> {
-      for (final Logs log : logs) {
-        final LogViewModel lvm = new LogViewModel(log);
-        all_logs.add(lvm);
-      }
-    });
-
-    while (!all_logs.isEmpty()) {
-      for (final TourViewModel tour : data) {
-        for (final LogViewModel log : all_logs) {
-          if (tour.getId().equals(log.getTourId())) {
-            tour.getLogs().getData().add(log);
-            all_logs.remove(log);
-            break;
+      // Now load logs and assign to the correct tour
+      RequestHandler.getInstance().loadLogs(logs -> {
+        for (final TourViewModel tour : tourVMs) {
+          final List<LogViewModel> logsForTour = logs.stream()
+                  .filter(log -> tour.getId().equals(log.getTourId()))
+                  .map(LogViewModel::new)
+                  .collect(Collectors.toList());
+          if (tour.getLogs() != null) {
+            tour.getLogs().getData().setAll(logsForTour);
           }
         }
-      }
-    }
+      });
+    });
   }
 }

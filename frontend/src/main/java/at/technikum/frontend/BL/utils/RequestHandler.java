@@ -6,11 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -309,7 +305,7 @@ public class RequestHandler {
     final double[] toCoords = toCoordsOpt.get();
 
     try {
-      final String body = String.format("""
+      final String body = String.format(Locale.US, """
               {
                 "coordinates": [[%f, %f], [%f, %f]]
               }

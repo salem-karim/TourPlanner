@@ -59,8 +59,8 @@ public class Tour {
 
   // @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval =
   // true)
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "tour_id")
-  private List<Logs> logs = new ArrayList<>();
+//  @OneToMany
+//  @JoinColumn(name = "tour_id")
+  transient private List<Logs> logs = new ArrayList<>();
 
 }

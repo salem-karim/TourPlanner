@@ -23,7 +23,7 @@ CREATE TABLE tour_logs (
 
     CONSTRAINT fk_tour
     FOREIGN KEY (tour_id)
-    REFERENCES toursa (id)
+    REFERENCES tours (id)
     ON DELETE CASCADE
 );
 

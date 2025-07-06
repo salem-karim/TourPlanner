@@ -25,7 +25,7 @@ public class Logs {
   private UUID id;
 
   @Column(name = "tour_id", nullable = false)
-  private UUID tour_id;
+  private UUID tourId;
 
   @Column(name = "start_date_time", nullable = false)
   private LocalDateTime start_date_time;
