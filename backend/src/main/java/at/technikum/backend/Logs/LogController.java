@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import at.technikum.common.models.Logs;
+import at.technikum.common.DAL.models.Logs;
 
 @CrossOrigin(origins = "*")
 @RestController

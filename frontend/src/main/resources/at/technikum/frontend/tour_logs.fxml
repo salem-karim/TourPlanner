@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="710.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.controllers.TourLogController">
+<AnchorPane prefHeight="710.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/21.0.3-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.technikum.frontend.PL.controllers.TourLogController">
   <padding>
     <Insets left="5.0" right="5.0" top="5.0" />
   </padding>

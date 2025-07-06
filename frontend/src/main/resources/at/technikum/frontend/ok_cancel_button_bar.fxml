@@ -8,7 +8,7 @@
            xmlns:fx="http://javafx.com/fxml"
            fx:id="buttonBar"
            buttonMinWidth="80.0" prefHeight="40.0" prefWidth="200.0"
-           fx:controller="at.technikum.frontend.controllers.OKCancelButtonBarController">
+           fx:controller="at.technikum.frontend.PL.controllers.OKCancelButtonBarController">
   <buttons>
     <Button fx:id="okButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
             text="%button.ok" textAlignment="CENTER">

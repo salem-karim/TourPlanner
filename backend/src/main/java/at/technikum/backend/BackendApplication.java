@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
-@EntityScan(basePackages = { "at.technikum.common.models", "at.technikum.backend" })
+@EntityScan(basePackages = { "at.technikum.common.DAL.models" })
 @EnableJpaRepositories(basePackages = { "at.technikum.backend" })
 public class BackendApplication {
 

@@ -3,7 +3,9 @@ package at.technikum.frontend;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testfx.assertions.api.Assertions.assertThat;
 
-import at.technikum.frontend.viewmodels.LogViewModel;
+import at.technikum.frontend.PL.viewmodels.LogViewModel;
+import javafx.collections.ObservableList;
+import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,10 +15,12 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import at.technikum.frontend.viewmodels.TourViewModel;
+import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 
 @ExtendWith(ApplicationExtension.class)
 class MainViewModelTest {
@@ -112,10 +116,10 @@ class MainViewModelTest {
     robot.write("Test Info");
 
     robot.clickOn("#from");
-    robot.write("Test Start");
+    robot.write("Wien");
 
     robot.clickOn("#to");
-    robot.write("Test Ende");
+    robot.write("Linz");
 
     robot.clickOn("#transportType");
     // All transport types besides Car work as Car is also displayed in the Main
@@ -163,35 +167,34 @@ class MainViewModelTest {
 
   @Test
   void testCreateLog(final FxRobot robot) {
-    // Select a tour
     final ListView<TourViewModel> tourListView = robot.lookup("#tourListView").query();
     robot.interact(() -> tourListView.getSelectionModel().selectFirst());
 
-    // Go to logs page
     robot.clickOn("#LogsTab");
-
-    // Create new log
     robot.clickOn("#newLogButton");
 
-    // Set the date (assuming DatePicker)
-    robot.clickOn("#logStartDate");
-    robot.write("01.01.2024"); // Use the correct format for your DatePicker
-    robot.clickOn("#logEndDate");
-    robot.write("02.01.2024"); // Use the correct format for your DatePicker
+    // Set dates
+    robot.interact(() -> {
+      DatePicker startDatePicker = robot.lookup("#logStartDate").query();
+      DatePicker endDatePicker = robot.lookup("#logEndDate").query();
+      startDatePicker.setValue(LocalDate.of(2024, 1, 1));
+      endDatePicker.setValue(LocalDate.of(2024, 1, 2));
+    });
 
-    // Fill required fields
     robot.clickOn("#logComment");
     robot.write("Test log comment");
 
     robot.clickOn("#logTotalDistance");
-    robot.write("30"); // Use the correct format for your DatePicker
+    robot.write("30");
 
     robot.clickOn("#logOkButton");
-    
 
-    // Now check if the log was added
+    // Assert new log is added
     final TableView<LogViewModel> logTable = robot.lookup("#logTable").query();
-    final String comment = logTable.getItems().getLast().getComment();
+    final ObservableList<LogViewModel> logs = logTable.getItems();
+    Assertions.assertThat(logs).isNotEmpty();
+
+    final String comment = logs.getLast().getComment();
     Assertions.assertThat(comment).isEqualTo("Test log comment");
   }
 
@@ -231,7 +234,6 @@ class MainViewModelTest {
     robot.write("Edited log comment");
     robot.clickOn("#logCancelButton");
 
-    
     String comment = logTable.getItems().getFirst().getComment();
     Assertions.assertThat(comment).isEqualTo("Great weather, enjoyed the hike!");
   }

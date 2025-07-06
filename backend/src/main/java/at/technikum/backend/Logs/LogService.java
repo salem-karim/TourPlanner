@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import at.technikum.common.models.Logs;
+import at.technikum.common.DAL.models.Logs;
 
 @Service
 public class LogService {
