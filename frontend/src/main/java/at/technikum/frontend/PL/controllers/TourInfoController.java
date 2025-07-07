@@ -1,22 +1,22 @@
 package at.technikum.frontend.PL.controllers;
 
-import java.io.ByteArrayInputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @NoArgsConstructor
 @Getter
@@ -65,14 +65,11 @@ public class TourInfoController implements Initializable {
       fromLabel.textProperty().bind(tourViewModel.fromProperty());
       toLabel.textProperty().bind(tourViewModel.toProperty());
       transportTypeLabel.textProperty().bind(Bindings.createStringBinding(
-              () -> tourViewModel.getLocalizedTransportType(),
-              tourViewModel.transport_typeProperty()));
+          () -> tourViewModel.getLocalizedTransportType(), tourViewModel.transport_typeProperty()));
       distanceLabel.textProperty().bind(Bindings.createStringBinding(
-              () -> String.format("%.2f", tourViewModel.getDistance()),
-              tourViewModel.distanceProperty()));
+          () -> String.format("%.2f", tourViewModel.getDistance()), tourViewModel.distanceProperty()));
       durationLabel.textProperty().bind(Bindings.createStringBinding(
-              () -> String.format("%.2f", tourViewModel.getEstimatedTime()),
-              tourViewModel.estimatedTimeProperty()));
+          () -> String.format("%.2f", tourViewModel.getEstimatedTime()), tourViewModel.estimatedTimeProperty()));
 
       // Make ImageView responsive
       AnchorPane parentPane = (AnchorPane) RouteImage.getParent();
@@ -89,27 +86,17 @@ public class TourInfoController implements Initializable {
       AnchorPane.setRightAnchor(RouteImage, 0.0);
 
       // Image binding
-      tourViewModel.routeInfoProperty().addListener((observable, oldValue, newValue) -> {
-        if (newValue != null) {
+      RouteImage.imageProperty().bind(Bindings.createObjectBinding(() -> {
+        byte[] routeInfo = tourViewModel.getRouteInfo();
+        if (routeInfo != null) {
           try {
-            final var byteArrayInputStream = new ByteArrayInputStream(newValue);
-            Image image = new Image(byteArrayInputStream);
-            RouteImage.setImage(image);
+            return new Image(new ByteArrayInputStream(routeInfo));
           } catch (Exception e) {
             log.error("Failed to load route image: {}", e.getMessage(), e);
           }
-        } else {
-          RouteImage.setImage(null);
-          log.info("Cleared image from ImageView");
         }
-      });
-
-      // Set initial image if available
-      byte[] currentRouteInfo = tourViewModel.getRouteInfo();
-      if (currentRouteInfo != null) {
-        final var byteArrayInputStream = new ByteArrayInputStream(currentRouteInfo);
-        RouteImage.setImage(new Image(byteArrayInputStream));
-      }
+        return null;
+      }, tourViewModel.routeInfoProperty()));
     } else {
       log.warn("TourViewModel is null, skipping bindings");
     }

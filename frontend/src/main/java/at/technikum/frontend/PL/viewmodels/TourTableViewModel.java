@@ -11,8 +11,7 @@ import javafx.collections.ObservableList;
 import lombok.Getter;
 
 /**
- * ViewModel for the TourTableView. This class is responsible for managing the
- * data and logic of the TourTableView. It
+ * ViewModel for the TourTableView. This class is responsible for managing the data and logic of the TourTableView. It
  * handles the creation, updating, and deletion of tours.
  */
 @Getter
@@ -32,9 +31,9 @@ public class TourTableViewModel {
     }
 
     data.add(new TourViewModel(TourUtils.createSampleTour("Kahlsberg Wanderung", "Schöne Wanderung aufm Kahlsberg",
-        "Nußdorf", "Kahlsberg", TransportType.CAR)));
+            "Nußdorf", "Kahlsberg", TransportType.CAR)));
     data.add(new TourViewModel(TourUtils.createSampleTour("Schneeberg Wanderung", "Schöne Wanderung aufm Schneeberg",
-        "Schneeberg Startpunkt", "Schneeberg Spitze", TransportType.BIKE)));
+            "Schneeberg Startpunkt", "Schneeberg Spitze", TransportType.BIKE)));
 
     data.forEach(TourUtils::addSampleLogs);
   }
@@ -61,7 +60,7 @@ public class TourTableViewModel {
     tourViewModel.setTransportType(otherViewModel.getTransportType());
     tourViewModel.setDistance(otherViewModel.getDistance());
     tourViewModel.setEstimatedTime(otherViewModel.getEstimatedTime());
-    // tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
+    tourViewModel.setRouteInfo(otherViewModel.getRouteInfo());
 
     RequestHandler.getInstance().putTour(tourViewModel);
   }
