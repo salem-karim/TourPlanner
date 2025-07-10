@@ -1,7 +1,9 @@
 package at.technikum.frontend.PL.controllers;
 
+import at.technikum.common.DAL.models.Logs;
 import at.technikum.common.DAL.models.Tour;
 import at.technikum.frontend.BL.utils.AppProperties;
+import at.technikum.frontend.BL.utils.RequestHandler;
 import at.technikum.frontend.PL.viewmodels.LogViewModel;
 import at.technikum.frontend.PL.viewmodels.TourViewModel;
 import atlantafx.base.theme.PrimerDark;
@@ -38,6 +40,7 @@ import java.util.Objects;
 
 import com.lowagie.text.pdf.PdfPTable;
 import lombok.Getter;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -86,7 +89,7 @@ public class NavbarController {
   }
 
   public void setLanguageMenuItems(RadioMenuItem englishButton, RadioMenuItem germanButton, RadioMenuItem polishButton,
-      Stage stage) {
+                                   Stage stage) {
     // Reset all selections first
     englishButton.setSelected(false);
     germanButton.setSelected(false);
@@ -157,12 +160,23 @@ public class NavbarController {
 
         // Deserialize a single Tour, not a list
         Tour importedTour = objectMapper.readValue(selectedFile, Tour.class);
+        List<Logs> logsToSave = importedTour.getLogs(); // Store logs before creating tour
 
         log.info(importedTour.getName()); // Print the imported tour name
 
         tourPlannerController.getTourTableViewModel().newTour(new TourViewModel(importedTour));
+        
+        // Wait for the tour to be created
+        Thread.sleep(250);
+        // Save each log after tour is created
+        if (logsToSave != null && !logsToSave.isEmpty()) {
+          for (Logs log : logsToSave) {
+            log.setTourId(importedTour.getId());
+            RequestHandler.getInstance().postLog(new LogViewModel(log));
+          }
+        }
 
-      } catch (IOException e) {
+      } catch (IOException | InterruptedException e) {
         log.error(e.getMessage());
       }
     }
@@ -191,12 +205,12 @@ public class NavbarController {
         file = new File(file.getAbsolutePath() + ".json");
       }
       mapper
-          .writeValue(
-              Objects
-                  .requireNonNullElseGet(file,
-                      () -> new File(
-                          "json_files/" + tour.getName().replaceAll("\\s+", "-") + "-" + tour.getId() + ".json")),
-              tour);
+              .writeValue(
+                      Objects
+                              .requireNonNullElseGet(file,
+                                      () -> new File(
+                                              "json_files/" + tour.getName().replaceAll("\\s+", "-") + "-" + tour.getId() + ".json")),
+                      tour);
       log.info("Tour exported to JSON.");
     } catch (IOException e) {
       log.error(e.getMessage());
@@ -339,7 +353,7 @@ public class NavbarController {
 
           for (LogViewModel log : currentLogs) {
             avgTimeMinutes += ((log.toLog().getEnd_date_time().getHour() - log.toLog().getStart_date_time().getHour())
-                * 60 + (log.toLog().getEnd_date_time().getMinute() - log.toLog().getStart_date_time().getMinute()));
+                    * 60 + (log.toLog().getEnd_date_time().getMinute() - log.toLog().getStart_date_time().getMinute()));
             avgDistance += log.toLog().getTotal_distance();
             avgRating += log.getRating();
           }
@@ -369,7 +383,7 @@ public class NavbarController {
     try {
       // Reload the entire scene with the new language
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/at/technikum/frontend/main_window.fxml"),
-          AppProperties.getInstance().getI18n());
+              AppProperties.getInstance().getI18n());
       Parent root = loader.load();
 
       // Replace the scene content
@@ -381,7 +395,7 @@ public class NavbarController {
   }
 
   private void updateLanguageSelection(RadioMenuItem englishButton, RadioMenuItem germanButton,
-      RadioMenuItem polishButton, String language) {
+                                       RadioMenuItem polishButton, String language) {
     // Reset all selections first
     englishButton.setSelected(false);
     germanButton.setSelected(false);
